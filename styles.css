@@ -1,0 +1,56 @@
+button {
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  width: 200px;
+  height: 50px;
+}
+
+h1 {
+    text-align: center;
+    -webkit-text-fill-color: antiquewhite;
+}
+
+body {
+    background-color: #1E1D23;
+}
+
+.button1 {
+    align-items: center;
+    background-color: #759E4C;
+    color: black;
+}
+
+.button1:hover {
+  background-color: #4E6995;
+  color: antiquewhite;
+}
+
+.container {
+    height: 200px;
+    position: relative;
+    border: 3px solid #1E1D23;
+}
+
+.verticalcenter {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
