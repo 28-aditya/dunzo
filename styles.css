@@ -12,16 +12,39 @@ button {
   height: 50px;
 }
 
+@font-face {
+    font-family: 'DopeStyle';
+    src: url('fonts/Dopestyle.ttf') format('TrueType');
+}
+
 h1 {
+    font-family: Arial;
     text-align: center;
     -webkit-text-fill-color: antiquewhite;
+}
+
+h2 {
+    font-family: Arial;
+    text-align: center;
+    -webkit-text-fill-color: #759E4C;
 }
 
 body {
     background-color: #1E1D23;
 }
 
+.home {
+    font-size: 36px;
+    font-family: "Dopestyle";
+    background-color: #1E1D23;
+    color: #A93C3C;
+    padding: 0% 0%;
+    margin: 0% 0%;
+    text-shadow: 4px 4px 4px #ffffff28;
+}
+
 .button1 {
+    font-family: Arial;
     align-items: center;
     background-color: #759E4C;
     color: black;
@@ -53,4 +76,12 @@ body {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.p {
+    align-items: center;
+    text-align: center;
+    font-size: larger;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    -webkit-text-fill-color: #759E4C;
 }
