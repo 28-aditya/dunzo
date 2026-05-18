@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>dunzo Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <div class="sidebar">
+
+        <button class="home">
+            <a href="homepage.html">dunzo.</a>
+        </button>
+
+        <div class="sidebar-menu">
+
+            <button class="sidebar-button active">
+                Dashboard
+            </button>
+
+            <button class="sidebar-button">
+                Today
+            </button>
+
+            <button class="sidebar-button">
+                Upcoming
+            </button>
+
+            <button class="sidebar-button">
+                Overdue
+            </button>
+
+            <button class="sidebar-button">
+                Completed
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+
+    <div class="main-content">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <h1 class="dashboard-title">
+                Your Tasks
+            </h1>
+
+            <button class="button1">
+                + New Task
+            </button>
+
+        </div>
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <p class="stat-number">12</p>
+                <p class="stat-label">Total Tasks</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-number">5</p>
+                <p class="stat-label">Completed</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-number">3</p>
+                <p class="stat-label">Overdue</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="stat-number">41%</p>
+                <p class="stat-label">Completion</p>
+            </div>
+
+        </div>
+
+        <!-- TASK CREATION -->
+
+        <div class="task-create">
+
+            <div class="task-form-row">
+
+                <input type="text"
+                class="textbox1 small-input"
+                placeholder="Task Title">
+
+                <input type="datetime-local"
+                class="textbox1 small-input">
+
+            </div>
+
+            <div class="task-form-row">
+
+                <select class="select1">
+
+                    <option>Category</option>
+                    <option>Work</option>
+                    <option>Study</option>
+                    <option>Personal</option>
+
+                </select>
+
+                <select class="select1">
+
+                    <option>Status</option>
+                    <option>Incomplete</option>
+                    <option>In Progress</option>
+                    <option>Complete</option>
+
+                </select>
+
+                <select class="select1">
+
+                    <option>Priority</option>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+
+                </select>
+
+            </div>
+
+            <textarea class="task-textarea"
+            placeholder="Task Description"></textarea>
+
+        </div>
+
+        <!-- FILTERS -->
+
+        <div class="filter-bar">
+
+            <input type="text"
+            class="textbox1 search-input"
+            placeholder="Search Tasks">
+
+            <select class="filter-select">
+
+                <option>All Status</option>
+                <option>Incomplete</option>
+                <option>In Progress</option>
+                <option>Complete</option>
+
+            </select>
+
+            <select class="filter-select">
+
+                <option>All Categories</option>
+                <option>Work</option>
+                <option>Study</option>
+                <option>Personal</option>
+
+            </select>
+
+            <select class="filter-select">
+
+                <option>Sort By</option>
+                <option>Nearest Deadline</option>
+                <option>Newest</option>
+                <option>Oldest</option>
+                <option>Priority</option>
+
+            </select>
+
+        </div>
+
+        <!-- TASK SECTION -->
+
+        <div class="task-section">
+
+            <h2 class="section-title">
+                Today
+            </h2>
+
+            <!-- TASK CARD -->
+
+            <div class="task-card overdue">
+
+                <div class="task-left">
+
+                    <input type="checkbox" class="task-check">
+
+                    <div>
+
+                        <p class="task-title">
+                            Finish UI Design
+                        </p>
+
+                        <p class="task-desc">
+                            Complete dashboard styling
+                        </p>
+
+                        <div class="task-meta">
+
+                            <span class="task-tag">
+                                Work
+                            </span>
+
+                            <span class="task-status">
+                                In Progress
+                            </span>
+
+                            <span class="priority-pill high-priority">
+                                High
+                            </span>
+
+                            <span class="task-deadline">
+                                Due: May 20, 6:00 PM
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="task-actions">
+
+                    <button class="task-edit">
+                        Edit
+                    </button>
+
+                    <button class="task-delete">
+                        Delete
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- TASK CARD -->
+
+            <div class="task-card">
+
+                <div class="task-left">
+
+                    <input type="checkbox" class="task-check">
+
+                    <div>
+
+                        <p class="task-title">
+                            Study JavaScript
+                        </p>
+
+                        <p class="task-desc">
+                            Learn DOM manipulation
+                        </p>
+
+                        <div class="task-meta">
+
+                            <span class="task-tag">
+                                Study
+                            </span>
+
+                            <span class="task-status">
+                                Incomplete
+                            </span>
+
+                            <span class="priority-pill medium-priority">
+                                Medium
+                            </span>
+
+                            <span class="task-deadline">
+                                Due: May 24, 11:00 AM
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="task-actions">
+
+                    <button class="task-edit">
+                        Edit
+                    </button>
+
+                    <button class="task-delete">
+                        Delete
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
