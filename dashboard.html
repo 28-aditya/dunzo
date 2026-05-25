@@ -12,215 +12,147 @@
 
 </head>
 
-<body class>
+<body>
 
   <div class="dash-layout">
 
     <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
 
-    <aside class="sidebar">
+  <div class="sidebar-logo">
+    dunzo<span class="dot">.</span>
+  </div>
 
-      <div class="sidebar-logo">
-        dunzo<span class="dot">.</span>
-      </div>
+  <!-- WORKSPACE -->
+  <div class="sidebar-section" id="workspace-section">
 
-      <div class="sidebar-section">
+    <p class="sidebar-label">Workspace</p>
 
-        <p class="sidebar-label">
-          Workspace
-        </p>
+    <button class="sidebar-item active" data-view="dashboard" id="nav-dashboard">
+      <span class="icon">⌂</span>
+      Dashboard
+    </button>
 
-        <a href="dashboard.html" class="sidebar-item active">
-          <span class="icon">⌂</span>
-          Dashboard
-        </a>
+    <button class="sidebar-item" data-view="today" id="nav-today">
+      <span class="icon">◉</span>
+      Today
+    </button>
 
-        <a href="#" class="sidebar-item">
-          <span class="icon">◉</span>
-          Today
-        </a>
+    <button class="sidebar-item" data-view="upcoming" id="nav-upcoming">
+      <span class="icon">◎</span>
+      Upcoming
+    </button>
 
-        <a href="#" class="sidebar-item">
-          <span class="icon">◎</span>
-          Upcoming
-        </a>
+    <button class="sidebar-item" data-view="completed" id="nav-completed">
+      <span class="icon">✓</span>
+      Completed
+    </button>
 
-        <a href="#" class="sidebar-item">
-          <span class="icon">✓</span>
-          Completed
-        </a>
+    <button class="sidebar-item" data-view="overdue" id="nav-overdue">
+      <span class="icon">⚠</span>
+      Overdue
+    </button>
 
-        <a href="#" class="sidebar-item">
-          <span class="icon">⚠</span>
-          Overdue
-        </a>
+  </div>
 
-      </div>
+  <!-- PRODUCTIVITY -->
+  <div class="sidebar-section" id="productivity-section">
 
-      <div class="sidebar-section">
+    <p class="sidebar-label">Productivity</p>
 
-        <p class="sidebar-label">
-          Productivity
-        </p>
+    <button class="sidebar-item" data-view="analytics" id="nav-analytics">
+      <span class="icon">★</span>
+      Analytics
+    </button>
 
-        <a href="#" class="sidebar-item">
-          <span class="icon">★</span>
-          Analytics
-        </a>
+    <button class="sidebar-item" data-view="notes" id="nav-notes">
+      <span class="icon">☰</span>
+      Notes
+    </button>
 
-        <a href="#" class="sidebar-item">
-          <span class="icon">☰</span>
-          Notes
-        </a>
+    <button class="sidebar-item" data-view="search" id="nav-search">
+      <span class="icon">⌕</span>
+      Search
+    </button>
 
-        <a href="#" class="sidebar-item">
-          <span class="icon">⌕</span>
-          Search
-        </a>
+    <button class="sidebar-item" data-view="settings" id="nav-settings">
+      <span class="icon">⚙</span>
+      Settings
+    </button>
 
-        <a href="#" class="sidebar-item">
-          <span class="icon">⚙</span>
-          Settings
-        </a>
+  </div>
 
-      </div>
+  <div class="sidebar-spacer"></div>
 
-      <div class="sidebar-spacer"></div>
+  <!-- USER -->
+  <div class="sidebar-user" id="user-panel">
+    <div class="avatar" id="user-avatar">A</div>
 
-      <a href="profile.html" class="sidebar-user">
+    <div class="user-info" id="user-info">
+      <p id="user-name">Aditya Sharma</p>
+      <span id="user-email">aditya@dunzo.app</span>
+    </div>
+  </div>
 
-        <div class="avatar">
-          A
-        </div>
-
-        <div class="user-info">
-
-          <p>
-            Aditya Sharma
-          </p>
-
-          <span>
-            aditya@dunzo.app
-          </span>
-
-        </div>
-
-      </a>
-
-    </aside>
+</aside>
 
     <!-- MAIN -->
-
     <main class="dash-main">
 
       <!-- HEADER -->
-
       <div class="dash-header">
 
         <div>
-
-          <h1>
-            Dashboard
-          </h1>
-
-          <p>
-            Stay focused and keep your workflow moving.
-          </p>
-
+          <h1>Dashboard</h1>
+          <p>Stay focused and keep your workflow moving.</p>
         </div>
 
         <div class="header-actions">
 
-          <button class="btn-icon">
-            🔔
-          </button>
+          <button class="btn-icon">🔔</button>
 
-          <button class="btn-icon" id="theme-toggle">
-            🎨
-          </button>
+          <button class="btn-icon" id="theme-toggle">🎨</button>
 
-          <button class="btn-new">
-            + New Task
-          </button>
+          <button class="btn-new">+ New Task</button>
 
         </div>
 
       </div>
 
       <!-- CONTENT -->
-
       <div class="dash-content">
 
         <!-- OVERVIEW -->
-
         <div class="overview-grid">
 
           <div class="overview-card">
-
-            <p class="overview-title">
-              Tasks Completed
-            </p>
-
-            <p class="overview-number">
-              18
-            </p>
-
-            <p class="overview-sub">
-              +4 from yesterday
-            </p>
-
+            <p class="overview-title">Tasks Completed</p>
+            <p class="overview-number">18</p>
+            <p class="overview-sub">+4 from yesterday</p>
           </div>
 
           <div class="overview-card">
-
-            <p class="overview-title">
-              Productivity Score
-            </p>
-
-            <p class="overview-number">
-              91%
-            </p>
-
-            <p class="overview-sub">
-              Excellent consistency
-            </p>
-
+            <p class="overview-title">Productivity Score</p>
+            <p class="overview-number">91%</p>
+            <p class="overview-sub">Excellent consistency</p>
           </div>
 
           <div class="overview-card">
-
-            <p class="overview-title">
-              Focus Time
-            </p>
-
-            <p class="overview-number">
-              6.2h
-            </p>
-
-            <p class="overview-sub">
-              Recorded today
-            </p>
-
+            <p class="overview-title">Focus Time</p>
+            <p class="overview-number">6.2h</p>
+            <p class="overview-sub">Recorded today</p>
           </div>
 
         </div>
 
-        <!-- QUICK ACTION -->
-
+        <!-- QUICK ADD -->
         <div class="task-card" style="margin-bottom: 28px;">
 
           <div class="section-header">
 
             <div>
-
-              <h2 class="section-title">
-                Quick Add
-              </h2>
-
-              <p class="section-subtitle">
-                Capture tasks before you forget them
-              </p>
-
+              <h2 class="section-title">Quick Add</h2>
+              <p class="section-subtitle">Capture tasks before you forget them</p>
             </div>
 
           </div>
@@ -232,334 +164,108 @@
               class="add-task-input"
               placeholder="Enter a new task...">
 
-            <button class="btn-add">
-              +
-            </button>
+            <button class="btn-add">+</button>
 
           </div>
 
         </div>
 
         <!-- STATS -->
-
         <div class="stats-grid">
 
           <div class="stat-card">
-
-            <p class="stat-label">
-              Total Tasks
-            </p>
-
-            <p class="stat-value">
-              24
-            </p>
-
-            <p class="stat-delta">
-              ↑ 12% this week
-            </p>
-
+            <p class="stat-label">Total Tasks</p>
+            <p class="stat-value">24</p>
+            <p class="stat-delta">↑ 12% this week</p>
           </div>
 
           <div class="stat-card">
-
-            <p class="stat-label">
-              In Progress
-            </p>
-
-            <p class="stat-value">
-              5
-            </p>
-
-            <p class="stat-delta">
-              ↑ Active projects
-            </p>
-
+            <p class="stat-label">In Progress</p>
+            <p class="stat-value">5</p>
+            <p class="stat-delta">↑ Active projects</p>
           </div>
 
           <div class="stat-card">
-
-            <p class="stat-label">
-              Overdue
-            </p>
-
-            <p class="stat-value">
-              2
-            </p>
-
-            <p class="stat-delta down">
-              ↓ Needs attention
-            </p>
-
+            <p class="stat-label">Overdue</p>
+            <p class="stat-value">2</p>
+            <p class="stat-delta down">↓ Needs attention</p>
           </div>
 
           <div class="stat-card">
-
-            <p class="stat-label">
-              Completion Rate
-            </p>
-
-            <p class="stat-value">
-              91%
-            </p>
-
-            <p class="stat-delta">
-              ↑ Excellent
-            </p>
-
+            <p class="stat-label">Completion Rate</p>
+            <p class="stat-value">91%</p>
+            <p class="stat-delta">↑ Excellent</p>
           </div>
 
         </div>
 
-        <!-- TASK BOARD -->
-
+        <!-- TASK BOARD (keep static for now) -->
         <div class="task-board">
 
-          <!-- TODO -->
-
           <div>
 
             <div class="task-col-header">
-
               <div class="task-col-title">
-
                 <div class="col-dot todo"></div>
-
                 Todo
-
               </div>
-
-              <div class="col-count">
-                3
-              </div>
-
+              <div class="col-count">3</div>
             </div>
 
             <div class="task-card">
-
-              <p>
-                Finish landing page redesign
-              </p>
-
-              <div class="task-meta">
-
-                <span class="tag tag-design">
-                  Design
-                </span>
-
-                <span class="task-due">
-                  Today
-                </span>
-
-              </div>
-
-              <div class="progress-wrap">
-
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 25%;"></div>
-                </div>
-
-              </div>
-
+              <p>Finish landing page redesign</p>
             </div>
 
             <div class="task-card">
-
-              <p>
-                Prepare backend database schema
-              </p>
-
-              <div class="task-meta">
-
-                <span class="tag tag-dev">
-                  Backend
-                </span>
-
-                <span class="task-due">
-                  Tomorrow
-                </span>
-
-              </div>
-
+              <p>Prepare backend database schema</p>
             </div>
 
             <div class="task-card">
-
-              <p>
-                Review UI color palette
-              </p>
-
-              <div class="task-meta">
-
-                <span class="tag tag-content">
-                  UI
-                </span>
-
-                <span class="task-due">
-                  Friday
-                </span>
-
-              </div>
-
+              <p>Review UI color palette</p>
             </div>
 
           </div>
 
-          <!-- IN PROGRESS -->
-
           <div>
 
             <div class="task-col-header">
-
               <div class="task-col-title">
-
                 <div class="col-dot doing"></div>
-
                 In Progress
-
               </div>
-
-              <div class="col-count">
-                2
-              </div>
-
+              <div class="col-count">2</div>
             </div>
 
             <div class="task-card">
-
-              <p>
-                Learn JavaScript fundamentals
-              </p>
-
-              <div class="task-meta">
-
-                <span class="tag tag-dev">
-                  Study
-                </span>
-
-                <span class="task-due">
-                  2 days left
-                </span>
-
-              </div>
-
-              <div class="progress-wrap">
-
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 68%;"></div>
-                </div>
-
-              </div>
-
+              <p>Learn JavaScript fundamentals</p>
             </div>
 
             <div class="task-card">
-
-              <p>
-                Build authentication system
-              </p>
-
-              <div class="task-meta">
-
-                <span class="tag tag-research">
-                  Research
-                </span>
-
-                <span class="task-due">
-                  Saturday
-                </span>
-
-              </div>
-
-              <div class="progress-wrap">
-
-                <div class="progress-bar">
-                  <div class="progress-fill" style="width: 52%;"></div>
-                </div>
-
-              </div>
-
+              <p>Build authentication system</p>
             </div>
 
           </div>
 
-          <!-- COMPLETED -->
-
           <div>
 
             <div class="task-col-header">
-
               <div class="task-col-title">
-
                 <div class="col-dot done"></div>
-
                 Completed
-
               </div>
-
-              <div class="col-count">
-                6
-              </div>
-
+              <div class="col-count">6</div>
             </div>
 
             <div class="task-card">
-
-              <p>
-                Create sign in page
-              </p>
-
-              <div class="task-meta">
-
-                <span class="tag tag-content">
-                  Frontend
-                </span>
-
-                <span class="task-due">
-                  Completed
-                </span>
-
-              </div>
-
+              <p>Create sign in page</p>
             </div>
 
             <div class="task-card">
-
-              <p>
-                Finish shared stylesheet
-              </p>
-
-              <div class="task-meta">
-
-                <span class="tag tag-design">
-                  CSS
-                </span>
-
-                <span class="task-due">
-                  Completed
-                </span>
-
-              </div>
-
+              <p>Finish shared stylesheet</p>
             </div>
 
             <div class="task-card">
-
-              <p>
-                Deploy initial homepage
-              </p>
-
-              <div class="task-meta">
-
-                <span class="tag tag-dev">
-                  Deployment
-                </span>
-
-                <span class="task-due">
-                  Completed
-                </span>
-
-              </div>
-
+              <p>Deploy initial homepage</p>
             </div>
 
           </div>
@@ -567,59 +273,28 @@
         </div>
 
         <!-- ACTIVITY -->
-
         <div class="activity-section">
 
           <div class="section-header">
-
             <div>
-
-              <h2 class="section-title">
-                Recent Activity
-              </h2>
-
-              <p class="section-subtitle">
-                Latest updates from your workspace
-              </p>
-
+              <h2 class="section-title">Recent Activity</h2>
+              <p class="section-subtitle">Latest updates from your workspace</p>
             </div>
-
           </div>
 
           <div class="activity-card">
-
-            <p>
-              Completed “Create sign in page”
-            </p>
-
-            <span>
-              2 hours ago
-            </span>
-
+            <p>Completed “Create sign in page”</p>
+            <span>2 hours ago</span>
           </div>
 
           <div class="activity-card">
-
-            <p>
-              Added new task “Finish API integration”
-            </p>
-
-            <span>
-              5 hours ago
-            </span>
-
+            <p>Added new task “Finish API integration”</p>
+            <span>5 hours ago</span>
           </div>
 
           <div class="activity-card">
-
-            <p>
-              Updated progress on “Learn JavaScript fundamentals”
-            </p>
-
-            <span>
-              Yesterday
-            </span>
-
+            <p>Updated progress on “Learn JavaScript fundamentals”</p>
+            <span>Yesterday</span>
           </div>
 
         </div>
@@ -629,7 +304,8 @@
     </main>
 
   </div>
-<script src="script.js"></script>
+
+  <script src="script.js"></script>
 </body>
 
 </html>

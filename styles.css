@@ -1168,3 +1168,28 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+.sidebar-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  appearance: none;
+}
+
+.sidebar-item:focus {
+  outline: none;
+}
+
+.sidebar-item:hover {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+.sidebar-item.active {
+  background: rgba(200, 242, 97, 0.12);
+  color: var(--accent);
+}
+
