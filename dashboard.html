@@ -12,7 +12,7 @@
 
 </head>
 
-<body>
+<body class>
 
   <div class="dash-layout">
 
@@ -30,7 +30,7 @@
           Workspace
         </p>
 
-        <a href="#" class="sidebar-item active">
+        <a href="dashboard.html" class="sidebar-item active">
           <span class="icon">⌂</span>
           Dashboard
         </a>
@@ -50,6 +50,11 @@
           Completed
         </a>
 
+        <a href="#" class="sidebar-item">
+          <span class="icon">⚠</span>
+          Overdue
+        </a>
+
       </div>
 
       <div class="sidebar-section">
@@ -66,6 +71,11 @@
         <a href="#" class="sidebar-item">
           <span class="icon">☰</span>
           Notes
+        </a>
+
+        <a href="#" class="sidebar-item">
+          <span class="icon">⌕</span>
+          Search
         </a>
 
         <a href="#" class="sidebar-item">
@@ -99,7 +109,7 @@
 
     </aside>
 
-    <!-- MAIN CONTENT -->
+    <!-- MAIN -->
 
     <main class="dash-main">
 
@@ -114,7 +124,7 @@
           </h1>
 
           <p>
-            Welcome back. Here's your productivity overview.
+            Stay focused and keep your workflow moving.
           </p>
 
         </div>
@@ -123,6 +133,10 @@
 
           <button class="btn-icon">
             🔔
+          </button>
+
+          <button class="btn-icon" id="theme-toggle">
+            ☀
           </button>
 
           <button class="btn-new">
@@ -136,6 +150,95 @@
       <!-- CONTENT -->
 
       <div class="dash-content">
+
+        <!-- OVERVIEW -->
+
+        <div class="overview-grid">
+
+          <div class="overview-card">
+
+            <p class="overview-title">
+              Tasks Completed
+            </p>
+
+            <p class="overview-number">
+              18
+            </p>
+
+            <p class="overview-sub">
+              +4 from yesterday
+            </p>
+
+          </div>
+
+          <div class="overview-card">
+
+            <p class="overview-title">
+              Productivity Score
+            </p>
+
+            <p class="overview-number">
+              91%
+            </p>
+
+            <p class="overview-sub">
+              Excellent consistency
+            </p>
+
+          </div>
+
+          <div class="overview-card">
+
+            <p class="overview-title">
+              Focus Time
+            </p>
+
+            <p class="overview-number">
+              6.2h
+            </p>
+
+            <p class="overview-sub">
+              Recorded today
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- QUICK ACTION -->
+
+        <div class="task-card" style="margin-bottom: 28px;">
+
+          <div class="section-header">
+
+            <div>
+
+              <h2 class="section-title">
+                Quick Add
+              </h2>
+
+              <p class="section-subtitle">
+                Capture tasks before you forget them
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="add-task-row">
+
+            <input
+              type="text"
+              class="add-task-input"
+              placeholder="Enter a new task...">
+
+            <button class="btn-add">
+              +
+            </button>
+
+          </div>
+
+        </div>
 
         <!-- STATS -->
 
@@ -160,15 +263,15 @@
           <div class="stat-card">
 
             <p class="stat-label">
-              Completed
+              In Progress
             </p>
 
             <p class="stat-value">
-              18
+              5
             </p>
 
             <p class="stat-delta">
-              ↑ 8% this week
+              ↑ Active projects
             </p>
 
           </div>
@@ -192,7 +295,7 @@
           <div class="stat-card">
 
             <p class="stat-label">
-              Productivity
+              Completion Rate
             </p>
 
             <p class="stat-value">
@@ -202,29 +305,6 @@
             <p class="stat-delta">
               ↑ Excellent
             </p>
-
-          </div>
-
-        </div>
-
-        <!-- QUICK TASK -->
-
-        <div class="task-card" style="margin-bottom: 24px;">
-
-          <p style="margin-bottom: 14px; font-weight: 500;">
-            Quick Add Task
-          </p>
-
-          <div class="add-task-row">
-
-            <input
-              type="text"
-              class="add-task-input"
-              placeholder="What needs to be done?">
-
-            <button class="btn-add">
-              +
-            </button>
 
           </div>
 
@@ -275,7 +355,7 @@
               <div class="progress-wrap">
 
                 <div class="progress-bar">
-                  <div class="progress-fill" style="width: 30%;"></div>
+                  <div class="progress-fill" style="width: 25%;"></div>
                 </div>
 
               </div>
@@ -285,7 +365,7 @@
             <div class="task-card">
 
               <p>
-                Prepare database schema
+                Prepare backend database schema
               </p>
 
               <div class="task-meta">
@@ -296,6 +376,26 @@
 
                 <span class="task-due">
                   Tomorrow
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="task-card">
+
+              <p>
+                Review UI color palette
+              </p>
+
+              <div class="task-meta">
+
+                <span class="tag tag-content">
+                  UI
+                </span>
+
+                <span class="task-due">
+                  Friday
                 </span>
 
               </div>
@@ -345,7 +445,7 @@
               <div class="progress-wrap">
 
                 <div class="progress-bar">
-                  <div class="progress-fill" style="width: 65%;"></div>
+                  <div class="progress-fill" style="width: 68%;"></div>
                 </div>
 
               </div>
@@ -365,8 +465,16 @@
                 </span>
 
                 <span class="task-due">
-                  Friday
+                  Saturday
                 </span>
+
+              </div>
+
+              <div class="progress-wrap">
+
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 52%;"></div>
+                </div>
 
               </div>
 
@@ -403,7 +511,7 @@
               <div class="task-meta">
 
                 <span class="tag tag-content">
-                  UI
+                  Frontend
                 </span>
 
                 <span class="task-due">
@@ -434,6 +542,84 @@
 
             </div>
 
+            <div class="task-card">
+
+              <p>
+                Deploy initial homepage
+              </p>
+
+              <div class="task-meta">
+
+                <span class="tag tag-dev">
+                  Deployment
+                </span>
+
+                <span class="task-due">
+                  Completed
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ACTIVITY -->
+
+        <div class="activity-section">
+
+          <div class="section-header">
+
+            <div>
+
+              <h2 class="section-title">
+                Recent Activity
+              </h2>
+
+              <p class="section-subtitle">
+                Latest updates from your workspace
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="activity-card">
+
+            <p>
+              Completed “Create sign in page”
+            </p>
+
+            <span>
+              2 hours ago
+            </span>
+
+          </div>
+
+          <div class="activity-card">
+
+            <p>
+              Added new task “Finish API integration”
+            </p>
+
+            <span>
+              5 hours ago
+            </span>
+
+          </div>
+
+          <div class="activity-card">
+
+            <p>
+              Updated progress on “Learn JavaScript fundamentals”
+            </p>
+
+            <span>
+              Yesterday
+            </span>
+
           </div>
 
         </div>
@@ -443,7 +629,7 @@
     </main>
 
   </div>
-
+<script src="script.js"></script>
 </body>
 
 </html>

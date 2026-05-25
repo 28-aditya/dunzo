@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,195 +12,365 @@
 
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+
 </head>
 
-<body>
+<body class="dark-mode" id="create-account-body">
 
-  <div class="page">
+  <div class="page" id="create-account-page">
 
-    <!-- Background decoration -->
+    <!-- BACKGROUND -->
 
-    <div class="bg-deco" aria-hidden="true">
+    <div class="bg-deco" id="background-decoration" aria-hidden="true">
+
       <div class="tile tile-tl"></div>
       <div class="tile tile-tr"></div>
       <div class="tile tile-br"></div>
+
     </div>
 
-    <!-- Navigation -->
+    <!-- NAV -->
 
-    <nav class="top-nav">
+    <nav class="top-nav" id="top-navigation">
 
-      <button class="logo">
+      <button class="logo" id="logo-button">
         dunzo<span class="dot">.</span>
+      </button>
+
+      <button
+        class="btn-icon"
+        id="theme-toggle-btn"
+        type="button">
+
+        ☀
+
       </button>
 
     </nav>
 
-    <!-- Main content -->
+    <!-- MAIN -->
 
-    <div class="page-center">
+    <main class="page-center" id="page-center">
 
-      <div class="auth-card">
+      <section class="auth-card" id="create-account-card">
 
-        <p class="eyebrow">
-          Get started
-        </p>
+        <!-- HEADER -->
 
-        <h1>
-          Create<br>
-          account
-        </h1>
+        <div class="auth-header" id="auth-header">
 
-        <p class="subtitle">
-          Free forever. No credit card needed.
-        </p>
+          <p class="eyebrow" id="auth-eyebrow">
+            Get started
+          </p>
 
-        <!-- OAuth buttons -->
+          <h1 class="auth-title" id="auth-title">
 
-        <div class="oauth-row">
+            Create
+            <br>
+            account
 
-          <button class="btn-oauth">
+          </h1>
 
-            <svg viewBox="0 0 24 24" fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+          <p class="subtitle" id="auth-subtitle">
 
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                fill="#4285F4" />
+            Free forever. No credit card needed.
 
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                fill="#34A853" />
-
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
-                fill="#FBBC05" />
-
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                fill="#EA4335" />
-
-            </svg>
-
-            Google
-
-          </button>
-
-          <button class="btn-oauth">
-
-            <svg viewBox="0 0 24 24" fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg">
-
-              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-
-            </svg>
-
-            GitHub
-
-          </button>
+          </p>
 
         </div>
 
-        <!-- Divider -->
+        <!-- OAUTH -->
 
-        <div class="divider">
+        <div class="oauth-section" id="oauth-section">
+
+          <div class="oauth-row" id="oauth-row">
+
+            <!-- GOOGLE -->
+
+            <button
+              class="btn-oauth"
+              id="google-signup-btn"
+              type="button">
+
+              <svg
+                class="oauth-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                  fill="#4285F4" />
+
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                  fill="#34A853" />
+
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                  fill="#FBBC05" />
+
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                  fill="#EA4335" />
+
+              </svg>
+
+              <span class="oauth-text">
+                Google
+              </span>
+
+            </button>
+
+            <!-- GITHUB -->
+
+            <button
+              class="btn-oauth"
+              id="github-signup-btn"
+              type="button">
+
+              <svg
+                class="oauth-icon"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+
+              </svg>
+
+              <span class="oauth-text">
+                GitHub
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- DIVIDER -->
+
+        <div class="divider" id="auth-divider">
+
           or continue with email
+
         </div>
 
-        <!-- Form -->
+        <!-- FORM -->
 
-        <form>
+        <form
+          class="auth-form"
+          id="create-account-form">
 
-          <div class="form-group">
+          <!-- FULL NAME -->
 
-            <label for="fullname">
+          <div
+            class="form-group"
+            id="fullname-group">
+
+            <label
+              for="fullname-input"
+              class="form-label">
+
               Full name
+
             </label>
 
             <input
               type="text"
-              id="fullname"
+              id="fullname-input"
+              class="form-input"
               name="fullname"
               placeholder="Ada Lovelace"
               autocomplete="name">
 
+            <p
+              class="field-error"
+              id="fullname-error">
+
+              Invalid full name
+
+            </p>
+
           </div>
 
-          <div class="form-group">
+          <!-- USERNAME -->
 
-            <label for="username">
-                Username
+          <div
+            class="form-group"
+            id="username-group">
+
+            <label
+              for="username-input"
+              class="form-label">
+
+              Username
+
             </label>
 
             <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="aditya">
+              type="text"
+              id="username-input"
+              class="form-input"
+              name="username"
+              placeholder="aditya">
+
+            <p
+              class="field-error"
+              id="username-error">
+
+              Invalid username
+
+            </p>
 
           </div>
 
-          <div class="form-group">
+          <!-- EMAIL -->
 
-            <label for="email">
+          <div
+            class="form-group"
+            id="email-group">
+
+            <label
+              for="email-input"
+              class="form-label">
+
               Email
+
             </label>
 
             <input
               type="email"
-              id="email"
+              id="email-input"
+              class="form-input"
               name="email"
               placeholder="ada@example.com"
               autocomplete="email">
 
+            <p
+              class="field-error"
+              id="email-error">
+
+              Invalid email
+
+            </p>
+
           </div>
 
-          <div class="form-group">
+          <!-- PASSWORD -->
 
-            <label for="password">
+          <div
+            class="form-group"
+            id="password-group">
+
+            <label
+              for="password-input"
+              class="form-label">
+
               Password
+
             </label>
 
-            <div class="input-wrap">
+            <div
+              class="input-wrap"
+              id="password-input-wrap">
 
               <input
                 type="password"
-                id="password"
+                id="password-input"
+                class="form-input"
                 name="password"
                 placeholder="At least 8 characters"
                 autocomplete="new-password">
 
               <button
                 type="button"
-                class="toggle-pw">
+                class="toggle-pw"
+                id="toggle-password-btn">
 
-                <i class="ti ti-eye"></i>
+                <i
+                  class="ti ti-eye"
+                  id="toggle-password-icon"></i>
 
               </button>
 
             </div>
 
+            <!-- PASSWORD STRENGTH -->
+
+            <div
+              class="strength-wrap"
+              id="password-strength-wrap">
+
+              <div
+                class="strength-bars"
+                id="strength-bars">
+
+                <div class="strength-bar" id="strength-bar-1"></div>
+                <div class="strength-bar" id="strength-bar-2"></div>
+                <div class="strength-bar" id="strength-bar-3"></div>
+
+              </div>
+
+              <p
+                class="strength-label"
+                id="strength-label">
+
+                Password strength
+
+              </p>
+
+            </div>
+
+            <p
+              class="field-error"
+              id="password-error">
+
+              Password too weak
+
+            </p>
+
           </div>
 
-          <!-- Terms -->
+          <!-- TERMS -->
 
-          <div class="check-row">
+          <div
+            class="check-row"
+            id="terms-row">
 
             <input
               type="checkbox"
-              id="terms"
+              id="terms-checkbox"
               name="terms">
 
-            <span>
+            <span class="terms-text">
+
               I agree to the
-              <a href="#">Terms of Service</a>
+
+              <a
+                href="#"
+                id="terms-link">
+
+                Terms of Service
+
+              </a>
+
               and
-              <a href="#">Privacy Policy</a>
+
+              <a
+                href="#"
+                id="privacy-link">
+
+                Privacy Policy
+
+              </a>
+
             </span>
 
           </div>
 
-          <!-- Submit -->
+          <!-- SUBMIT -->
 
           <button
             type="submit"
-            class="btn btn-primary">
+            class="btn btn-primary"
+            id="create-account-submit-btn">
 
             Create account
 
@@ -207,23 +378,35 @@
 
         </form>
 
-        <!-- Footer -->
+        <!-- FOOTER -->
 
-        <p class="auth-footer">
+        <div
+          class="auth-footer"
+          id="auth-footer">
 
-          Already have an account?
+          <p>
 
-          <a href="sign-in.html">
-            Sign in
-          </a>
+            Already have an account?
 
-        </p>
+            <a
+              href="sign-in.html"
+              id="signin-link">
 
-      </div>
+              Sign in
 
-    </div>
+            </a>
+
+          </p>
+
+        </div>
+
+      </section>
+
+    </main>
 
   </div>
+
+  <script src="script.js"></script>
 
 </body>
 

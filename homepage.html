@@ -1,42 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>dunzo</title>
+
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+
 </head>
-<body>
-  <div class="page">
+
+<body class="dark-mode" id="homepage-body">
+
+  <div class="page" id="homepage-page">
+
+    <!-- BACKGROUND -->
 
     <div class="bg-deco" aria-hidden="true">
+
       <div class="tile tile-tl"></div>
       <div class="tile tile-br"></div>
+
     </div>
 
-    <nav class="top-nav">
-      <button class="logo" onclick="window.location='index.html'">dunzo<span class="dot">.</span></button>
+    <!-- NAVIGATION -->
+
+    <nav class="top-nav" id="homepage-nav">
+
+      <button
+        class="logo"
+        id="homepage-logo"
+        onclick="window.location='index.html'">
+
+        dunzo<span class="dot">.</span>
+
+      </button>
+
     </nav>
 
-    <div class="page-center">
-      <div class="auth-card">
-        <p class="eyebrow">Welcome</p>
-        <h1>Get things<br>done.</h1>
-        <p class="subtitle">Your workspace for what matters.</p>
+    <!-- MAIN CONTENT -->
 
-        <a href="create-account.html" class="btn btn-primary" style="margin-bottom: 10px; display:block; text-align:center;">
-          Create account
-        </a>
+    <main class="page-center" id="homepage-center">
 
-        <div class="divider">or</div>
+      <section class="auth-card" id="homepage-card">
 
-        <a href="sign-in.html" class="btn btn-ghost" style="display:block; text-align:center;">
-          Sign in
-        </a>
-      </div>
-    </div>
+        <!-- TEXT -->
+
+        <p class="eyebrow" id="homepage-eyebrow">
+          Welcome
+        </p>
+
+        <h1 id="homepage-title">
+
+          Get things
+          <br>
+          done.
+
+        </h1>
+
+        <p class="subtitle" id="homepage-subtitle">
+
+          Your workspace for what matters.
+
+        </p>
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="homepage-actions" id="homepage-actions">
+
+          <a
+            href="create-account.html"
+            class="btn btn-primary"
+            id="create-account-btn">
+
+            Create account
+
+          </a>
+
+          <div class="divider" id="homepage-divider">
+            or
+          </div>
+
+          <a
+            href="sign-in.html"
+            class="btn btn-ghost"
+            id="sign-in-btn">
+
+            Sign in
+
+          </a>
+
+        </div>
+
+      </section>
+
+    </main>
 
   </div>
+
+  <script src="script.js"></script>
+
 </body>
+
 </html>
