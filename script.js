@@ -8,3 +8,8 @@ theme_button.addEventListener("click", function(){
 
 });
 
+const state = {
+    currentView: "dashboard",
+    tasks: []
+};
+
