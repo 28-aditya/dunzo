@@ -438,13 +438,22 @@ button {
 }
 
 .btn-ghost {
-  background: var(--surface2);
+  padding: 9px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
+  background: var(--surface);
   color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .btn-ghost:hover {
-  background: var(--surface);
+  background: var(--surface2);
 }
 
 .btn-icon {
@@ -1193,10 +1202,200 @@ button {
   color: var(--accent);
 }
 
+/* ============================================================
+   VIEWS
+   ============================================================ */
+
 .view {
   display: none;
 }
 
 .view.active {
+  display: block;
+}
+
+/* ============================================================
+   TASK MODAL
+   ============================================================ */
+
+.task-modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.55);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  z-index: 999;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.2s ease;
+}
+
+.task-modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.task-modal {
+  width: 100%;
+  max-width: 520px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  overflow: hidden;
+
+  transform: scale(0.96);
+
+  transition: transform 0.2s ease;
+}
+
+.task-modal-overlay.active .task-modal {
+  transform: scale(1);
+}
+
+.task-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 24px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.task-modal-header h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.close-modal {
+  width: 34px;
+  height: 34px;
+
+  border: none;
+
+  border-radius: var(--radius-sm);
+
+  background: var(--surface2);
+
+  color: var(--text);
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.close-modal:hover {
+  background: var(--bg);
+}
+
+.task-modal-body {
+  padding: 24px;
+}
+
+.task-modal-body .form-group {
+  margin-bottom: 18px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.task-textarea,
+.task-select {
+  width: 100%;
+
+  padding: 12px 16px;
+
+  border-radius: var(--radius-md);
+
+  border: 1px solid var(--border);
+
+  background: var(--surface2);
+
+  color: var(--text);
+
+  font-family: var(--font-body);
+  font-size: 14px;
+
+  outline: none;
+}
+
+.task-textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.task-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+
+  padding: 20px 24px;
+
+  border-top: 1px solid var(--border);
+}
+
+/* ============================================================
+   DATE + TIME INPUTS
+   ============================================================ */
+
+input[type="date"],
+input[type="time"] {
+  color-scheme: dark;
+}
+
+/* light mode support */
+body.light-mode input[type="date"],
+body.light-mode input[type="time"] {
+  color-scheme: light;
+}
+
+/* calendar + clock icon styling */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+  filter: invert(1);
+  transition: opacity 0.15s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* invert back for light mode */
+body.light-mode input[type="date"]::-webkit-calendar-picker-indicator,
+body.light-mode input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+}
+
+.task-error {
+  color: var(--danger);
+
+  font-size: 13px;
+
+  margin-right: auto;
+
+  display: none;
+}
+
+.task-error.visible {
   display: block;
 }

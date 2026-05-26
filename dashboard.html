@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>dunzo — Dashboard</title>
+
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -20,6 +21,7 @@
         dunzo<span class="dot">.</span>
       </div>
 
+      <!-- WORKSPACE -->
       <div class="sidebar-section">
 
         <p class="sidebar-label">Workspace</p>
@@ -51,6 +53,7 @@
 
       </div>
 
+      <!-- PRODUCTIVITY -->
       <div class="sidebar-section">
 
         <p class="sidebar-label">Productivity</p>
@@ -79,13 +82,18 @@
 
       <div class="sidebar-spacer"></div>
 
+      <!-- USER -->
       <div class="sidebar-user" id="user-panel">
-        <div class="avatar" id="user-avatar">A</div>
+
+        <div class="avatar" id="user-avatar">
+          A
+        </div>
 
         <div class="user-info" id="user-info">
           <p id="user-name">Aditya Sharma</p>
           <span id="user-email">aditya@dunzo.app</span>
         </div>
+
       </div>
 
     </aside>
@@ -93,8 +101,9 @@
     <!-- MAIN -->
     <main class="dash-main">
 
-      <!-- HEADER (static for now) -->
-      <div class="dash-header" id = "view-header">
+      <!-- HEADER -->
+      <div class="dash-header" id="view-header">
+
         <div>
           <h1>Dashboard</h1>
           <p>Stay focused and keep your workflow moving.</p>
@@ -103,14 +112,17 @@
         <div class="header-actions">
           <button class="btn-icon">🔔</button>
           <button class="btn-icon" id="theme-toggle">🎨</button>
-          <button class="btn-new">+ New Task</button>
+          <button class="btn-new" id="new-task-btn">
+            + New Task
+          </button>
         </div>
+
       </div>
 
-      <!-- CONTENT WRAPPER -->
+      <!-- CONTENT -->
       <div class="dash-content">
 
-        <!-- ================= DASHBOARD VIEW ================= -->
+        <!-- DASHBOARD VIEW -->
         <div class="view active" id="view-dashboard">
 
           <!-- OVERVIEW -->
@@ -140,15 +152,26 @@
           <div class="task-card" style="margin-bottom: 28px;">
 
             <div class="section-header">
+
               <div>
                 <h2 class="section-title">Quick Add</h2>
-                <p class="section-subtitle">Capture tasks before you forget them</p>
+                <p class="section-subtitle">
+                  Capture tasks before you forget them
+                </p>
               </div>
+
             </div>
 
             <div class="add-task-row">
-              <input type="text" class="add-task-input" placeholder="Enter a new task...">
-              <button class="btn-add">+</button>
+              <input
+                type="text"
+                class="add-task-input"
+                placeholder="Enter a new task..."
+              >
+
+              <button class="btn-add">
+                +
+              </button>
             </div>
 
           </div>
@@ -185,45 +208,84 @@
           <!-- TASK BOARD -->
           <div class="task-board">
 
+            <!-- TODO -->
             <div>
+
               <div class="task-col-header">
+
                 <div class="task-col-title">
                   <div class="col-dot todo"></div>
                   Todo
                 </div>
+
                 <div class="col-count">3</div>
+
               </div>
 
-              <div class="task-card"><p>Finish landing page redesign</p></div>
-              <div class="task-card"><p>Prepare backend database schema</p></div>
-              <div class="task-card"><p>Review UI color palette</p></div>
+              <div class="task-card">
+                <p>Finish landing page redesign</p>
+              </div>
+
+              <div class="task-card">
+                <p>Prepare backend database schema</p>
+              </div>
+
+              <div class="task-card">
+                <p>Review UI color palette</p>
+              </div>
+
             </div>
 
+            <!-- DOING -->
             <div>
+
               <div class="task-col-header">
+
                 <div class="task-col-title">
                   <div class="col-dot doing"></div>
                   In Progress
                 </div>
+
                 <div class="col-count">2</div>
+
               </div>
 
-              <div class="task-card"><p>Learn JavaScript fundamentals</p></div>
-              <div class="task-card"><p>Build authentication system</p></div>
+              <div class="task-card">
+                <p>Learn JavaScript fundamentals</p>
+              </div>
+
+              <div class="task-card">
+                <p>Build authentication system</p>
+              </div>
+
             </div>
 
+            <!-- DONE -->
             <div>
+
               <div class="task-col-header">
+
                 <div class="task-col-title">
                   <div class="col-dot done"></div>
                   Completed
                 </div>
+
                 <div class="col-count">6</div>
+
               </div>
 
-              <div class="task-card"><p>Create sign in page</p></div>
-              <div class="task-card"><p>Finish shared stylesheet</p></div>
-              <div class="task-card"><p>Deploy initial homepage</p></div>
+              <div class="task-card">
+                <p>Create sign in page</p>
+              </div>
+
+              <div class="task-card">
+                <p>Finish shared stylesheet</p>
+              </div>
+
+              <div class="task-card">
+                <p>Deploy initial homepage</p>
+              </div>
+
             </div>
 
           </div>
@@ -232,10 +294,14 @@
           <div class="activity-section">
 
             <div class="section-header">
+
               <div>
                 <h2 class="section-title">Recent Activity</h2>
-                <p class="section-subtitle">Latest updates from your workspace</p>
+                <p class="section-subtitle">
+                  Latest updates from your workspace
+                </p>
               </div>
+
             </div>
 
             <div class="activity-card">
@@ -257,7 +323,7 @@
 
         </div>
 
-        <!-- ================= OTHER VIEWS (EMPTY FOR NOW) ================= -->
+        <!-- OTHER VIEWS -->
         <div class="view" id="view-today"></div>
         <div class="view" id="view-upcoming"></div>
         <div class="view" id="view-completed"></div>
@@ -273,7 +339,146 @@
 
   </div>
 
-  <script src="script.js"></script>
-</body>
+  <!-- TASK MODAL -->
+  <div class="task-modal-overlay" id="task-modal">
 
+    <div class="task-modal">
+
+      <!-- HEADER -->
+      <div class="task-modal-header">
+
+        <h2>Create Task</h2>
+
+        <button class="close-modal" id="close-modal">
+          ✕
+        </button>
+
+      </div>
+
+      <!-- BODY -->
+      <div class="task-modal-body">
+
+        <!-- TITLE -->
+        <div class="form-group">
+          <label>Task Title</label>
+
+          <input
+            type="text"
+            id="task-title"
+            class="form-input"
+            placeholder="Enter task title"
+          >
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="form-group">
+          <label>Description</label>
+
+          <textarea
+            id="task-desc"
+            class="task-textarea"
+            placeholder="Optional"
+          ></textarea>
+        </div>
+
+        <!-- STATUS + CATEGORY -->
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label>Status</label>
+
+            <select id="task-status" class="task-select">
+              <option value="todo">Todo</option>
+              <option value="doing">In Progress</option>
+              <option value="done">Completed</option>
+            </select>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Category</label>
+
+            <select id="task-category" class="task-select">
+              <option value="work">Work</option>
+              <option value="study">Study</option>
+              <option value="personal">Personal</option>
+              <option value="health">Health</option>
+              <option value="fitness">Fitness</option>
+              <option value="finance">Finance</option>
+              <option value="custom">+ New Category</option>
+            </select>
+
+          </div>
+
+        </div>
+
+        <!-- CUSTOM CATEGORY -->
+        <div
+          class="form-group"
+          id="custom-category-group"
+          style="display: none;"
+        >
+
+          <label>New Category</label>
+
+          <input
+            type="text"
+            id="custom-category"
+            class="form-input"
+            placeholder="Enter category name"
+          >
+
+        </div>
+
+        <!-- DATE + TIME -->
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label>Due Date</label>
+
+            <input
+              type="date"
+              id="task-date"
+              class="form-input"
+            >
+
+          </div>
+
+          <div class="form-group">
+
+            <label>Due Time</label>
+
+            <input
+              type="time"
+              id="task-time"
+              class="form-input"
+            >
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="task-modal-footer">
+        <p id="task-error" class="task-error">
+          Please fill in all required fields.
+        </p>
+        <button class="btn-new" id="create-task">
+          Create Task
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
 </html>

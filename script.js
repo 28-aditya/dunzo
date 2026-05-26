@@ -18,6 +18,21 @@ let state = {
     tasks: []
 };
 
+// ****************************
+// Class Declarations
+// ****************************
+
+class TaskItem {
+    constructor(task_title, task_description, task_status, task_category, task_date, task_time) {
+        this.task_title = task_title;
+        this.task_description = task_description;
+        this.task_status = task_status;
+        this.task_category = task_category;
+        this.task_date = task_date;
+        this.task_time = task_time;
+    }
+}
+
 // *****************************
 // Sidebar -- Workspace Section
 // *****************************
@@ -205,5 +220,66 @@ sb_settings.addEventListener("click", function(){
     sb_settings.classList.add("active");
 
     state.currentView="settings";    
+});
+
+// ***************************
+// New Task Creation Tab
+// ***************************
+
+const new_task = document.getElementById("new-task-btn");
+const task_modal = document.getElementById("task-modal");
+
+new_task.addEventListener("click", function() {
+    console.log("new task pressed")
+    task_modal.classList.add("active");
+
+    const close_task_modal = document.getElementById("close-modal");
+    const create_task_modal = document.getElementById("create-task");
+
+    close_task_modal.addEventListener("click", function() {
+        console.log("task creation modal closed");
+        task_modal.classList.remove("active");     
+    });
+
+    create_task_modal.addEventListener("click", function() {
+        console.log("task created");
+        
+        const title = document.getElementById("task-title");
+        const description = document.getElementById("task-desc");
+        const status = document.getElementById("task-status");
+        const category = document.getElementById("task-category");
+        const date = document.getElementById("task-date");
+        const time = document.getElementById("task-time");
+
+        if (
+            title.value === "" ||
+            status.value === "" ||
+            category.value === "" ||
+            date.value === "" ||
+            time.value === "" 
+        ) {
+
+            const task_error = document.getElementById("task-error");
+            task_error.classList.add("visible");
+            return;
+
+        } else {
+            
+            
+            const task = new TaskItem(
+                title.value, 
+                description.value,
+                status.value,
+                category.value,
+                date.value, 
+                time.value
+            );
+
+            state.tasks.push(task);
+            console.log(state.tasks);
+            task_modal.classList.remove("active");
+
+        }
+    });
 });
 
