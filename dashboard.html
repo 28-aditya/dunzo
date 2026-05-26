@@ -2,14 +2,11 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>dunzo — Dashboard</title>
-
   <link rel="stylesheet" href="styles.css">
-
 </head>
 
 <body>
@@ -19,285 +16,256 @@
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
 
-  <div class="sidebar-logo">
-    dunzo<span class="dot">.</span>
-  </div>
+      <div class="sidebar-logo">
+        dunzo<span class="dot">.</span>
+      </div>
 
-  <!-- WORKSPACE -->
-  <div class="sidebar-section" id="workspace-section">
+      <div class="sidebar-section">
 
-    <p class="sidebar-label">Workspace</p>
+        <p class="sidebar-label">Workspace</p>
 
-    <button class="sidebar-item active" data-view="dashboard" id="nav-dashboard">
-      <span class="icon">⌂</span>
-      Dashboard
-    </button>
+        <button class="sidebar-item active" data-view="dashboard" id="nav-dashboard">
+          <span class="icon">⌂</span>
+          Dashboard
+        </button>
 
-    <button class="sidebar-item" data-view="today" id="nav-today">
-      <span class="icon">◉</span>
-      Today
-    </button>
+        <button class="sidebar-item" data-view="today" id="nav-today">
+          <span class="icon">◉</span>
+          Today
+        </button>
 
-    <button class="sidebar-item" data-view="upcoming" id="nav-upcoming">
-      <span class="icon">◎</span>
-      Upcoming
-    </button>
+        <button class="sidebar-item" data-view="upcoming" id="nav-upcoming">
+          <span class="icon">◎</span>
+          Upcoming
+        </button>
 
-    <button class="sidebar-item" data-view="completed" id="nav-completed">
-      <span class="icon">✓</span>
-      Completed
-    </button>
+        <button class="sidebar-item" data-view="completed" id="nav-completed">
+          <span class="icon">✓</span>
+          Completed
+        </button>
 
-    <button class="sidebar-item" data-view="overdue" id="nav-overdue">
-      <span class="icon">⚠</span>
-      Overdue
-    </button>
+        <button class="sidebar-item" data-view="overdue" id="nav-overdue">
+          <span class="icon">⚠</span>
+          Overdue
+        </button>
 
-  </div>
+      </div>
 
-  <!-- PRODUCTIVITY -->
-  <div class="sidebar-section" id="productivity-section">
+      <div class="sidebar-section">
 
-    <p class="sidebar-label">Productivity</p>
+        <p class="sidebar-label">Productivity</p>
 
-    <button class="sidebar-item" data-view="analytics" id="nav-analytics">
-      <span class="icon">★</span>
-      Analytics
-    </button>
+        <button class="sidebar-item" data-view="analytics" id="nav-analytics">
+          <span class="icon">★</span>
+          Analytics
+        </button>
 
-    <button class="sidebar-item" data-view="notes" id="nav-notes">
-      <span class="icon">☰</span>
-      Notes
-    </button>
+        <button class="sidebar-item" data-view="notes" id="nav-notes">
+          <span class="icon">☰</span>
+          Notes
+        </button>
 
-    <button class="sidebar-item" data-view="search" id="nav-search">
-      <span class="icon">⌕</span>
-      Search
-    </button>
+        <button class="sidebar-item" data-view="search" id="nav-search">
+          <span class="icon">⌕</span>
+          Search
+        </button>
 
-    <button class="sidebar-item" data-view="settings" id="nav-settings">
-      <span class="icon">⚙</span>
-      Settings
-    </button>
+        <button class="sidebar-item" data-view="settings" id="nav-settings">
+          <span class="icon">⚙</span>
+          Settings
+        </button>
 
-  </div>
+      </div>
 
-  <div class="sidebar-spacer"></div>
+      <div class="sidebar-spacer"></div>
 
-  <!-- USER -->
-  <div class="sidebar-user" id="user-panel">
-    <div class="avatar" id="user-avatar">A</div>
+      <div class="sidebar-user" id="user-panel">
+        <div class="avatar" id="user-avatar">A</div>
 
-    <div class="user-info" id="user-info">
-      <p id="user-name">Aditya Sharma</p>
-      <span id="user-email">aditya@dunzo.app</span>
-    </div>
-  </div>
+        <div class="user-info" id="user-info">
+          <p id="user-name">Aditya Sharma</p>
+          <span id="user-email">aditya@dunzo.app</span>
+        </div>
+      </div>
 
-</aside>
+    </aside>
 
     <!-- MAIN -->
     <main class="dash-main">
 
-      <!-- HEADER -->
-      <div class="dash-header">
-
+      <!-- HEADER (static for now) -->
+      <div class="dash-header" id = "view-header">
         <div>
           <h1>Dashboard</h1>
           <p>Stay focused and keep your workflow moving.</p>
         </div>
 
         <div class="header-actions">
-
           <button class="btn-icon">🔔</button>
-
           <button class="btn-icon" id="theme-toggle">🎨</button>
-
           <button class="btn-new">+ New Task</button>
-
         </div>
-
       </div>
 
-      <!-- CONTENT -->
+      <!-- CONTENT WRAPPER -->
       <div class="dash-content">
 
-        <!-- OVERVIEW -->
-        <div class="overview-grid">
+        <!-- ================= DASHBOARD VIEW ================= -->
+        <div class="view active" id="view-dashboard">
 
-          <div class="overview-card">
-            <p class="overview-title">Tasks Completed</p>
-            <p class="overview-number">18</p>
-            <p class="overview-sub">+4 from yesterday</p>
+          <!-- OVERVIEW -->
+          <div class="overview-grid">
+
+            <div class="overview-card">
+              <p class="overview-title">Tasks Completed</p>
+              <p class="overview-number">18</p>
+              <p class="overview-sub">+4 from yesterday</p>
+            </div>
+
+            <div class="overview-card">
+              <p class="overview-title">Productivity Score</p>
+              <p class="overview-number">91%</p>
+              <p class="overview-sub">Excellent consistency</p>
+            </div>
+
+            <div class="overview-card">
+              <p class="overview-title">Focus Time</p>
+              <p class="overview-number">6.2h</p>
+              <p class="overview-sub">Recorded today</p>
+            </div>
+
           </div>
 
-          <div class="overview-card">
-            <p class="overview-title">Productivity Score</p>
-            <p class="overview-number">91%</p>
-            <p class="overview-sub">Excellent consistency</p>
+          <!-- QUICK ADD -->
+          <div class="task-card" style="margin-bottom: 28px;">
+
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">Quick Add</h2>
+                <p class="section-subtitle">Capture tasks before you forget them</p>
+              </div>
+            </div>
+
+            <div class="add-task-row">
+              <input type="text" class="add-task-input" placeholder="Enter a new task...">
+              <button class="btn-add">+</button>
+            </div>
+
           </div>
 
-          <div class="overview-card">
-            <p class="overview-title">Focus Time</p>
-            <p class="overview-number">6.2h</p>
-            <p class="overview-sub">Recorded today</p>
+          <!-- STATS -->
+          <div class="stats-grid">
+
+            <div class="stat-card">
+              <p class="stat-label">Total Tasks</p>
+              <p class="stat-value">24</p>
+              <p class="stat-delta">↑ 12% this week</p>
+            </div>
+
+            <div class="stat-card">
+              <p class="stat-label">In Progress</p>
+              <p class="stat-value">5</p>
+              <p class="stat-delta">↑ Active projects</p>
+            </div>
+
+            <div class="stat-card">
+              <p class="stat-label">Overdue</p>
+              <p class="stat-value">2</p>
+              <p class="stat-delta down">↓ Needs attention</p>
+            </div>
+
+            <div class="stat-card">
+              <p class="stat-label">Completion Rate</p>
+              <p class="stat-value">91%</p>
+              <p class="stat-delta">↑ Excellent</p>
+            </div>
+
           </div>
 
-        </div>
-
-        <!-- QUICK ADD -->
-        <div class="task-card" style="margin-bottom: 28px;">
-
-          <div class="section-header">
+          <!-- TASK BOARD -->
+          <div class="task-board">
 
             <div>
-              <h2 class="section-title">Quick Add</h2>
-              <p class="section-subtitle">Capture tasks before you forget them</p>
-            </div>
-
-          </div>
-
-          <div class="add-task-row">
-
-            <input
-              type="text"
-              class="add-task-input"
-              placeholder="Enter a new task...">
-
-            <button class="btn-add">+</button>
-
-          </div>
-
-        </div>
-
-        <!-- STATS -->
-        <div class="stats-grid">
-
-          <div class="stat-card">
-            <p class="stat-label">Total Tasks</p>
-            <p class="stat-value">24</p>
-            <p class="stat-delta">↑ 12% this week</p>
-          </div>
-
-          <div class="stat-card">
-            <p class="stat-label">In Progress</p>
-            <p class="stat-value">5</p>
-            <p class="stat-delta">↑ Active projects</p>
-          </div>
-
-          <div class="stat-card">
-            <p class="stat-label">Overdue</p>
-            <p class="stat-value">2</p>
-            <p class="stat-delta down">↓ Needs attention</p>
-          </div>
-
-          <div class="stat-card">
-            <p class="stat-label">Completion Rate</p>
-            <p class="stat-value">91%</p>
-            <p class="stat-delta">↑ Excellent</p>
-          </div>
-
-        </div>
-
-        <!-- TASK BOARD (keep static for now) -->
-        <div class="task-board">
-
-          <div>
-
-            <div class="task-col-header">
-              <div class="task-col-title">
-                <div class="col-dot todo"></div>
-                Todo
+              <div class="task-col-header">
+                <div class="task-col-title">
+                  <div class="col-dot todo"></div>
+                  Todo
+                </div>
+                <div class="col-count">3</div>
               </div>
-              <div class="col-count">3</div>
+
+              <div class="task-card"><p>Finish landing page redesign</p></div>
+              <div class="task-card"><p>Prepare backend database schema</p></div>
+              <div class="task-card"><p>Review UI color palette</p></div>
             </div>
 
-            <div class="task-card">
-              <p>Finish landing page redesign</p>
-            </div>
-
-            <div class="task-card">
-              <p>Prepare backend database schema</p>
-            </div>
-
-            <div class="task-card">
-              <p>Review UI color palette</p>
-            </div>
-
-          </div>
-
-          <div>
-
-            <div class="task-col-header">
-              <div class="task-col-title">
-                <div class="col-dot doing"></div>
-                In Progress
-              </div>
-              <div class="col-count">2</div>
-            </div>
-
-            <div class="task-card">
-              <p>Learn JavaScript fundamentals</p>
-            </div>
-
-            <div class="task-card">
-              <p>Build authentication system</p>
-            </div>
-
-          </div>
-
-          <div>
-
-            <div class="task-col-header">
-              <div class="task-col-title">
-                <div class="col-dot done"></div>
-                Completed
-              </div>
-              <div class="col-count">6</div>
-            </div>
-
-            <div class="task-card">
-              <p>Create sign in page</p>
-            </div>
-
-            <div class="task-card">
-              <p>Finish shared stylesheet</p>
-            </div>
-
-            <div class="task-card">
-              <p>Deploy initial homepage</p>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- ACTIVITY -->
-        <div class="activity-section">
-
-          <div class="section-header">
             <div>
-              <h2 class="section-title">Recent Activity</h2>
-              <p class="section-subtitle">Latest updates from your workspace</p>
+              <div class="task-col-header">
+                <div class="task-col-title">
+                  <div class="col-dot doing"></div>
+                  In Progress
+                </div>
+                <div class="col-count">2</div>
+              </div>
+
+              <div class="task-card"><p>Learn JavaScript fundamentals</p></div>
+              <div class="task-card"><p>Build authentication system</p></div>
             </div>
+
+            <div>
+              <div class="task-col-header">
+                <div class="task-col-title">
+                  <div class="col-dot done"></div>
+                  Completed
+                </div>
+                <div class="col-count">6</div>
+              </div>
+
+              <div class="task-card"><p>Create sign in page</p></div>
+              <div class="task-card"><p>Finish shared stylesheet</p></div>
+              <div class="task-card"><p>Deploy initial homepage</p></div>
+            </div>
+
           </div>
 
-          <div class="activity-card">
-            <p>Completed “Create sign in page”</p>
-            <span>2 hours ago</span>
-          </div>
+          <!-- ACTIVITY -->
+          <div class="activity-section">
 
-          <div class="activity-card">
-            <p>Added new task “Finish API integration”</p>
-            <span>5 hours ago</span>
-          </div>
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">Recent Activity</h2>
+                <p class="section-subtitle">Latest updates from your workspace</p>
+              </div>
+            </div>
 
-          <div class="activity-card">
-            <p>Updated progress on “Learn JavaScript fundamentals”</p>
-            <span>Yesterday</span>
+            <div class="activity-card">
+              <p>Completed “Create sign in page”</p>
+              <span>2 hours ago</span>
+            </div>
+
+            <div class="activity-card">
+              <p>Added new task “Finish API integration”</p>
+              <span>5 hours ago</span>
+            </div>
+
+            <div class="activity-card">
+              <p>Updated progress on “Learn JavaScript fundamentals”</p>
+              <span>Yesterday</span>
+            </div>
+
           </div>
 
         </div>
+
+        <!-- ================= OTHER VIEWS (EMPTY FOR NOW) ================= -->
+        <div class="view" id="view-today"></div>
+        <div class="view" id="view-upcoming"></div>
+        <div class="view" id="view-completed"></div>
+        <div class="view" id="view-overdue"></div>
+        <div class="view" id="view-analytics"></div>
+        <div class="view" id="view-notes"></div>
+        <div class="view" id="view-search"></div>
+        <div class="view" id="view-settings"></div>
 
       </div>
 
