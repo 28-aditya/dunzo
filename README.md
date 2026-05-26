@@ -86,24 +86,12 @@ dunzo/
 
 ---
 
-## Screenshots
-
-Add screenshots here later.
-
-Example:
-
-```md
-![Dashboard](images/dashboard.png)
-```
-
----
-
 ## Getting Started
 
 ### Clone the repository
 
 ```bash
-git clone https://github.com/your-username/dunzo.git
+git clone https://github.com/28-aditya/dunzo.git
 ```
 
 ### Open the project
