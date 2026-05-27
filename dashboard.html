@@ -360,7 +360,7 @@
 
         <!-- TITLE -->
         <div class="form-group">
-          <label>Task Title</label>
+          <label>Task Title *</label>
 
           <input
             type="text"
@@ -386,9 +386,10 @@
 
           <div class="form-group">
 
-            <label>Status</label>
+            <label>Status *</label>
 
             <select id="task-status" class="task-select">
+              <option value="">Select Status</option>
               <option value="todo">Todo</option>
               <option value="doing">In Progress</option>
               <option value="done">Completed</option>
@@ -398,16 +399,17 @@
 
           <div class="form-group">
 
-            <label>Category</label>
+            <label>Category *</label>
 
             <select id="task-category" class="task-select">
+              <option value="">Select Category</option>
               <option value="work">Work</option>
               <option value="study">Study</option>
               <option value="personal">Personal</option>
               <option value="health">Health</option>
               <option value="fitness">Fitness</option>
               <option value="finance">Finance</option>
-              <option value="custom">+ New Category</option>
+              <option value="custom">+ Create Category</option>
             </select>
 
           </div>
@@ -421,7 +423,7 @@
           style="display: none;"
         >
 
-          <label>New Category</label>
+          <label>New Category *</label>
 
           <input
             type="text"
@@ -437,7 +439,7 @@
 
           <div class="form-group">
 
-            <label>Due Date</label>
+            <label>Due Date *</label>
 
             <input
               type="date"
@@ -449,13 +451,17 @@
 
           <div class="form-group">
 
-            <label>Due Time</label>
+            <label>Due Time *</label>
 
             <input
               type="time"
               id="task-time"
               class="form-input"
             >
+
+            <p id="task-time-error" class="task-error">
+              Task can not be due in the past
+            </p>
 
           </div>
 

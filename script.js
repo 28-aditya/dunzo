@@ -1,285 +1,277 @@
 console.log("JS connected");
 
-document.querySelectorAll(".sidebar-item").forEach(item=> {
+// =========================
+// GLOBAL UI CLEANUP
+// =========================
+
+document.querySelectorAll(".sidebar-item").forEach(item => {
     item.classList.remove("active");
 });
 
+// =========================
+// THEME TOGGLE
+// =========================
 
 const theme_button = document.getElementById("theme-toggle");
-theme_button.addEventListener("click", function(){
 
+theme_button.addEventListener("click", function () {
     console.log("theme toggled");
     document.body.classList.toggle("light-mode");
-
 });
+
+// =========================
+// STATE
+// =========================
 
 let state = {
     currentView: "dashboard",
-    tasks: []
+    tasks: [],
+    addedCategories: []
 };
 
-// ****************************
-// Class Declarations
-// ****************************
+// =========================
+// TASK CLASS
+// =========================
 
 class TaskItem {
-    constructor(task_title, task_description, task_status, task_category, task_date, task_time) {
-        this.task_title = task_title;
-        this.task_description = task_description;
-        this.task_status = task_status;
-        this.task_category = task_category;
-        this.task_date = task_date;
-        this.task_time = task_time;
+    constructor(title, description, status, category, date, time) {
+        this.task_title = title;
+        this.task_description = description;
+        this.task_status = status;
+        this.task_category = category;
+        this.task_date = date;
+        this.task_time = time;
     }
 }
 
-// *****************************
-// Sidebar -- Workspace Section
-// *****************************
+// =========================
+// SIDEBAR NAVIGATION
+// =========================
+
+function switchView(viewId, viewName, element) {
+    document.querySelectorAll(".sidebar-item").forEach(i => i.classList.remove("active"));
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+
+    document.getElementById(viewId).classList.add("active");
+    element.classList.add("active");
+
+    state.currentView = viewName;
+}
 
 const sb_dashboard = document.getElementById("nav-dashboard");
 sb_dashboard.classList.add("active");
-sb_dashboard.addEventListener("click", function(){
 
-    console.log("dashboard");
-
-    document.querySelectorAll(".sidebar-item").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    document.querySelectorAll(".view").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    const dashboard_view = document.getElementById("view-dashboard");
-    dashboard_view.classList.add("active");
-    sb_dashboard.classList.add("active");
-
-    state.currentView = "dashboard";
+sb_dashboard.addEventListener("click", () => {
+    switchView("view-dashboard", "dashboard", sb_dashboard);
 });
 
-const sb_today = document.getElementById("nav-today");
-sb_today.addEventListener("click", function(){
-
-    console.log("today's tasks");
-
-    document.querySelectorAll(".sidebar-item").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    document.querySelectorAll(".view").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    const today_view = document.getElementById("view-today");
-    today_view.classList.add("active");
-    sb_today.classList.add("active");
-
-    state.currentView = "today";
+document.getElementById("nav-today").addEventListener("click", function () {
+    switchView("view-today", "today", this);
 });
 
-const sb_upcoming = document.getElementById("nav-upcoming");
-sb_upcoming.addEventListener("click", function(){
-
-    console.log("upcoming tasks");
-
-    document.querySelectorAll(".sidebar-item").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    document.querySelectorAll(".view").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    const upcoming_view = document.getElementById("view-upcoming");
-    upcoming_view.classList.add("active");
-    sb_upcoming.classList.add("active");
-
-    state.currentView="upcoming";
+document.getElementById("nav-upcoming").addEventListener("click", function () {
+    switchView("view-upcoming", "upcoming", this);
 });
 
-const sb_completed = document.getElementById("nav-completed");
-sb_completed.addEventListener("click", function(){
-
-    console.log("completed tasks");
-
-    document.querySelectorAll(".sidebar-item").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    document.querySelectorAll(".view").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    const completed_view = document.getElementById("view-completed");
-    completed_view.classList.add("active"); 
-    sb_completed.classList.add("active");
-
-    state.currentView="completed";
+document.getElementById("nav-completed").addEventListener("click", function () {
+    switchView("view-completed", "completed", this);
 });
 
-const sb_overdue = document.getElementById("nav-overdue");
-sb_overdue.addEventListener("click", function(){
-
-    console.log("overdue tasks");
-
-    document.querySelectorAll(".sidebar-item").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    document.querySelectorAll(".view").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    const view_overdue = document.getElementById("view-overdue");
-    view_overdue.classList.add("active");
-    sb_overdue.classList.add("active");
-
-    state.currentView="overdue";    
+document.getElementById("nav-overdue").addEventListener("click", function () {
+    switchView("view-overdue", "overdue", this);
 });
 
-// *****************************
-// Sidebar -- Analytics Section
-// *****************************
-
-const sb_analytics = document.getElementById("nav-analytics");
-sb_analytics.addEventListener("click", function(){
-
-    console.log("task analytics");
-
-    document.querySelectorAll(".sidebar-item").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    document.querySelectorAll(".view").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    const view_analytics = document.getElementById("view-analytics");
-    view_analytics.classList.add("active");
-    sb_analytics.classList.add("active");
-    
-    state.currentView="analytics";
+document.getElementById("nav-analytics").addEventListener("click", function () {
+    switchView("view-analytics", "analytics", this);
 });
 
-const sb_notes = document.getElementById("nav-notes");
-sb_notes.addEventListener("click", function(){
-
-    console.log("notes page");
-
-    document.querySelectorAll(".sidebar-item").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    document.querySelectorAll(".view").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    const view_notes = document.getElementById("view-notes");
-    view_notes.classList.add("active");
-    sb_notes.classList.add("active");
-
-    state.currentView="notes";    
+document.getElementById("nav-notes").addEventListener("click", function () {
+    switchView("view-notes", "notes", this);
 });
 
-const sb_search = document.getElementById("nav-search");
-sb_search.addEventListener("click", function(){
-
-    console.log("search tasks");
-    
-    document.querySelectorAll(".sidebar-item").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    document.querySelectorAll(".view").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    const view_search = document.getElementById("view-search");
-    view_search.classList.add("active");
-    sb_search.classList.add("active");
-
-    state.currentView="notes";
+document.getElementById("nav-search").addEventListener("click", function () {
+    switchView("view-search", "search", this);
 });
 
-const sb_settings = document.getElementById("nav-settings");
-sb_settings.addEventListener("click", function(){
-
-    console.log("settings page");
-
-    document.querySelectorAll(".sidebar-item").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    document.querySelectorAll(".view").forEach(item=> {
-        item.classList.remove("active");
-    });
-
-    const view_settings = document.getElementById("view-settings");
-    view_settings.classList.add("active");
-    sb_settings.classList.add("active");
-
-    state.currentView="settings";    
+document.getElementById("nav-settings").addEventListener("click", function () {
+    switchView("view-settings", "settings", this);
 });
 
-// ***************************
-// New Task Creation Tab
-// ***************************
+// =========================
+// TASK MODAL ELEMENTS
+// =========================
 
 const new_task = document.getElementById("new-task-btn");
 const task_modal = document.getElementById("task-modal");
+const close_task_modal = document.getElementById("close-modal");
+const create_task_modal = document.getElementById("create-task");
 
-new_task.addEventListener("click", function() {
-    console.log("new task pressed")
-    task_modal.classList.add("active");
+const date = document.getElementById("task-date");
+const time = document.getElementById("task-time");
 
-    const close_task_modal = document.getElementById("close-modal");
-    const create_task_modal = document.getElementById("create-task");
+const categorySelect = document.getElementById("task-category");
+const customInput = document.getElementById("custom-category");
+const customGroup = document.getElementById("custom-category-group");
 
-    close_task_modal.addEventListener("click", function() {
-        console.log("task creation modal closed");
-        task_modal.classList.remove("active");     
-    });
+// =========================
+// FIX: DATE MIN (IMPORTANT)
+// =========================
 
-    create_task_modal.addEventListener("click", function() {
-        console.log("task created");
-        
-        const title = document.getElementById("task-title");
-        const description = document.getElementById("task-desc");
-        const status = document.getElementById("task-status");
-        const category = document.getElementById("task-category");
-        const date = document.getElementById("task-date");
-        const time = document.getElementById("task-time");
+const nowInit = new Date();
+date.min = nowInit.toISOString().split("T")[0];
 
-        if (
-            title.value === "" ||
-            status.value === "" ||
-            category.value === "" ||
-            date.value === "" ||
-            time.value === "" 
-        ) {
+// =========================
+// CUSTOM CATEGORY TOGGLE
+// =========================
 
-            const task_error = document.getElementById("task-error");
-            task_error.classList.add("visible");
-            return;
-
-        } else {
-            
-            
-            const task = new TaskItem(
-                title.value, 
-                description.value,
-                status.value,
-                category.value,
-                date.value, 
-                time.value
-            );
-
-            state.tasks.push(task);
-            console.log(state.tasks);
-            task_modal.classList.remove("active");
-
-        }
-    });
+categorySelect.addEventListener("change", function () {
+    if (this.value === "custom") {
+        customGroup.style.display = "block";
+    } else {
+        customGroup.style.display = "none";
+        customInput.value = "";
+    }
 });
 
+// =========================
+// DATE VALIDATION (TIME MIN)
+// =========================
+
+date.addEventListener("click", function() {
+    const now = new Date();
+    const today = now.toISOString().split("T")[0];
+
+    date.min = today;
+});
+
+date.addEventListener("change", function () {
+    const now = new Date();
+    const today = now.toISOString().split("T")[0];
+
+    const currentTime =
+        String(now.getHours()).padStart(2, "0") + ":" +
+        String(now.getMinutes()).padStart(2, "0");
+
+    time.min = (date.value === today) ? currentTime : "";
+});
+
+// =========================
+// CREATE TASK
+// =========================
+
+create_task_modal.addEventListener("click", function () {
+
+    const title = document.getElementById("task-title");
+    const description = document.getElementById("task-desc");
+    const status = document.getElementById("task-status");
+
+    const task_error = document.getElementById("task-error");
+    const time_error = document.getElementById("task-time-error");
+
+    task_error.classList.remove("visible");
+    time_error.classList.remove("visible");
+
+    // REQUIRED FIELDS CHECK
+    if (
+        title.value === "" ||
+        status.value === "" ||
+        categorySelect.value === "" ||
+        date.value === "" ||
+        time.value === ""
+    ) {
+        task_error.classList.add("visible");
+        return;
+    }
+
+    // TIME VALIDATION
+    const now = new Date();
+    const today = now.toISOString().split("T")[0];
+
+    const currentTime =
+        String(now.getHours()).padStart(2, "0") + ":" +
+        String(now.getMinutes()).padStart(2, "0");
+
+    if (date.value === today && time.value < currentTime) {
+        time_error.classList.add("visible");
+        return;
+    }
+
+    // CATEGORY HANDLING
+    let finalCategory = categorySelect.value;
+
+    if (finalCategory === "custom") {
+
+        if (customInput.value.trim() === "") {
+            task_error.classList.add("visible");
+            return;
+        }
+
+        finalCategory = customInput.value.trim();
+
+        const exists = [...categorySelect.options].some(
+            opt => opt.value === finalCategory
+        );
+
+        if (!exists) {
+            const option = document.createElement("option");
+            option.value = finalCategory;
+            option.textContent = finalCategory;
+
+            const customOption = categorySelect.querySelector('option[value="custom"]');
+            categorySelect.insertBefore(option, customOption);
+
+            state.addedCategories.push(finalCategory);
+        }
+    }
+
+    // CREATE TASK
+    const task = new TaskItem(
+        title.value,
+        description.value,
+        status.value,
+        finalCategory,
+        date.value,
+        time.value
+    );
+
+    state.tasks.push(task);
+
+    console.log(state.tasks);
+
+    // CLOSE MODAL
+    task_modal.classList.remove("active");
+
+    // RESET FORM
+    title.value = "";
+    description.value = "";
+    status.value = "";
+    categorySelect.value = "";
+    customInput.value = "";
+    customGroup.style.display = "none";
+    date.value = "";
+    time.value = "";
+});
+
+// =========================
+// MODAL CONTROLS
+// =========================
+
+new_task.addEventListener("click", function () {
+    task_modal.classList.add("active");
+});
+
+close_task_modal.addEventListener("click", function () {
+    task_modal.classList.remove("active");
+
+    document.getElementById("task-title").value = "";
+    document.getElementById("task-desc").value = "";
+    document.getElementById("task-status").value = "";
+    categorySelect.value = "";
+    customInput.value = "";
+    customGroup.style.display = "none";
+    date.value = "";
+    time.value = "";
+
+    document.getElementById("task-error").classList.remove("visible");
+    document.getElementById("task-time-error").classList.remove("visible");
+});

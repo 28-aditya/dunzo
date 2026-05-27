@@ -1366,24 +1366,18 @@ body.light-mode input[type="time"] {
   color-scheme: light;
 }
 
-/* calendar + clock icon styling */
+/* calendar + clock icon styling (clean dark/light handling) */
 input[type="date"]::-webkit-calendar-picker-indicator,
 input[type="time"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
-  opacity: 0.7;
-  filter: invert(1);
-  transition: opacity 0.15s ease;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator:hover,
-input[type="time"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
+  filter: brightness(0) invert(1); /* good for dark mode */
 }
 
-/* invert back for light mode */
+/* light mode: normal icon */
 body.light-mode input[type="date"]::-webkit-calendar-picker-indicator,
 body.light-mode input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: invert(0);
+  filter: none;
 }
 
 .task-error {
