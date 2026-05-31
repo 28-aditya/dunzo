@@ -133,12 +133,15 @@ document.querySelectorAll(".sidebar-item").forEach(item => {
 
 sb_dashboard.addEventListener("click", () => {
     switchView("view-dashboard", "dashboard", sb_dashboard);
+    state.currentView = "dashboard";
+
+    refreshCurrentView();
 });
 
 document.getElementById("nav-today").addEventListener("click", function () {
     switchView("view-today", "today", this);
-
     state.currentView = "today";
+
     refreshCurrentView();
 
 });
@@ -166,18 +169,30 @@ document.getElementById("nav-overdue").addEventListener("click", function () {
 
 document.getElementById("nav-analytics").addEventListener("click", function () {
     switchView("view-analytics", "analytics", this);
+    state.currentView = "analytics";
+
+    refreshCurrentView();
 });
 
 document.getElementById("nav-notes").addEventListener("click", function () {
     switchView("view-notes", "notes", this);
+    state.currentView = "notes";
+
+    refreshCurrentView();
 });
 
 document.getElementById("nav-search").addEventListener("click", function () {
     switchView("view-search", "search", this);
+    state.currentView = "search";
+
+    refreshCurrentView();
 });
 
 document.getElementById("nav-settings").addEventListener("click", function () {
     switchView("view-settings", "settings", this);
+    state.currentView = "settings";
+
+    refreshCurrentView();
 });
 
 // =========================
@@ -363,9 +378,7 @@ function refreshCurrentView() {
         case "completed":
             renderTaskList({
                 tasks: getCompletedTasks(),
-                containerId: "completed-task-list",
-                dueCounterId: "completed-tasks-due",
-                completedCounterId: "upcoming-completed-tasks"
+                containerId: "completed-task-list"
             });
             break;
         case "overdue":
@@ -374,7 +387,11 @@ function refreshCurrentView() {
                 containerId: "overdue-task-list",
             });
             break;
+
+        default:
+            break;
     }
+
 }
 
 
