@@ -8,6 +8,8 @@ document.querySelectorAll(".sidebar-item").forEach(item => {
     item.classList.remove("active");
 });
 
+const view_header = document.getElementById("view-header");
+
 // =========================
 // THEME TOGGLE
 // =========================
@@ -61,12 +63,81 @@ function switchView(viewId, viewName, element) {
 const sb_dashboard = document.getElementById("nav-dashboard");
 sb_dashboard.classList.add("active");
 
+const headerTitle = document.querySelector(".dash-header h1");
+const headerSubtitle = document.querySelector(".dash-header p");
+
+const viewData = {
+    dashboard: {
+        title: "Dashboard",
+        subtitle: "Stay focused and keep your workflow moving."
+    },
+
+    today: {
+        title: "Today",
+        subtitle: "Your schedule and priorities for today."
+    },
+
+    upcoming: {
+        title: "Upcoming",
+        subtitle: "Plan ahead and stay organized."
+    },
+
+    completed: {
+        title: "Completed",
+        subtitle: "Review your finished work."
+    },
+
+    overdue: {
+        title: "Overdue",
+        subtitle: "Tasks that need immediate attention."
+    },
+
+    analytics: {
+        title: "Analytics",
+        subtitle: "Track your productivity insights."
+    },
+
+    notes: {
+        title: "Notes",
+        subtitle: "Keep your ideas and thoughts organized."
+    },
+
+    search: {
+        title: "Search",
+        subtitle: "Find tasks, notes, and projects quickly."
+    },
+
+    settings: {
+        title: "Settings",
+        subtitle: "Customize your workspace experience."
+    }
+};
+
+document.querySelectorAll(".sidebar-item").forEach(item => {
+
+    item.addEventListener("click", function () {
+
+        const viewName = this.dataset.view;
+
+        headerTitle.textContent = viewData[viewName].title;
+        headerSubtitle.textContent = viewData[viewName].subtitle;
+
+    });
+
+}); 
+
+
+// ==============================
+// VIEW SWITCHING
+// ==============================
+
 sb_dashboard.addEventListener("click", () => {
     switchView("view-dashboard", "dashboard", sb_dashboard);
 });
 
 document.getElementById("nav-today").addEventListener("click", function () {
     switchView("view-today", "today", this);
+    renderTodaysTasks(getTodaysTasks());
 });
 
 document.getElementById("nav-upcoming").addEventListener("click", function () {
@@ -114,7 +185,7 @@ const customInput = document.getElementById("custom-category");
 const customGroup = document.getElementById("custom-category-group");
 
 // =========================
-// FIX: DATE MIN (IMPORTANT)
+// DATE MIN
 // =========================
 
 const nowInit = new Date();
@@ -134,7 +205,7 @@ categorySelect.addEventListener("change", function () {
 });
 
 // =========================
-// DATE VALIDATION (TIME MIN)
+// DATE VALIDATION
 // =========================
 
 date.addEventListener("click", function() {
@@ -235,6 +306,11 @@ create_task_modal.addEventListener("click", function () {
     );
 
     state.tasks.push(task);
+    refreshCurrentView();
+
+    if (state.currentView === "today") {
+        renderTodaysTasks(getTodaysTasks());
+    }
 
     console.log(state.tasks);
 
@@ -251,6 +327,38 @@ create_task_modal.addEventListener("click", function () {
     date.value = "";
     time.value = "";
 });
+
+// =========================
+// DYNAMIC UPDATING
+// =========================
+
+function refreshCurrentView() {
+
+    switch (state.currentView) {
+
+        case "today":
+            renderTodaysTasks(getTodaysTasks());
+            break;
+
+        case "dashboard":
+            renderDashboard();
+            break;
+
+        case "completed":
+            renderCompletedTasks();
+            break;
+
+        case "upcoming":
+            renderUpcomingTasks();
+            break;
+
+        case "overdue":
+            renderOverdueTasks();
+            break;
+    }
+}
+
+
 
 // =========================
 // MODAL CONTROLS
@@ -275,3 +383,150 @@ close_task_modal.addEventListener("click", function () {
     document.getElementById("task-error").classList.remove("visible");
     document.getElementById("task-time-error").classList.remove("visible");
 });
+
+// ============================
+// TASK RENDERING FUNCTIONS
+// ============================
+
+function getTodaysTasks() {
+
+    const today = new Date().toISOString().split("T")[0];
+
+    return state.tasks
+        .filter(task => task.task_date === today)
+        .sort((a, b) => a.task_time.localeCompare(b.task_time));
+
+}
+
+function renderTodaysTasks(tasks) {
+    const taskList = document.getElementById("today-task-list");
+    taskList.innerHTML = "";
+    if (tasks.length === 0) {
+
+        taskList.innerHTML = `
+            <div class="empty-state">
+                No tasks scheduled for today.
+            </div>
+        `;
+
+        document.getElementById("todays-tasks-due").textContent = "0";
+        document.getElementById("tasks-completed-today").textContent = "0";
+
+        return;
+
+    } else {
+        const taskList = document.getElementById("today-task-list");
+        taskList.innerHTML = "";
+        let completedTaskCount = 0;
+
+        for (const task of tasks) {
+            const taskRow           =   document.createElement("div");
+            const leftDiv           =   document.createElement("div");
+            const rightDiv          =   document.createElement("div");
+            const taskTitle         =   document.createElement("p");
+            const taskDesc          =   document.createElement("p");
+            const taskTime          =   document.createElement("span");
+            const taskStatusPill    =   document.createElement("span");
+            const taskCategoryPill  =   document.createElement("span");
+            
+            taskRow.classList.add("task-row");
+            taskTitle.classList.add("task-row-title");
+            taskDesc.classList.add("task-row-desc");
+            taskTime.classList.add("task-row-time");
+            rightDiv.classList.add("task-right");
+            taskCategoryPill.classList.add("category-pill");
+            
+            taskStatusPill.classList.add("task-pill");
+            taskStatusPill.classList.add(`${task.task_status}-pill`);
+
+            if (task.task_status === "done") {
+                completedTaskCount = completedTaskCount + 1;
+            }
+
+            taskTitle.textContent           =   task.task_title;
+            taskDesc.textContent            =   task.task_description;
+            taskTime.textContent            =   task.task_time;
+            taskStatusPill.textContent      =   task.task_status;
+            taskCategoryPill.textContent    =   task.task_category.toUpperCase();
+
+            rightDiv.append(taskStatusPill);
+            rightDiv.append(taskCategoryPill);
+
+            leftDiv.appendChild(taskTitle);
+            leftDiv.appendChild(taskDesc);
+            leftDiv.appendChild(taskTime);
+
+            taskRow.appendChild(leftDiv);
+            taskRow.appendChild(rightDiv);
+
+            taskList.appendChild(taskRow);
+            taskStatusPill.addEventListener("click", () => {
+
+            const statuses = ["todo", "doing", "done"];
+
+                let currentIndex = statuses.indexOf(task.task_status);
+
+                task.task_status =
+                    statuses[(currentIndex + 1) % statuses.length];
+
+                renderTodaysTasks(getTodaysTasks());
+                
+                console.log(state.tasks);
+            });
+        }   
+
+        const todaysTasksDue        =   document.getElementById("todays-tasks-due");
+        const todaysCompletedTasks  =   document.getElementById("tasks-completed-today");
+
+        todaysTasksDue.textContent          =   tasks.length - completedTaskCount; 
+        todaysCompletedTasks.textContent    =   completedTaskCount;
+
+    }
+}
+
+state.tasks = [
+    new TaskItem(
+        "Complete dashboard JavaScript",
+        "Finish rendering logic",
+        "doing",
+        "study",
+        "2026-05-31",
+        "09:00"
+    ),
+
+    new TaskItem(
+        "Study database normalization",
+        "Review 3NF and BCNF",
+        "todo",
+        "study",
+        "2026-05-31",
+        "13:00"
+    ),
+
+    new TaskItem(
+        "Workout session",
+        "Chest and triceps",
+        "done",
+        "health",
+        "2026-05-31",
+        "19:00"
+    ),
+
+    new TaskItem(
+        "Finish economics assignment",
+        "Macroeconomics questions",
+        "todo",
+        "study",
+        "2026-06-01",
+        "11:00"
+    ),
+
+    new TaskItem(
+        "Prepare presentation slides",
+        "For project review",
+        "doing",
+        "work",
+        "2026-06-02",
+        "15:30"
+    )
+];

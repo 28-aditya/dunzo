@@ -324,10 +324,158 @@
         </div>
 
         <!-- OTHER VIEWS -->
-        <div class="view" id="view-today"></div>
-        <div class="view" id="view-upcoming"></div>
-        <div class="view" id="view-completed"></div>
-        <div class="view" id="view-overdue"></div>
+          
+        <!-- TODAY VIEW -->
+        <div class="view" id="view-today">
+
+          <div class="view-grid">
+
+            <div class="large-panel">
+
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Today's Tasks</h2>
+                        <p class="section-subtitle">
+                            Tasks scheduled for today
+                        </p>
+                    </div>
+                </div>
+
+                <div class="task-list" id="today-task-list"></div>
+
+            </div>
+
+            <div class="side-panel">
+
+                <div class="mini-card">
+                    <p class="mini-label">Tasks Due</p>
+                    <h3 id="todays-tasks-due"></h3>
+                </div>
+
+                <div class="mini-card">
+                    <p class="mini-label">Completed</p>
+                    <h3 id="tasks-completed-today"></h3>
+                </div>
+
+            </div>
+
+        </div>
+
+      </div>
+
+
+        <!-- UPCOMING VIEW -->
+        <div class="view" id="view-upcoming">
+
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Upcoming Schedule</h2>
+              <p class="section-subtitle">
+                Tasks planned for the next few days
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline">
+
+            <div class="timeline-card">
+              <p class="timeline-date">Tomorrow</p>
+              <h3>Backend API Integration</h3>
+              <span>3 Tasks</span>
+            </div>
+
+            <div class="timeline-card">
+              <p class="timeline-date">Friday</p>
+              <h3>UI Polish & Testing</h3>
+              <span>5 Tasks</span>
+            </div>
+
+            <div class="timeline-card">
+              <p class="timeline-date">Saturday</p>
+              <h3>Database Optimization</h3>
+              <span>2 Tasks</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- COMPLETED VIEW -->
+        <div class="view" id="view-completed">
+
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Completed Tasks</h2>
+              <p class="section-subtitle">
+                Recently finished work
+              </p>
+            </div>
+          </div>
+
+          <div class="completed-grid">
+
+            <div class="completed-card">
+              <h3>Create login page</h3>
+              <span>Finished 2 hours ago</span>
+            </div>
+
+            <div class="completed-card">
+              <h3>Design homepage layout</h3>
+              <span>Finished yesterday</span>
+            </div>
+
+            <div class="completed-card">
+              <h3>Setup CSS variables</h3>
+              <span>Finished yesterday</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- OVERDUE VIEW -->
+        <div class="view" id="view-overdue">
+
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Overdue Tasks</h2>
+              <p class="section-subtitle">
+                Tasks that require immediate attention
+              </p>
+            </div>
+            <button class="btn-new">
+              Resolve All
+            </button>
+          </div>
+
+          <div class="overdue-list">
+
+            <div class="overdue-card">
+              <div>
+                <h3>Submit economics assignment</h3>
+                <span>Missed deadline by 2 days</span>
+              </div>
+
+              <p class="overdue-priority">
+                High
+              </p>
+            </div>
+
+            <div class="overdue-card">
+              <div>
+                <h3>Finish authentication system</h3>
+                <span>Missed deadline by 1 day</span>
+              </div>
+
+              <p class="overdue-priority">
+                Medium
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
         <div class="view" id="view-analytics"></div>
         <div class="view" id="view-notes"></div>
         <div class="view" id="view-search"></div>
