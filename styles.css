@@ -1535,6 +1535,10 @@ body.light-mode input[type="time"]::-webkit-calendar-picker-indicator {
   letter-spacing: 0.5px;
 }
 
+.task-pill:hover {
+  cursor: pointer;
+}
+
 .todo-pill {
   background: rgba(242, 192, 97, 0.12);
   color: #f2c061;
@@ -1584,12 +1588,18 @@ body.light-mode input[type="time"]::-webkit-calendar-picker-indicator {
     align-items: start;
 }
 
+.side-panel {
+  height: 100%;
+  margin-top: 28px;
+}
+
 .large-panel {
     width: 100%;
 }
 
 .task-list {
     width: 100%;
+    margin-top: 28px;
 }
 
 .category-pill {

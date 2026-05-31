@@ -137,19 +137,31 @@ sb_dashboard.addEventListener("click", () => {
 
 document.getElementById("nav-today").addEventListener("click", function () {
     switchView("view-today", "today", this);
-    renderTodaysTasks(getTodaysTasks());
+
+    state.currentView = "today";
+    refreshCurrentView();
+
 });
 
 document.getElementById("nav-upcoming").addEventListener("click", function () {
     switchView("view-upcoming", "upcoming", this);
+    state.currentView = "upcoming";
+
+    refreshCurrentView();
 });
 
 document.getElementById("nav-completed").addEventListener("click", function () {
     switchView("view-completed", "completed", this);
+    state.currentView = "completed";
+
+    refreshCurrentView();
 });
 
 document.getElementById("nav-overdue").addEventListener("click", function () {
     switchView("view-overdue", "overdue", this);
+    state.currentView = "overdue";
+
+    refreshCurrentView();
 });
 
 document.getElementById("nav-analytics").addEventListener("click", function () {
@@ -308,10 +320,6 @@ create_task_modal.addEventListener("click", function () {
     state.tasks.push(task);
     refreshCurrentView();
 
-    if (state.currentView === "today") {
-        renderTodaysTasks(getTodaysTasks());
-    }
-
     console.log(state.tasks);
 
     // CLOSE MODAL
@@ -334,26 +342,37 @@ create_task_modal.addEventListener("click", function () {
 
 function refreshCurrentView() {
 
-    switch (state.currentView) {
-
+    switch (state.currentView)
+    {
         case "today":
-            renderTodaysTasks(getTodaysTasks());
+            renderTaskList({
+                tasks: getTodaysTasks(), 
+                containerId: "today-task-list",
+                dueCounterId: "todays-tasks-due",
+                completedCounterId: "tasks-completed-today"
+            });
             break;
-
-        case "dashboard":
-            renderDashboard();
-            break;
-
-        case "completed":
-            renderCompletedTasks();
-            break;
-
         case "upcoming":
-            renderUpcomingTasks();
+            renderTaskList({
+                tasks: getUpcomingTasks(),
+                containerId : "upcoming-task-list",
+                dueCounterId : "upcoming-tasks-due",
+                completedCounterId: "upcoming-completed-tasks"
+            });
             break;
-
+        case "completed":
+            renderTaskList({
+                tasks: getCompletedTasks(),
+                containerId: "completed-task-list",
+                dueCounterId: "completed-tasks-due",
+                completedCounterId: "upcoming-completed-tasks"
+            });
+            break;
         case "overdue":
-            renderOverdueTasks();
+            renderTaskList({
+                tasks: getOverdueTasks(),
+                containerId: "overdue-task-list",
+            });
             break;
     }
 }
@@ -389,98 +408,140 @@ close_task_modal.addEventListener("click", function () {
 // ============================
 
 function getTodaysTasks() {
-
     const today = new Date().toISOString().split("T")[0];
-
     return state.tasks
         .filter(task => task.task_date === today)
-        .sort((a, b) => a.task_time.localeCompare(b.task_time));
-
+        .sort((a,b) => a.task_time.localeCompare(b.task_time));
 }
 
-function renderTodaysTasks(tasks) {
-    const taskList = document.getElementById("today-task-list");
+function getUpcomingTasks() {
+    const today = new Date().toISOString().split("T")[0];
+
+    return state.tasks.filter(task =>
+        task.task_date > today
+    );
+}
+
+function getCompletedTasks() {
+    return state.tasks.filter(task =>
+        task.task_status === "done"
+    );
+}
+
+function getOverdueTasks() {
+    const today = new Date().toISOString().split("T")[0];
+
+    return state.tasks.filter(task =>
+        task.task_date < today &&
+        task.task_status !== "done"
+    );
+}
+
+function renderTaskList({
+    tasks,
+    containerId,
+    dueCounterId = null,
+    completedCounterId = null
+}) {
+
+    const taskList = document.getElementById(containerId);
     taskList.innerHTML = "";
+
     if (tasks.length === 0) {
 
         taskList.innerHTML = `
             <div class="empty-state">
-                No tasks scheduled for today.
+                No tasks found.
             </div>
         `;
 
-        document.getElementById("todays-tasks-due").textContent = "0";
-        document.getElementById("tasks-completed-today").textContent = "0";
+        if (dueCounterId)
+            document.getElementById(dueCounterId).textContent = "0";
+
+        if (completedCounterId)
+            document.getElementById(completedCounterId).textContent = "0";
 
         return;
+    }
 
-    } else {
-        const taskList = document.getElementById("today-task-list");
-        taskList.innerHTML = "";
-        let completedTaskCount = 0;
+    let completedCount = 0;
 
-        for (const task of tasks) {
-            const taskRow           =   document.createElement("div");
-            const leftDiv           =   document.createElement("div");
-            const rightDiv          =   document.createElement("div");
-            const taskTitle         =   document.createElement("p");
-            const taskDesc          =   document.createElement("p");
-            const taskTime          =   document.createElement("span");
-            const taskStatusPill    =   document.createElement("span");
-            const taskCategoryPill  =   document.createElement("span");
-            
-            taskRow.classList.add("task-row");
-            taskTitle.classList.add("task-row-title");
-            taskDesc.classList.add("task-row-desc");
-            taskTime.classList.add("task-row-time");
-            rightDiv.classList.add("task-right");
-            taskCategoryPill.classList.add("category-pill");
-            
-            taskStatusPill.classList.add("task-pill");
-            taskStatusPill.classList.add(`${task.task_status}-pill`);
+    tasks.forEach(task => {
 
-            if (task.task_status === "done") {
-                completedTaskCount = completedTaskCount + 1;
-            }
+        if (task.task_status === "done")
+            completedCount++;
 
-            taskTitle.textContent           =   task.task_title;
-            taskDesc.textContent            =   task.task_description;
-            taskTime.textContent            =   task.task_time;
-            taskStatusPill.textContent      =   task.task_status;
-            taskCategoryPill.textContent    =   task.task_category.toUpperCase();
+        const taskRow = document.createElement("div");
+        const leftDiv = document.createElement("div");
+        const rightDiv = document.createElement("div");
 
-            rightDiv.append(taskStatusPill);
-            rightDiv.append(taskCategoryPill);
+        const taskTitle = document.createElement("p");
+        const taskDesc = document.createElement("p");
+        const taskTime = document.createElement("span");
 
-            leftDiv.appendChild(taskTitle);
-            leftDiv.appendChild(taskDesc);
-            leftDiv.appendChild(taskTime);
+        const taskStatusPill = document.createElement("span");
+        const taskCategoryPill = document.createElement("span");
 
-            taskRow.appendChild(leftDiv);
-            taskRow.appendChild(rightDiv);
+        taskRow.classList.add("task-row");
+        taskRow.classList.add(task.task_status);
 
-            taskList.appendChild(taskRow);
-            taskStatusPill.addEventListener("click", () => {
+        taskTitle.classList.add("task-row-title");
+        taskDesc.classList.add("task-row-desc");
+        taskTime.classList.add("task-row-time");
+
+        rightDiv.classList.add("task-right");
+
+        taskStatusPill.classList.add(
+            "task-pill",
+            `${task.task_status}-pill`
+        );
+
+        taskCategoryPill.classList.add("category-pill");
+
+        taskTitle.textContent = task.task_title;
+        taskDesc.textContent = task.task_description;
+        taskTime.textContent = task.task_time;
+
+        taskStatusPill.textContent = task.task_status;
+        taskCategoryPill.textContent =
+            task.task_category.toUpperCase();
+
+        rightDiv.append(taskStatusPill);
+        rightDiv.append(taskCategoryPill);
+
+        leftDiv.append(taskTitle);
+        leftDiv.append(taskDesc);
+        leftDiv.append(taskTime);
+
+        taskRow.append(leftDiv);
+        taskRow.append(rightDiv);
+
+        taskList.append(taskRow);
+                taskStatusPill.addEventListener("click", e => {
+
+            e.stopPropagation();
 
             const statuses = ["todo", "doing", "done"];
 
-                let currentIndex = statuses.indexOf(task.task_status);
+            const currentIndex =
+                statuses.indexOf(task.task_status);
 
-                task.task_status =
-                    statuses[(currentIndex + 1) % statuses.length];
+            task.task_status =
+                statuses[(currentIndex + 1) % statuses.length];
 
-                renderTodaysTasks(getTodaysTasks());
-                
-                console.log(state.tasks);
-            });
-        }   
+            refreshCurrentView();
+        });
 
-        const todaysTasksDue        =   document.getElementById("todays-tasks-due");
-        const todaysCompletedTasks  =   document.getElementById("tasks-completed-today");
+    });
 
-        todaysTasksDue.textContent          =   tasks.length - completedTaskCount; 
-        todaysCompletedTasks.textContent    =   completedTaskCount;
+    if (dueCounterId) {
+        document.getElementById(dueCounterId).textContent =
+            tasks.length - completedCount;
+    }
 
+    if (completedCounterId) {
+        document.getElementById(completedCounterId).textContent =
+            completedCount;
     }
 }
 
