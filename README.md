@@ -1,4 +1,4 @@
-# dunzo.
+# dunzo. v2.0.3.3
 
 > A modern productivity dashboard focused on clean design, fast workflow, and simple task management.
 
@@ -6,58 +6,130 @@
 
 ## Preview
 
-A sleek workspace for managing tasks, tracking productivity, and organizing daily workflow — built completely with vanilla HTML, CSS, and JavaScript.
+A responsive productivity workspace built with vanilla HTML, CSS, and JavaScript. Manage tasks, track progress, organize schedules, and navigate between dedicated workflow views.
 
 ---
 
 ## Features
 
 ### Workspace Dashboard
-- Modern responsive UI
-- Sidebar navigation system
-- Multiple workspace views:
-  - Dashboard
-  - Today
-  - Upcoming
-  - Completed
-  - Overdue
-  - Analytics
-  - Notes
-  - Search
-  - Settings
-- Productivity overview cards
-- Recent activity section
+
+* Responsive dashboard interface
+* Sidebar navigation system
+* Dedicated workspace views:
+
+  * Dashboard
+  * Today
+  * Upcoming
+  * Completed
+  * Overdue
+  * Analytics
+  * Notes
+  * Search
+  * Settings
+* Dynamic page header updates
+* Productivity overview cards
+* Recent activity section
 
 ### Task Management
-- Create tasks with:
-  - Title
-  - Description
-  - Status (Todo / In Progress / Completed)
-  - Category
-  - Due date
-  - Due time
-- Custom category creation inside task modal
-- Custom categories inserted before “+ Create Category”
-- Validation system:
-  - Required fields
-  - Prevent empty custom category
-  - Prevent past-time scheduling (same-day validation)
-- Modal-based task creation flow
-- Tasks stored in internal state object
+
+* Create tasks with:
+
+  * Title
+  * Description
+  * Status
+  * Category
+  * Due date
+  * Due time
+* Custom category creation
+* Dynamic category insertion
+* Task validation system
+* Modal-based task creation workflow
+* Centralized task state management
+* Dynamic task rendering engine
+* Reusable rendering architecture
+* Status cycling:
+
+  * Todo → In Progress → Completed
+* Automatic UI refresh after task updates
+
+### Task Views
+
+#### Today
+
+* Displays tasks scheduled for the current day
+* Sorted by due time
+* Live incomplete task counter
+* Live completed task counter
+
+#### Upcoming
+
+* Displays future scheduled tasks
+* Dynamic completion statistics
+
+#### Completed
+
+* Displays completed tasks across all dates
+* Automatically updates when task status changes
+
+#### Overdue
+
+* Displays incomplete tasks with past due dates
+* Automatically excludes completed tasks
 
 ### User Experience
-- Dark / light mode toggle
-- Improved form UX (dynamic date/time restrictions)
-- Error handling for invalid inputs
-- Smooth UI transitions and state switching
-- Centralized state management (`state.tasks`, `state.addedCategories`)
+
+* Dark mode / light mode toggle
+* Dynamic date restrictions
+* Dynamic time restrictions
+* Form validation feedback
+* Smooth modal animations
+* View-based state updates
+* Responsive layout system
 
 ---
 
 ## Built With
-- HTML5
-- CSS3
-- Vanilla JavaScript (ES6+)
+
+* HTML5
+* CSS3
+* Vanilla JavaScript (ES6+)
+
+---
+
+## Architecture
+
+### State Management
+
+```js
+state = {
+    currentView,
+    tasks,
+    addedCategories
+}
+```
+
+### Task Object
+
+```js
+{
+    task_title,
+    task_description,
+    task_status,
+    task_category,
+    task_date,
+    task_time
+}
+```
+
+### Core Systems
+
+* View Switching System
+* Modal Management System
+* Task Filtering Engine
+* Reusable Task Rendering Engine
+* Dynamic Category Management
+* Theme Management
 
 ---
 
@@ -77,63 +149,109 @@ dunzo/
 ## Current Development Progress
 
 ### Completed
-- Dashboard UI layout
-- Sidebar navigation system
-- Theme switching
-- Task modal system
-- Task validation system
-- Custom category creation feature
-- Task object architecture
-- State management setup
+
+* Dashboard UI
+* Responsive layout
+* Sidebar navigation
+* Theme switching
+* Task creation modal
+* Task validation
+* Dynamic category creation
+* State management
+* Today task view
+* Upcoming task view
+* Completed task view
+* Overdue task view
+* Reusable rendering system
+* Status update system
+* Dynamic counters
 
 ### In Progress
-- Dynamic task rendering into UI
-- Category system improvements
-- Analytics logic
-- Search functionality
+
+* Analytics system
+* Search functionality
+* Notes system
+* Dashboard statistics integration
+* Task editing functionality
 
 ### Planned
-- Drag & drop task board
-- Local storage persistence
-- Authentication system
-- Backend integration
-- User accounts
-- Real-time sync
+
+* Local storage persistence
+* Authentication system
+* Backend integration
+* User accounts
+* Real-time synchronization
+* Drag and drop task management
+* Notifications and reminders
 
 ---
 
 ## Known Limitations
-- Tasks are not dynamically rendered yet
-- No persistence (refresh clears state)
-- Analytics section is UI-only
+
+* Data is stored only in memory
+* Refreshing the page resets all tasks
+* Analytics view not implemented
+* Search view not implemented
+* Notes view not implemented
+* No backend integration yet
 
 ---
 
 ## Getting Started
 
-### Clone repository
+### Clone Repository
+
 ```bash
 git clone https://github.com/28-aditya/dunzo.git
 ```
 
-### Open project
-Open `dashboard.html` in a browser.
+### Run Project
+
+Open:
+
+```txt
+dashboard.html
+```
+
+in any modern web browser.
+
+---
+
+## Version
+
+**v2.0.3.3**
+
+### Changelog
+
+* Added reusable task rendering engine
+* Added Today task view
+* Added Upcoming task view
+* Added Completed task view
+* Added Overdue task view
+* Added dynamic status updates
+* Added automatic view refresh system
+* Added task filtering utilities
+* Improved state architecture
+* Improved category management
 
 ---
 
 ## Goals
-- Improve frontend architecture skills
-- Strengthen DOM manipulation
-- Practice state management
-- Build UI/UX consistency
-- Learn real-world project structure
+
+* Improve frontend architecture skills
+* Strengthen DOM manipulation skills
+* Learn scalable state management
+* Practice reusable UI systems
+* Build production-style project structure
 
 ---
 
 ## License
+
 MIT
 
 ---
 
 ## Author
+
 Aditya Sharma
