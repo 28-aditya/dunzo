@@ -209,117 +209,60 @@
           <div class="task-board">
 
             <!-- TODO -->
-            <div>
+            <div class="board-column">
 
-              <div class="task-col-header">
+                <div class="task-col-header">
 
-                <div class="task-col-title">
-                  <div class="col-dot todo"></div>
-                  Todo
+                    <div class="task-col-title">
+                        <div class="col-dot todo"></div>
+                        Todo
+                    </div>
+
+                    <div class="col-count" id="todo-board-count">0</div>
+
                 </div>
 
-                <div class="col-count">3</div>
-
-              </div>
-
-              <div class="task-card">
-                <p>Finish landing page redesign</p>
-              </div>
-
-              <div class="task-card">
-                <p>Prepare backend database schema</p>
-              </div>
-
-              <div class="task-card">
-                <p>Review UI color palette</p>
-              </div>
+                <div id="todo-board-list"></div>
 
             </div>
 
             <!-- DOING -->
-            <div>
+            <div class="board-column">
 
-              <div class="task-col-header">
+                <div class="task-col-header">
 
-                <div class="task-col-title">
-                  <div class="col-dot doing"></div>
-                  In Progress
+                    <div class="task-col-title">
+                        <div class="col-dot doing"></div>
+                        In Progress
+                    </div>
+
+                    <div class="col-count" id="doing-board-count">0</div>
+
                 </div>
 
-                <div class="col-count">2</div>
-
-              </div>
-
-              <div class="task-card">
-                <p>Learn JavaScript fundamentals</p>
-              </div>
-
-              <div class="task-card">
-                <p>Build authentication system</p>
-              </div>
+                <div id="doing-board-list"></div>
 
             </div>
 
             <!-- DONE -->
-            <div>
+            <div class="board-column">
 
-              <div class="task-col-header">
+                <div class="task-col-header">
 
-                <div class="task-col-title">
-                  <div class="col-dot done"></div>
-                  Completed
+                    <div class="task-col-title">
+                        <div class="col-dot done"></div>
+                        Completed
+                    </div>
+
+                    <div class="col-count" id="done-board-count">0</div>
+
                 </div>
 
-                <div class="col-count">6</div>
-
-              </div>
-
-              <div class="task-card">
-                <p>Create sign in page</p>
-              </div>
-
-              <div class="task-card">
-                <p>Finish shared stylesheet</p>
-              </div>
-
-              <div class="task-card">
-                <p>Deploy initial homepage</p>
-              </div>
+                <div id="done-board-list"></div>
 
             </div>
 
-          </div>
-
-          <!-- ACTIVITY -->
-          <div class="activity-section">
-
-            <div class="section-header">
-
-              <div>
-                <h2 class="section-title">Recent Activity</h2>
-                <p class="section-subtitle">
-                  Latest updates from your workspace
-                </p>
-              </div>
-
-            </div>
-
-            <div class="activity-card">
-              <p>Completed “Create sign in page”</p>
-              <span>2 hours ago</span>
-            </div>
-
-            <div class="activity-card">
-              <p>Added new task “Finish API integration”</p>
-              <span>5 hours ago</span>
-            </div>
-
-            <div class="activity-card">
-              <p>Updated progress on “Learn JavaScript fundamentals”</p>
-              <span>Yesterday</span>
-            </div>
-
-          </div>
+        </div>
 
         </div>
 

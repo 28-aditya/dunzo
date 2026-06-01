@@ -105,7 +105,7 @@ function getProductivityScore() {
 // RENDERING ANALYTICS
 // ==============================
 
-function renderDashboardAnalytics() {
+function renderDashboard() {
 
     const completionRate = getCompletionRate();
 
@@ -193,7 +193,67 @@ function renderDashboardAnalytics() {
         document.getElementById("timer-stat-subtext")
             .textContent = "Since last completion";
     }
+
+    // ====================
+    // TASK BOARD
+    // ====================
+    const todoBoardList     =   document.getElementById("todo-board-list");
+    const doingBoardList    =   document.getElementById("doing-board-list");
+    const doneBoardList     =   document.getElementById("done-board-list");
+
+    todoBoardList.innerHTML     =   "";
+    doingBoardList.innerHTML    =   "";
+    doneBoardList.innerHTML     =   "";
+
+    const todoBoardCount    =   document.getElementById("todo-board-count");
+    const doingBoardCount   =   document.getElementById("doing-board-count");
+    const doneBoardCount    =   document.getElementById("done-board-count");
+
+    todoBoardCount.textContent  =   
+        state.tasks.filter(task => task.task_status === "todo").length;
+    doingBoardCount.textContent =
+        state.tasks.filter(task => task.task_status === "doing").length;
+    doneBoardCount.textContent  =
+        state.tasks.filter(task => task.task_status === "done").length;
+    
+    for (const task of state.tasks) {
+        switch (task.task_status) {
+            case "todo":
+                const todoBoardDiv = document.createElement("div");
+                todoBoardDiv.classList.add("task-card");
+
+                const todoBoardPara = document.createElement("p");
+                todoBoardPara.textContent = task.task_title;
+                
+                todoBoardDiv.appendChild(todoBoardPara);
+                todoBoardList.appendChild(todoBoardDiv);
+                break;
+            case "doing":
+                const doingBoardDiv = document.createElement("div");
+                doingBoardDiv.classList.add("task-card");
+
+                const doingBoardPara = document.createElement("p");
+                doingBoardPara.textContent = task.task_title;
+                
+                doingBoardDiv.appendChild(doingBoardPara);
+                doingBoardList.appendChild(doingBoardDiv);
+                break;
+            case "done":
+                const doneBoardDiv = document.createElement("div");
+                doneBoardDiv.classList.add("task-card");
+
+                const doneBoardPara = document.createElement("p");
+                doneBoardPara.textContent = task.task_title;
+
+                doneBoardDiv.appendChild(doneBoardPara);
+                doneBoardList.appendChild(doneBoardDiv);
+                break;
+            default:
+                break;
+        }
+    }
 }
+
 // =========================
 // SIDEBAR NAVIGATION
 // =========================
@@ -505,7 +565,7 @@ create_task_modal.addEventListener("click", function () {
 
 function refreshCurrentView() {
 
-    renderDashboardAnalytics();
+    renderDashboard();
 
     switch (state.currentView)
     {
@@ -721,6 +781,8 @@ function renderTaskList({
             completedCount;
     }
 }
+
+
 
 state.tasks = [
     new TaskItem(
