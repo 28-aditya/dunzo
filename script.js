@@ -43,9 +43,157 @@ class TaskItem {
         this.task_category = category;
         this.task_date = date;
         this.task_time = time;
+
+        this.time_created = new Date().toISOString();
+        this.time_completed = null;
     }
 }
 
+// =========================
+// ANALYTICS CALCULATION
+// =========================
+
+function getTotalTasks() {
+    return state.tasks.length;
+}
+
+function getCompletedTasksCount() {
+    return state.tasks
+        .filter(task => task.task_status === "done")
+        .length;
+}
+
+function getCompletionRate() {
+
+    if (state.tasks.length === 0)
+        return 0;
+
+    return Math.round(
+        (getCompletedTasksCount() / state.tasks.length) * 100
+    );
+}
+
+function getOverdueTasksCount() {
+    return getOverdueTasks().length;
+}
+
+function getProductivityScore() {
+
+    const total = state.tasks.length;
+
+    if (total === 0)
+        return 0;
+
+    const completed =
+        state.tasks.filter(task => task.task_status === "done").length;
+
+    const doing =
+        state.tasks.filter(task => task.task_status === "doing").length;
+
+    const overdue =
+        getOverdueTasksCount();
+
+    let score =
+        (completed * 100 + doing * 50 - overdue * 25) / total;
+
+    score = Math.max(0, Math.min(100, Math.round(score)));
+
+    return score;
+}
+
+// ==============================
+// RENDERING ANALYTICS
+// ==============================
+
+function renderDashboardAnalytics() {
+
+    const completionRate = getCompletionRate();
+
+    // =====================
+    // OVERVIEW CARDS
+    // =====================
+
+    document.getElementById("tasks-completed-stat")
+        .textContent = getCompletedTasksCount();
+
+    document.getElementById("task-completed-subtext")
+        .textContent = `${getCompletedTasksCount()} tasks finished`;
+
+    document.getElementById("productivity-score-stat")
+        .textContent = `${getProductivityScore()}`;
+
+    const productivityText =
+        document.getElementById("productivity-score-subtext");
+
+    if (completionRate === 100) {
+        productivityText.textContent = "Perfection";
+    }
+    else if (completionRate >= 90) {
+        productivityText.textContent = "Excellent consistency";
+    }
+    else if (completionRate >= 80) {
+        productivityText.textContent = "Great consistency";
+    }
+    else if (completionRate >= 65) {
+        productivityText.textContent = "Good consistency";
+    }
+    else {
+        productivityText.textContent = "Needs improvement";
+    }
+
+    // =====================
+    // STATS GRID
+    // =====================
+
+    document.getElementById("total-tasks-stat")
+        .textContent = getTotalTasks();
+
+    document.getElementById("in-progress-stat")
+        .textContent = state.tasks.filter(
+            task => task.task_status === "doing"
+        ).length;
+
+    document.getElementById("overdue-stat")
+        .textContent = getOverdueTasksCount();
+
+    document.getElementById("completion-rate-stat")
+        .textContent = `${completionRate}%`;
+
+    // =======================
+    // TIME COMPLETED
+    // =======================
+    const completedTasks = state.tasks.filter(
+        task => task.time_completed
+    );
+
+    if (completedTasks.length === 0) {
+
+        document.getElementById("timer-stat")
+            .textContent = "--";
+
+        document.getElementById("timer-stat-subtext")
+            .textContent = "No completed tasks yet";
+    }
+    else {
+
+        const latestTask = completedTasks.sort(
+            (a, b) =>
+                new Date(b.time_completed) -
+                new Date(a.time_completed)
+        )[0];
+
+        const minutesAgo = Math.floor(
+            (Date.now() - new Date(latestTask.time_completed))
+            / 60000
+        );
+
+        document.getElementById("timer-stat")
+            .textContent = `${minutesAgo}m`;
+
+        document.getElementById("timer-stat-subtext")
+            .textContent = "Since last completion";
+    }
+}
 // =========================
 // SIDEBAR NAVIGATION
 // =========================
@@ -357,6 +505,8 @@ create_task_modal.addEventListener("click", function () {
 
 function refreshCurrentView() {
 
+    renderDashboardAnalytics();
+
     switch (state.currentView)
     {
         case "today":
@@ -393,8 +543,6 @@ function refreshCurrentView() {
     }
 
 }
-
-
 
 // =========================
 // MODAL CONTROLS
@@ -517,7 +665,12 @@ function renderTaskList({
 
         taskTitle.textContent = task.task_title;
         taskDesc.textContent = task.task_description;
-        taskTime.textContent = task.task_time;
+        if (state.currentView !== "today") {
+            taskTime.textContent =
+                `${task.task_date} • ${task.task_time}`;
+        } else {
+            taskTime.textContent = task.task_time;
+        }
 
         taskStatusPill.textContent = task.task_status;
         taskCategoryPill.textContent =
@@ -534,7 +687,8 @@ function renderTaskList({
         taskRow.append(rightDiv);
 
         taskList.append(taskRow);
-                taskStatusPill.addEventListener("click", e => {
+
+        taskStatusPill.addEventListener("click", e => {
 
             e.stopPropagation();
 
@@ -545,6 +699,12 @@ function renderTaskList({
 
             task.task_status =
                 statuses[(currentIndex + 1) % statuses.length];
+            
+            if (task.task_status === "done") {
+                task.time_completed = new Date().toISOString();
+            } else {
+                task.time_completed = null;
+            }
 
             refreshCurrentView();
         });
@@ -606,5 +766,208 @@ state.tasks = [
         "work",
         "2026-06-02",
         "15:30"
+    ),
+
+    new TaskItem(
+        "Complete dashboard JavaScript",
+        "Finish rendering logic",
+        "doing",
+        "study",
+        "2026-06-01",
+        "09:00"
+    ),
+
+    new TaskItem(
+        "Study database normalization",
+        "Review 3NF and BCNF",
+        "todo",
+        "study",
+        "2026-06-01",
+        "13:00"
+    ),
+
+    new TaskItem(
+        "Workout session",
+        "Chest and triceps",
+        "done",
+        "health",
+        "2026-06-01",
+        "19:00"
+    ),
+
+    new TaskItem(
+        "Finish economics assignment",
+        "Macroeconomics questions",
+        "todo",
+        "study",
+        "2026-06-02",
+        "11:00"
+    ),
+
+    new TaskItem(
+        "Prepare presentation slides",
+        "For project review",
+        "doing",
+        "work",
+        "2026-06-03",
+        "15:30"
+    ),
+
+    new TaskItem(
+        "Update LinkedIn profile",
+        "Add latest projects",
+        "done",
+        "personal",
+        "2026-05-30",
+        "17:00"
+    ),
+
+    new TaskItem(
+        "Practice LeetCode",
+        "Solve 5 medium questions",
+        "doing",
+        "study",
+        "2026-06-01",
+        "20:00"
+    ),
+
+    new TaskItem(
+        "Book dentist appointment",
+        "Annual checkup",
+        "todo",
+        "health",
+        "2026-06-05",
+        "10:00"
+    ),
+
+    new TaskItem(
+        "Review cybersecurity notes",
+        "Authentication and hashing",
+        "done",
+        "study",
+        "2026-05-29",
+        "21:00"
+    ),
+
+    new TaskItem(
+        "Clean workspace",
+        "Organize desk and cables",
+        "todo",
+        "personal",
+        "2026-06-04",
+        "18:00"
+    ),
+
+    new TaskItem(
+        "Prepare internship applications",
+        "Finalize resume and cover letter",
+        "doing",
+        "work",
+        "2026-06-03",
+        "14:00"
+    ),
+
+    new TaskItem(
+        "Read system design article",
+        "Distributed caching",
+        "todo",
+        "study",
+        "2026-06-06",
+        "16:00"
+    ),
+
+    new TaskItem(
+        "Morning run",
+        "5km easy pace",
+        "done",
+        "fitness",
+        "2026-05-28",
+        "07:00"
+    ),
+
+    new TaskItem(
+        "Budget planning",
+        "Review monthly expenses",
+        "todo",
+        "finance",
+        "2026-06-07",
+        "12:00"
+    ),
+
+    new TaskItem(
+        "Create API documentation",
+        "Endpoints and examples",
+        "doing",
+        "work",
+        "2026-06-02",
+        "09:30"
+    ),
+
+    new TaskItem(
+        "Buy groceries",
+        "Weekly shopping",
+        "done",
+        "personal",
+        "2026-05-31",
+        "17:30"
+    ),
+
+    new TaskItem(
+        "Research cloud providers",
+        "AWS vs Azure comparison",
+        "todo",
+        "study",
+        "2026-06-08",
+        "15:00"
+    ),
+
+    new TaskItem(
+        "Refactor CSS",
+        "Reduce duplication",
+        "doing",
+        "work",
+        "2026-06-04",
+        "11:00"
+    ),
+
+    new TaskItem(
+        "Submit scholarship documents",
+        "Upload remaining forms",
+        "done",
+        "personal",
+        "2026-05-27",
+        "13:00"
+    ),
+
+    // Overdue tasks
+
+    new TaskItem(
+        "Finish database report",
+        "Submission missed",
+        "todo",
+        "study",
+        "2026-05-20",
+        "23:59"
+    ),
+
+    new TaskItem(
+        "Pay internet bill",
+        "Monthly payment",
+        "todo",
+        "finance",
+        "2026-05-25",
+        "18:00"
+    ),
+
+    new TaskItem(
+        "Review project proposal",
+        "Feedback required",
+        "doing",
+        "work",
+        "2026-05-26",
+        "12:00"
     )
 ];
+
+
+refreshCurrentView();
