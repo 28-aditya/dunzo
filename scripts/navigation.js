@@ -188,6 +188,9 @@ function refreshCurrentView() {
         case "search":
             renderSearchResults();
             break;
+        case "notes":
+            renderNotes();
+            break;
         default:
             break;
     }

@@ -343,7 +343,131 @@
         </div>
 
         <div class="view" id="view-analytics"></div>
-        <div class="view" id="view-notes"></div>
+
+        <div id="view-notes" class="view">
+
+          <div class="notes-layout">
+
+              <div class="notes-sidebar">
+
+                  <div class="notes-sidebar-header">
+
+                      <button
+                          id="new-note-btn"
+                          class="btn-new"
+                      >
+                          + New Note
+                      </button>
+
+                  </div>
+
+                  <div
+                      id="notes-list"
+                      class="notes-list"
+                  ></div>
+
+              </div>
+
+              <div id="notes-empty-state" class="search-empty-state active">
+                  <div class="search-empty-icon">☰</div>
+                  <h3>No note selected</h3>
+                  <p>Create a new note or select one from the list.</p>
+              </div>
+
+              <div class="note-editor hidden" id="note-editor">
+
+                  <div class="note-header">
+                      <button id="close-note-editor" class="note-close-btn">
+                        ✕
+                      </button>
+
+                      <input
+                          type="text"
+                          id="note-title"
+                          class="note-title-input"
+                          placeholder="Untitled Note"
+                      >
+
+                  </div>
+
+                  <textarea
+                      id="note-content"
+                      class="note-content"
+                      placeholder="Start writing..."
+                  ></textarea>
+
+                  <div class="linked-tasks-section">
+
+                      <div class="linked-tasks-header">
+
+                          <h3 class="linked-tasks-title">
+                              Linked Tasks
+                          </h3>
+
+                      </div>
+
+                      <div
+                          id="linked-task-list"
+                          class="linked-task-list"
+                      ></div>
+
+                      <div
+                          class="notes-link-row"
+                          style="margin-top:16px; display:flex; gap:10px;"
+                      >
+
+                          <select
+                              id="task-link-select"
+                              class="task-select"
+                          >
+                              <option value="">
+                                  Select task...
+                              </option>
+                          </select>
+
+                          <button
+                              id="link-task-btn"
+                              class="btn-new"
+                          >
+                              Link
+                          </button>
+
+                      </div>
+
+                  </div>
+
+                  <div
+                      style="
+                          display:flex;
+                          gap:10px;
+                          margin-top:24px;
+                      "
+                  >
+
+                      <button
+                          id="save-note-btn"
+                          class="btn-new"
+                      >
+                          Save Note
+                      </button>
+
+
+                      <button
+                          id="delete-note-btn"
+                          class="btn-ghost"
+                      >
+                          Delete
+                      </button>
+
+                      <p id="note-error" class="task-error"></p>
+
+                  </div>
+
+              </div>
+
+          </div>
+
+        </div>
 
         <div class="view" id="view-search">
 
@@ -551,6 +675,7 @@
   <script src="../scripts/taskRendering.js"></script>
   <script src="../scripts/search.js"></script>
   <script src="../scripts/dashboard.js"></script>
+  <script src="../scripts/notes.js"></script>
   <script src="../scripts/navigation.js"></script>
   <script src="../scripts/modal.js"></script>
   <script src="../scripts/dashboardData.js"></script>
