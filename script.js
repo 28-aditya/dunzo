@@ -82,7 +82,7 @@ function getProductivityScore() {
     const total = state.tasks.length;
 
     if (total === 0)
-        return 0;
+        return 25;
 
     const completed =
         state.tasks.filter(task => task.task_status === "done").length;
@@ -96,7 +96,9 @@ function getProductivityScore() {
     let score =
         (completed * 100 + doing * 50 - overdue * 25) / total;
 
-    score = Math.max(0, Math.min(100, Math.round(score)));
+    score += 25;
+
+    score = Math.max(25, Math.min(100, Math.round(score)));
 
     return score;
 }
@@ -107,7 +109,8 @@ function getProductivityScore() {
 
 function renderDashboard() {
 
-    const completionRate = getCompletionRate();
+    const completionRate        =    getCompletionRate();
+    const productivityScore     =    getProductivityScore();
 
     // =====================
     // OVERVIEW CARDS
@@ -125,16 +128,16 @@ function renderDashboard() {
     const productivityText =
         document.getElementById("productivity-score-subtext");
 
-    if (completionRate === 100) {
+    if (productivityScore === 100) {
         productivityText.textContent = "Perfection";
     }
-    else if (completionRate >= 90) {
+    else if (productivityScore >= 80) {
         productivityText.textContent = "Excellent consistency";
     }
-    else if (completionRate >= 80) {
+    else if (productivityScore >= 65) {
         productivityText.textContent = "Great consistency";
     }
-    else if (completionRate >= 65) {
+    else if (productivityScore >= 45) {
         productivityText.textContent = "Good consistency";
     }
     else {
@@ -782,6 +785,33 @@ function renderTaskList({
     }
 }
 
+// ========================
+// QUICK ADD FUNCTIONALITY
+// ========================
+
+const quickAddInput     =   document.getElementById("quick-add-input");
+const quickAddButton    =   document.getElementById("quick-add-button");
+
+const isAlNum = str => /^[a-z0-9]+$/i.test(str);
+
+quickAddButton.addEventListener("click", function() {
+    if (quickAddInput.value.length > 0) {
+        const quickTask = new TaskItem(quickAddInput.value,
+            "",
+            "todo",
+            "quick",
+            new Date().toISOString().split("T")[0],
+            "23:59"
+        );
+
+        state.tasks.push(quickTask);
+        quickAddInput.value="";
+
+        refreshCurrentView();
+    } else {
+        alert("please enter a valid task title");
+    }
+});
 
 
 state.tasks = [
