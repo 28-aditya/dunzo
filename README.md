@@ -248,11 +248,11 @@ dunzo/
 * Status update system
 * Completion timestamp tracking
 * Modular JavaScript architecture
+* Notes system
 
 ### In Progress
 
 * Analytics page UI
-* Notes system
 * Recent activity automation
 * Task editing functionality
 
@@ -263,10 +263,8 @@ dunzo/
 * Backend integration
 * User accounts
 * Real-time synchronization
-* Drag-and-drop task management
 * Notifications and reminders
 * Database support
-* Team collaboration features
 
 ---
 
