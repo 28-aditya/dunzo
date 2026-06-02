@@ -1,4 +1,4 @@
-# dunzo. v2.0.3.3
+# dunzo. v2.0.4.0
 
 > A modern productivity dashboard focused on clean design, fast workflow, and simple task management.
 
@@ -72,6 +72,17 @@ A responsive productivity workspace built with vanilla HTML, CSS, and JavaScript
 
 ---
 
+### Search System
+
+* Real-time task searching
+* Search by title
+* Search by description
+* Search by category
+* Empty-state handling
+* Dynamic search rendering
+
+---
+
 ### Dashboard Analytics
 
 * Total tasks counter
@@ -82,6 +93,7 @@ A responsive productivity workspace built with vanilla HTML, CSS, and JavaScript
 * Productivity score calculation
 * Time since last completed task
 * Dynamic productivity feedback
+* Dashboard task board
 
 ---
 
@@ -141,7 +153,8 @@ A responsive productivity workspace built with vanilla HTML, CSS, and JavaScript
 state = {
     currentView,
     tasks,
-    addedCategories
+    addedCategories,
+    notes
 }
 ```
 
@@ -149,6 +162,7 @@ state = {
 
 ```js
 {
+    task_id,
     task_title,
     task_description,
     task_status,
@@ -165,6 +179,7 @@ state = {
 * View Switching System
 * Modal Management System
 * Analytics Engine
+* Search Engine
 * Task Filtering Engine
 * Reusable Task Rendering Engine
 * Dynamic Category Management
@@ -178,12 +193,34 @@ state = {
 ```txt
 dunzo/
 │
-├── dashboard.html
-├── styles.css
-├── script.js
+├── assets/
+│
+├── css/
+│   └── styles.css
+│
+├── pages/
+│   ├── create-account.html
+│   ├── dashboard.html
+│   ├── profile.html
+│   └── sign-in.html
+│
+├── scripts/
+│   ├── app.js
+│   ├── dashboard.js
+│   ├── dashboardData.js
+│   ├── modal.js
+│   ├── models.js
+│   ├── navigation.js
+│   ├── search.js
+│   ├── state.js
+│   ├── taskRendering.js
+│   └── utils.js
+│
+├── .gitignore
+├── index.html
+├── LICENSE
 └── README.md
 ```
-
 ---
 
 ## Current Development Progress
@@ -205,17 +242,17 @@ dunzo/
 * Upcoming task view
 * Completed task view
 * Overdue task view
+* Search system
 * Dynamic counters
 * Reusable rendering engine
 * Status update system
 * Completion timestamp tracking
+* Modular JavaScript architecture
 
 ### In Progress
 
 * Analytics page UI
-* Search functionality
 * Notes system
-* Dashboard task board integration
 * Recent activity automation
 * Task editing functionality
 
@@ -237,12 +274,11 @@ dunzo/
 
 * Data is stored only in memory
 * Refreshing the page resets all tasks
-* Analytics view page not implemented
-* Search functionality not implemented
+* Analytics page not implemented
 * Notes functionality not implemented
-* Dashboard task board currently uses placeholder content
 * No backend integration
 * No persistent storage
+* No user authentication
 
 ---
 
@@ -259,7 +295,7 @@ git clone https://github.com/28-aditya/dunzo.git
 Open:
 
 ```txt
-dashboard.html
+index.html
 ```
 
 in any modern web browser.
@@ -268,21 +304,21 @@ in any modern web browser.
 
 ## Version
 
-**v2.0.3.3**
+**v2.0.4.0**
 
 ### Changelog
 
-* Added dashboard analytics system
-* Added productivity score calculations
-* Added completion rate calculations
-* Added overdue task calculations
-* Added task completion timestamp tracking
-* Added time-since-completion tracking
-* Added dynamic dashboard statistics
-* Improved rendering architecture
-* Improved task state management
-* Improved task filtering utilities
-* Improved dashboard data synchronization
+* Refactored project structure
+* Introduced modular JavaScript architecture
+* Added search functionality
+* Added dedicated navigation module
+* Added dashboard module
+* Added models and state separation
+* Added utility module
+* Improved maintainability and scalability
+* Improved code organization
+* Reduced monolithic script size
+* Updated project directory structure
 
 ---
 
