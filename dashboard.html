@@ -344,7 +344,54 @@
 
         <div class="view" id="view-analytics"></div>
         <div class="view" id="view-notes"></div>
-        <div class="view" id="view-search"></div>
+
+        <div class="view" id="view-search">
+
+            <div class="search-container">
+
+                <div class="search-bar">
+
+                    <span class="search-icon">⌕</span>
+
+                    <input
+                        type="text"
+                        id="search-input"
+                        class="search-input"
+                        placeholder="Search tasks..."
+                    >
+
+                </div>
+
+                <!-- EMPTY STATE -->
+
+                <div
+                    class="search-empty-state active"
+                    id="search-bar-empty-result"
+                >
+
+                    <div class="search-empty-icon">
+                        ⌕
+                    </div>
+
+                    <h3>Search your workspace</h3>
+
+                    <p>
+                        Find tasks by title, description, or category.
+                    </p>
+
+                </div>
+
+                <!-- SEARCH RESULTS -->
+
+                <div
+                    class="task-list"
+                    id="search-results"
+                ></div>
+
+            </div>
+
+        </div>
+
         <div class="view" id="view-settings"></div>
 
       </div>

@@ -28,7 +28,8 @@ theme_button.addEventListener("click", function () {
 let state = {
     currentView: "dashboard",
     tasks: [],
-    addedCategories: []
+    addedCategories: [],
+    notes: []
 };
 
 // =========================
@@ -37,16 +38,46 @@ let state = {
 
 class TaskItem {
     constructor(title, description, status, category, date, time) {
-        this.task_title = title;
-        this.task_description = description;
-        this.task_status = status;
-        this.task_category = category;
-        this.task_date = date;
-        this.task_time = time;
 
-        this.time_created = new Date().toISOString();
-        this.time_completed = null;
+        this.task_id            =   crypto.randomUUID();
+
+        this.task_title         =   title;
+        this.task_description   =   description;
+        this.task_status        =   status;
+        this.task_category      =   category;
+        this.task_date          =   date;
+        this.task_time          =   time;
+        
+        this.time_created       =   new Date().toISOString();
+        this.time_completed     =   null;
     }
+}
+
+// ======================
+// NOTE CLASS
+// ======================
+
+class NoteItem {
+    constructor(title, content) {
+        this.note_id    =   crypto.randomUUID();
+        
+        this.note_title =   title;
+        this.note_content   =   content;
+        
+        this.linked_tasks   =   [];
+
+        this.time_created   =   new Date().toISOString();
+        this.time_modified  =   null;
+    }
+}
+
+// =========================
+// HELPER FUNCTIONS
+// =========================
+
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split("-");
+    return `${day}/${month}/${year}`;
 }
 
 // =========================
@@ -600,7 +631,9 @@ function refreshCurrentView() {
                 containerId: "overdue-task-list",
             });
             break;
-
+        case "search":
+            renderSearchResults();
+            break;
         default:
             break;
     }
@@ -730,7 +763,7 @@ function renderTaskList({
         taskDesc.textContent = task.task_description;
         if (state.currentView !== "today") {
             taskTime.textContent =
-                `${task.task_date} • ${task.task_time}`;
+                `${formatDate(task.task_date)} • ${task.task_time}`;
         } else {
             taskTime.textContent = task.task_time;
         }
@@ -813,7 +846,38 @@ quickAddButton.addEventListener("click", function() {
     }
 });
 
+// ===========================
+// SEARCH VIEW FUNCTIONALITY
+// ===========================
+function renderSearchResults() {
 
+    const searchInput = document.getElementById("search-input");
+    const searchBarEmptyResults =
+        document.getElementById("search-bar-empty-result");
+
+    let query = searchInput.value.toLowerCase();
+
+    if (query.length === 0) {
+        searchBarEmptyResults.classList.add("active");
+        document.getElementById("search-results").innerHTML = "";
+        return;
+    }
+
+    searchBarEmptyResults.classList.remove("active");
+
+    let requiredTasks =
+        state.tasks.filter(task =>
+            task.task_title.toLowerCase().includes(query) ||
+            (task.task_description || "")
+                .toLowerCase().includes(query) ||
+            task.task_category.toLowerCase().includes(query)
+        );
+
+    renderTaskList({
+        tasks: requiredTasks,
+        containerId: "search-results"
+    });
+}
 state.tasks = [
     new TaskItem(
         "Complete dashboard JavaScript",
@@ -1061,5 +1125,12 @@ state.tasks = [
     )
 ];
 
+const searchInput = document.getElementById("search-input");
+
+searchInput.addEventListener("input", () => {
+    if (state.currentView === "search") {
+        renderSearchResults();
+    }
+});
 
 refreshCurrentView();
