@@ -342,7 +342,71 @@
 
         </div>
 
-        <div class="view" id="view-analytics"></div>
+        <div class="view" id="view-analytics">
+
+          <div class="view-grid">
+
+            <!-- LEFT: MAIN ANALYTICS -->
+            <div class="analytics-main">
+
+              <div class="section-header">
+                <div>
+                  <h2 class="section-title">Analytics</h2>
+                  <p class="section-subtitle">Track your productivity trends</p>
+                </div>
+              </div>
+
+              <!-- CHART PLACEHOLDERS -->
+              <div class="analytics-grid">
+
+                <div class="analytics-card">
+                  <p class="analytics-title">Tasks Over Time</p>
+                  <div class="analytics-chart" id="tasks-over-time-chart">
+                    <!-- chart goes here -->
+                  </div>
+                </div>
+
+                <div class="analytics-card">
+                  <p class="analytics-title">Completion Rate</p>
+                  <div class="analytics-chart" id="completion-rate-chart">
+                    <!-- chart goes here -->
+                  </div>
+                </div>
+
+                <div class="analytics-card">
+                  <p class="analytics-title">Category Breakdown</p>
+                  <div class="analytics-chart" id="category-chart">
+                    <!-- chart goes here -->
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- RIGHT: STATS -->
+            <div class="side-panel">
+
+              <div class="mini-card">
+                <p class="mini-label">Total Tasks</p>
+                <h3 id="analytics-total-tasks">0</h3>
+              </div>
+
+              <div class="mini-card">
+                <p class="mini-label">Avg Completion Time</p>
+                <h3 id="analytics-avg-time">0h</h3>
+              </div>
+
+              <div class="mini-card">
+                <p class="mini-label">Productivity Score</p>
+                <h3 id="analytics-score">0</h3>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
 
         <div id="view-notes" class="view">
 
@@ -513,7 +577,64 @@
 
         </div>
 
-        <div class="view" id="view-settings"></div>
+        <div class="view" id="view-settings">
+
+          <div class="settings-container">
+
+            <div class="section-header">
+              <div>
+                <h2 class="section-title">Settings</h2>
+                <p class="section-subtitle">Customize your workspace</p>
+              </div>
+            </div>
+
+            <!-- APPEARANCE -->
+            <div class="settings-card">
+
+              <h3 class="settings-title">Appearance</h3>
+
+              <div class="settings-row">
+                <p>Theme</p>
+                <button class="btn-new" id="toggle-theme-settings">Toggle Theme</button>
+              </div>
+
+            </div>
+
+            <!-- NOTIFICATIONS -->
+            <div class="settings-card">
+
+              <h3 class="settings-title">Notifications</h3>
+
+              <div class="settings-row">
+                <p>Task reminders</p>
+                <label class="switch">
+                  <input type="checkbox" id="notif-toggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+            </div>
+
+            <!-- DATA -->
+            <div class="settings-card">
+
+              <h3 class="settings-title">Data</h3>
+
+              <div class="settings-row">
+                <p>Export tasks</p>
+                <button class="btn-ghost" id="export-data">Export</button>
+              </div>
+
+              <div class="settings-row">
+                <p>Clear all data</p>
+                <button class="btn-danger" id="clear-data">Delete</button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
