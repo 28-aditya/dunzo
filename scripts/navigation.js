@@ -191,6 +191,9 @@ function refreshCurrentView() {
         case "notes":
             renderNotes();
             break;
+        case "analytics":
+            renderAnalytics();
+            break;
         default:
             break;
     }

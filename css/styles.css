@@ -2198,7 +2198,7 @@ body.light-mode input[type="time"]::-webkit-calendar-picker-indicator {
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 20px;
-    min-height: 220px;
+    min-height: 80px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -2336,4 +2336,125 @@ body.light-mode input[type="time"]::-webkit-calendar-picker-indicator {
 
 .btn-danger:hover {
     opacity: 0.85;
+}
+
+/* =========================
+   SETTINGS INPUT
+   ========================= */
+
+.settings-input {
+    width: 200px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    outline: none;
+}
+
+/* =========================
+   ANALYTICS LAYOUT
+   ========================= */
+
+.analytics-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.analytics-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.analytics-card.small {
+    padding: 18px;
+    border-radius: var(--radius-lg);
+}
+
+.analytics-card.large {
+    padding: 20px;
+    min-height: 240px;
+}
+
+.analytics-card.full {
+    padding: 22px;
+    min-height: 320px;
+}
+
+.analytics-title {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.analytics-card h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+}
+
+/* =========================
+   CHART PLACEHOLDERS
+   ========================= */
+
+.chart-box {
+    width: 100%;
+    height: 340px;
+    border-radius: var(--radius-md);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted2);
+}
+
+/* =========================
+   HEATMAP
+   ========================= */
+
+.heatmap {
+    display: grid;
+    grid-template-columns: repeat(30, 1fr);
+    gap: 4px;
+}
+
+.heat-cell {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 3px;
+    background: var(--surface2);
+}
+
+.heat-cell.l1 { background: rgba(200,242,97,0.15); }
+.heat-cell.l2 { background: rgba(200,242,97,0.35); }
+.heat-cell.l3 { background: rgba(200,242,97,0.6); }
+.heat-cell.l4 { background: var(--accent); }
+
+.chart-box {
+    width: 100%;
+    height: 340px;
+
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    padding: 20px;
+}
+
+.chart-box canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#weekly-trend-chart {
+    width: 100%;
+    height: 280px;
+    display: block;
+}
+
+.chart-box{
+  height: 320px;
 }

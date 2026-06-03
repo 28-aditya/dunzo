@@ -344,63 +344,62 @@
 
         <div class="view" id="view-analytics">
 
-          <div class="view-grid">
+          <div class="analytics-container">
 
-            <!-- LEFT: MAIN ANALYTICS -->
-            <div class="analytics-main">
+            <!-- TOP SUMMARY CARDS -->
+            <div class="analytics-summary">
 
-              <div class="section-header">
-                <div>
-                  <h2 class="section-title">Analytics</h2>
-                  <p class="section-subtitle">Track your productivity trends</p>
-                </div>
+              <div class="analytics-card small">
+                <p class="analytics-title">This Week</p>
+                <h2 id="week-tasks">0</h2>
               </div>
 
-              <!-- CHART PLACEHOLDERS -->
-              <div class="analytics-grid">
+              <div class="analytics-card small">
+                <p class="analytics-title">Completion Rate</p>
+                <h2 id="week-rate">0%</h2>
+              </div>
 
-                <div class="analytics-card">
-                  <p class="analytics-title">Tasks Over Time</p>
-                  <div class="analytics-chart" id="tasks-over-time-chart">
-                    <!-- chart goes here -->
-                  </div>
-                </div>
+              <div class="analytics-card small">
+                <p class="analytics-title">Best Day</p>
+                <h2 id="best-day">--</h2>
+              </div>
 
-                <div class="analytics-card">
-                  <p class="analytics-title">Completion Rate</p>
-                  <div class="analytics-chart" id="completion-rate-chart">
-                    <!-- chart goes here -->
-                  </div>
-                </div>
-
-                <div class="analytics-card">
-                  <p class="analytics-title">Category Breakdown</p>
-                  <div class="analytics-chart" id="category-chart">
-                    <!-- chart goes here -->
-                  </div>
-                </div>
-
+              <div class="analytics-card small">
+                <p class="analytics-title">Streak</p>
+                <h2 id="streak-count">0</h2>
               </div>
 
             </div>
 
-            <!-- RIGHT: STATS -->
-            <div class="side-panel">
+            <!-- MAIN CHARTS -->
 
-              <div class="mini-card">
-                <p class="mini-label">Total Tasks</p>
-                <h3 id="analytics-total-tasks">0</h3>
-              </div>
+            <!-- WEEKLY PROGRESS -->
+            <div class="analytics-card full">
+                <div class="analytics-title">Weekly Completion Trend</div>
 
-              <div class="mini-card">
-                <p class="mini-label">Avg Completion Time</p>
-                <h3 id="analytics-avg-time">0h</h3>
-              </div>
+                <div class="chart-box">
+                    <canvas id="weekly-trend-chart"></canvas>
+                </div>
+            </div>
 
-              <div class="mini-card">
-                <p class="mini-label">Productivity Score</p>
-                <h3 id="analytics-score">0</h3>
-              </div>
+            <!-- TASK FLOW -->
+            <div class="analytics-card large">
+              <p class="analytics-title">Task Flow (Created vs Completed)</p>
+              <div class="chart-box" id="task-flow-chart"></div>
+            </div>
+
+            <!-- CATEGORY BREAKDOWN -->
+            <div class="analytics-card large">
+              <p class="analytics-title">Category Distribution</p>
+              <div class="chart-box" id="category-trend-chart"></div>
+            </div>
+
+            <!-- ACTIVITY HEATMAP -->
+            <div class="analytics-card full">
+
+              <p class="analytics-title">Activity Heatmap (Last 30 Days)</p>
+
+              <div class="heatmap" id="activity-heatmap"></div>
 
             </div>
 
@@ -581,11 +580,26 @@
 
           <div class="settings-container">
 
-            <div class="section-header">
-              <div>
-                <h2 class="section-title">Settings</h2>
-                <p class="section-subtitle">Customize your workspace</p>
+            <!-- ACCOUNT -->
+            <div class="settings-card">
+
+              <h3 class="settings-title">Account</h3>
+
+              <div class="settings-row">
+                <p>Username</p>
+                <input type="text" class="settings-input" id="settings-username">
               </div>
+
+              <div class="settings-row">
+                <p>Email</p>
+                <input type="email" class="settings-input" id="settings-email">
+              </div>
+
+              <div class="settings-row">
+                <p>Reset Password</p>
+                <button class="btn-ghost">Change</button>
+              </div>
+
             </div>
 
             <!-- APPEARANCE -->
@@ -595,20 +609,33 @@
 
               <div class="settings-row">
                 <p>Theme</p>
-                <button class="btn-new" id="toggle-theme-settings">Toggle Theme</button>
+                <button class="btn-new" id="theme-toggle-settings">Toggle Theme</button>
               </div>
 
             </div>
 
-            <!-- NOTIFICATIONS -->
+            <!-- PRODUCTIVITY -->
             <div class="settings-card">
 
-              <h3 class="settings-title">Notifications</h3>
+              <h3 class="settings-title">Productivity Tracking</h3>
 
               <div class="settings-row">
-                <p>Task reminders</p>
+                <p>Daily Goal (tasks)</p>
+                <input type="number" class="settings-input" id="daily-goal">
+              </div>
+
+              <div class="settings-row">
+                <p>Enable streak tracking</p>
                 <label class="switch">
-                  <input type="checkbox" id="notif-toggle">
+                  <input type="checkbox" id="streak-toggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <p>Auto archive completed tasks</p>
+                <label class="switch">
+                  <input type="checkbox" id="auto-archive">
                   <span class="slider"></span>
                 </label>
               </div>
@@ -621,13 +648,13 @@
               <h3 class="settings-title">Data</h3>
 
               <div class="settings-row">
-                <p>Export tasks</p>
-                <button class="btn-ghost" id="export-data">Export</button>
+                <p>Export all data</p>
+                <button class="btn-ghost" id="export-data">Export JSON</button>
               </div>
 
               <div class="settings-row">
-                <p>Clear all data</p>
-                <button class="btn-danger" id="clear-data">Delete</button>
+                <p>Clear workspace</p>
+                <button class="btn-danger" id="clear-data">Delete All</button>
               </div>
 
             </div>
@@ -794,6 +821,7 @@
   <script src="../scripts/search.js"></script>
   <script src="../scripts/dashboard.js"></script>
   <script src="../scripts/notes.js"></script>
+  <script src="../scripts/analytics.js"></script>
   <script src="../scripts/navigation.js"></script>
   <script src="../scripts/modal.js"></script>
   <script src="../scripts/dashboardData.js"></script>

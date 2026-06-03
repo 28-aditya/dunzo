@@ -112,10 +112,13 @@ function renderDashboard() {
         .textContent = `${completionRate}%`;
 
     // =======================
-    // TIME COMPLETED
+    // TIME SINCE COMPLETION
     // =======================
+
     const completedTasks = state.tasks.filter(
-        task => task.time_completed
+        task =>
+            task.task_status === "done" &&
+            task.time_completed
     );
 
     if (completedTasks.length === 0) {
@@ -128,23 +131,33 @@ function renderDashboard() {
     }
     else {
 
-        const latestTask = completedTasks.sort(
-            (a, b) =>
-                new Date(b.time_completed) -
-                new Date(a.time_completed)
-        )[0];
-
-        const minutesAgo = Math.floor(
-            (Date.now() - new Date(latestTask.time_completed))
-            / 60000
+        const latestCompletion = Math.max(
+            ...completedTasks.map(task =>
+                new Date(task.time_completed).getTime()
+            )
         );
 
-        document.getElementById("timer-stat")
-            .textContent = `${minutesAgo}m`;
+    const diffMs =
+        Date.now() -
+        new Date(latestTask.time_completed).getTime();
 
-        document.getElementById("timer-stat-subtext")
-            .textContent = "Since last completion";
+    const minutes = Math.floor(diffMs / 60000);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    let display;
+
+    if (days > 0) {
+        display = `${days}d`;
     }
+    else if (hours > 0) {
+        display = `${hours}h`;
+    }
+    else {
+        display = `${minutes}m`;
+    }
+
+    document.getElementById("timer-stat").textContent = display;
 
     // ====================
     // TASK BOARD
