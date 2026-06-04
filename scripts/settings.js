@@ -10,21 +10,14 @@ let saveChangesRow;
 let saveChangesBtn;
 let themeToggleBtn;
 let autoArchiveToggle;
-let streakToggle;
 let exportBtn;
 let clearBtn;
 let resetPwdBtn;
 
-// focus mode refs
-let focusDurationInput;
-let focusBreakInput;
-
 // notification refs
 let notifyOverdueToggle;
-let notifyDailySummaryToggle;
 
 // display refs
-let compactModeToggle;
 let defaultViewSelect;
 
 // =========================
@@ -40,15 +33,10 @@ function initSettings() {
     saveChangesBtn          = document.getElementById("save-changes-btn");
     themeToggleBtn          = document.getElementById("theme-toggle-settings");
     autoArchiveToggle       = document.getElementById("auto-archive");
-    streakToggle            = document.getElementById("streak-toggle");
     exportBtn               = document.getElementById("export-data");
     clearBtn                = document.getElementById("clear-data");
     resetPwdBtn             = document.getElementById("reset-pwd-btn");
-    focusDurationInput      = document.getElementById("focus-duration");
-    focusBreakInput         = document.getElementById("focus-break");
     notifyOverdueToggle     = document.getElementById("notify-overdue");
-    notifyDailySummaryToggle = document.getElementById("notify-daily-summary");
-    compactModeToggle       = document.getElementById("compact-mode");
     defaultViewSelect       = document.getElementById("default-view");
 
     renderSettings();
@@ -69,7 +57,6 @@ function renderSettings() {
     // ---- productivity ----
     dailyGoalInput.value    = state.settings.dailyGoal   ?? 5;
     autoArchiveToggle.checked  = state.settings.autoArchive    ?? false;
-    streakToggle.checked       = state.settings.streakTracking ?? true;
 
     // ---- focus ----
     if (focusDurationInput)
@@ -80,12 +67,7 @@ function renderSettings() {
     // ---- notifications ----
     if (notifyOverdueToggle)
         notifyOverdueToggle.checked      = state.settings.notifyOverdue      ?? true;
-    if (notifyDailySummaryToggle)
-        notifyDailySummaryToggle.checked = state.settings.notifyDailySummary ?? false;
 
-    // ---- display ----
-    if (compactModeToggle)
-        compactModeToggle.checked = state.settings.compactMode ?? false;
     if (defaultViewSelect)
         defaultViewSelect.value   = state.settings.defaultView ?? "dashboard";
 
@@ -138,13 +120,6 @@ function attachSettingsEvents() {
     // productivity
     dailyGoalInput.addEventListener("change",   updateDailyGoal);
     autoArchiveToggle.addEventListener("change", updateAutoArchive);
-    streakToggle.addEventListener("change",     updateStreakTracking);
-
-    // focus
-    if (focusDurationInput)
-        focusDurationInput.addEventListener("change", updateFocusSettings);
-    if (focusBreakInput)
-        focusBreakInput.addEventListener("change",    updateFocusSettings);
 
     // notifications
     if (notifyOverdueToggle)
@@ -153,8 +128,6 @@ function attachSettingsEvents() {
         notifyDailySummaryToggle.addEventListener("change", updateNotifications);
 
     // display
-    if (compactModeToggle)
-        compactModeToggle.addEventListener("change", updateDisplaySettings);
     if (defaultViewSelect)
         defaultViewSelect.addEventListener("change", updateDisplaySettings);
 
@@ -251,38 +224,12 @@ function updateAutoArchive() {
     saveState();
 }
 
-function updateStreakTracking() {
-    state.settings.streakTracking = streakToggle.checked;
-    saveState();
-}
-
-// =========================
-// FOCUS
-// =========================
-
-function updateFocusSettings() {
-    state.settings.focusDuration = Number(focusDurationInput.value) || 25;
-    state.settings.focusBreak    = Number(focusBreakInput.value)    || 5;
-    saveState();
-}
-
 // =========================
 // NOTIFICATIONS
 // =========================
 
 function updateNotifications() {
     state.settings.notifyOverdue      = notifyOverdueToggle?.checked      ?? true;
-    state.settings.notifyDailySummary = notifyDailySummaryToggle?.checked ?? false;
-    saveState();
-}
-
-// =========================
-// DISPLAY
-// =========================
-
-function updateDisplaySettings() {
-    state.settings.compactMode  = compactModeToggle?.checked  ?? false;
-    state.settings.defaultView  = defaultViewSelect?.value    ?? "dashboard";
     saveState();
 }
 
@@ -339,52 +286,6 @@ function exportData() {
 function formatExportDate() {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-}
-
-// =========================
-// IMPORT
-// =========================
-
-function handleImport(e) {
-
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = (ev) => {
-        try {
-            const imported = JSON.parse(ev.target.result);
-
-            if (!imported.tasks || !imported.user) {
-                alert("Invalid dunzo export file.");
-                return;
-            }
-
-            const confirmed = confirm(
-                `Import ${imported.tasks.length} tasks and ${(imported.notes || []).length} notes?\n\nThis will REPLACE your current workspace.`
-            );
-            if (!confirmed) return;
-
-            Object.assign(state, imported);
-            saveState();
-            renderSettings();
-
-            // re-render all views
-            ["renderDashboard","renderToday","renderUpcoming",
-             "renderCompleted","renderOverdue","renderNotes","renderAnalytics"
-            ].forEach(fn => { if (typeof window[fn] === "function") window[fn](); });
-
-            alert("Import successful ✓");
-
-        } catch {
-            alert("Could not parse file. Make sure it's a valid dunzo JSON export.");
-        }
-    };
-
-    reader.readAsText(file);
-    e.target.value = ""; // reset so same file can be re-imported
-
 }
 
 // =========================

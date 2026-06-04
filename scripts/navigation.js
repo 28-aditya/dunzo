@@ -195,7 +195,7 @@ function refreshCurrentView() {
             renderAnalytics();
             break;
         case "settings":
-            renderSettings();
+            initSettings();
             break;
         default:
             break;

@@ -586,31 +586,6 @@
 
           <div class="settings-container">
 
-            <!-- ── WORKSPACE OVERVIEW ─────────────────────────────── -->
-            <div class="settings-stats-row">
-
-              <div class="settings-stat-chip">
-                <span class="settings-stat-value" id="stat-total-tasks">0</span>
-                <span class="settings-stat-label">Total Tasks</span>
-              </div>
-
-              <div class="settings-stat-chip">
-                <span class="settings-stat-value accent" id="stat-done-tasks">0</span>
-                <span class="settings-stat-label">Completed</span>
-              </div>
-
-              <div class="settings-stat-chip">
-                <span class="settings-stat-value" id="stat-notes-count">0</span>
-                <span class="settings-stat-label">Notes</span>
-              </div>
-
-              <div class="settings-stat-chip">
-                <span class="settings-stat-value accent" id="stat-completion-rate">0%</span>
-                <span class="settings-stat-label">Completion Rate</span>
-              </div>
-
-            </div>
-
             <!-- ── ACCOUNT ────────────────────────────────────────── -->
             <div class="settings-card">
 
@@ -707,21 +682,6 @@
                   <option value="analytics">Analytics</option>
                 </select>
               </div>
-
-              <div class="settings-divider"></div>
-
-              <!-- compact mode -->
-              <div class="settings-row">
-                <div>
-                  <p class="settings-row-label">Compact Mode</p>
-                  <p class="settings-row-hint">Reduce spacing for denser layouts</p>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" id="compact-mode">
-                  <span class="slider"></span>
-                </label>
-              </div>
-
             </div>
 
             <!-- ── PRODUCTIVITY ────────────────────────────────────── -->
@@ -751,19 +711,6 @@
 
               <div class="settings-row">
                 <div>
-                  <p class="settings-row-label">Streak Tracking</p>
-                  <p class="settings-row-hint">Track your daily completion streaks</p>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" id="streak-toggle">
-                  <span class="slider"></span>
-                </label>
-              </div>
-
-              <div class="settings-divider"></div>
-
-              <div class="settings-row">
-                <div>
                   <p class="settings-row-label">Auto-Archive Completed</p>
                   <p class="settings-row-hint">Move done tasks out of active views</p>
                 </div>
@@ -771,45 +718,6 @@
                   <input type="checkbox" id="auto-archive">
                   <span class="slider"></span>
                 </label>
-              </div>
-
-            </div>
-
-            <!-- ── FOCUS ──────────────────────────────────────────── -->
-            <div class="settings-card">
-
-              <div class="settings-card-head">
-                <div class="settings-card-icon">◎</div>
-                <div>
-                  <h3 class="settings-title">Focus Sessions</h3>
-                  <p class="settings-desc">Pomodoro-style timer preferences</p>
-                </div>
-              </div>
-
-              <div class="settings-row">
-                <div>
-                  <p class="settings-row-label">Focus Duration</p>
-                  <p class="settings-row-hint">Minutes per work session</p>
-                </div>
-                <div class="number-stepper">
-                  <button class="stepper-btn" onclick="stepNumber('focus-duration', -5, 5, 120)">−</button>
-                  <input type="number" class="stepper-input" id="focus-duration" min="5" max="120" value="25">
-                  <button class="stepper-btn" onclick="stepNumber('focus-duration', 5, 5, 120)">+</button>
-                </div>
-              </div>
-
-              <div class="settings-divider"></div>
-
-              <div class="settings-row">
-                <div>
-                  <p class="settings-row-label">Break Duration</p>
-                  <p class="settings-row-hint">Minutes per break</p>
-                </div>
-                <div class="number-stepper">
-                  <button class="stepper-btn" onclick="stepNumber('focus-break', -1, 1, 30)">−</button>
-                  <input type="number" class="stepper-input" id="focus-break" min="1" max="30" value="5">
-                  <button class="stepper-btn" onclick="stepNumber('focus-break', 1, 1, 30)">+</button>
-                </div>
               </div>
 
             </div>
@@ -835,20 +743,6 @@
                   <span class="slider"></span>
                 </label>
               </div>
-
-              <div class="settings-divider"></div>
-
-              <div class="settings-row">
-                <div>
-                  <p class="settings-row-label">Daily Summary</p>
-                  <p class="settings-row-hint">Morning recap of today's tasks</p>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" id="notify-daily-summary">
-                  <span class="slider"></span>
-                </label>
-              </div>
-
             </div>
 
             <!-- ── DATA ───────────────────────────────────────────── -->
@@ -872,15 +766,6 @@
 
               <div class="settings-divider"></div>
 
-              <div class="settings-row">
-                <div>
-                  <p class="settings-row-label">Import Data</p>
-                  <p class="settings-row-hint">Restore from a previous export</p>
-                </div>
-                <button class="btn-ghost" id="import-data">Import JSON</button>
-                <input type="file" id="import-file-input" accept=".json" style="display:none">
-              </div>
-
               <div class="settings-divider"></div>
 
               <div class="settings-row">
@@ -892,10 +777,7 @@
               </div>
 
             </div>
-
-            <!-- ── VERSION ────────────────────────────────────────── -->
-            <p class="settings-version">dunzo v1.0 · made with focus</p>
-
+            
           </div>
 
         </div>
