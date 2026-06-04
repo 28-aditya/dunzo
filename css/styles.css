@@ -2479,3 +2479,319 @@ body.light-mode input[type="time"]::-webkit-calendar-picker-indicator {
     height: 12px;
     border-radius: 50%;
 }
+
+/* ============================================================
+   SETTINGS — redesigned
+   Add these rules to the bottom of styles.css
+   (they override the original .settings-* rules above)
+   ============================================================ */
+
+/* ---- workspace overview strip ---- */
+.settings-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+  margin-bottom: 4px;
+}
+
+.settings-stat-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settings-stat-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.settings-stat-value.accent {
+  color: var(--accent);
+}
+
+.settings-stat-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---- main container ---- */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 740px;
+  margin-top: 20px;
+  padding-bottom: 40px;
+}
+
+/* ---- card ---- */
+.settings-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.settings-card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.settings-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: rgba(200, 242, 97, 0.1);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.settings-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.settings-desc {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---- divider ---- */
+.settings-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 -2px;
+}
+
+/* ---- row ---- */
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  gap: 16px;
+}
+
+.settings-row.hidden {
+  display: none;
+}
+
+.settings-row-label {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.settings-row-hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.danger-hint {
+  color: var(--danger) !important;
+  opacity: 0.7;
+}
+
+/* ---- fields (stacked inputs) ---- */
+.settings-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.settings-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.settings-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.settings-input:focus {
+  border-color: rgba(200, 242, 97, 0.45);
+  box-shadow: 0 0 0 3px rgba(200, 242, 97, 0.07);
+}
+
+.settings-input::placeholder {
+  color: var(--muted2);
+}
+
+/* ---- select ---- */
+.settings-select {
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* ---- theme chips ---- */
+.theme-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.theme-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.theme-chip:hover {
+  border-color: var(--border-md);
+  color: var(--text);
+}
+
+.theme-chip.active {
+  border-color: rgba(200, 242, 97, 0.4);
+  background: rgba(200, 242, 97, 0.08);
+  color: var(--accent);
+}
+
+.theme-chip-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dark-swatch {
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.light-swatch {
+  background: #f0f0f0;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+/* ---- number stepper ---- */
+.number-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.stepper-btn {
+  width: 34px;
+  height: 36px;
+  background: var(--surface2);
+  border: none;
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.stepper-btn:hover {
+  background: var(--bg);
+}
+
+.stepper-input {
+  width: 52px;
+  height: 36px;
+  background: var(--surface2);
+  border: none;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.stepper-input::-webkit-outer-spin-button,
+.stepper-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* ---- save btn success state ---- */
+.btn-saved {
+  background: var(--success) !important;
+  color: #111 !important;
+}
+
+/* ---- version footer ---- */
+.settings-version {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted2);
+  padding-top: 8px;
+}
+
+/* ---- responsive ---- */
+@media (max-width: 700px) {
+  .settings-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .settings-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .theme-chips {
+    flex-wrap: wrap;
+  }
+}

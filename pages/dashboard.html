@@ -586,60 +586,187 @@
 
           <div class="settings-container">
 
-            <!-- ACCOUNT -->
-            <div class="settings-card">
+            <!-- ── WORKSPACE OVERVIEW ─────────────────────────────── -->
+            <div class="settings-stats-row">
 
-              <h3 class="settings-title">Account</h3>
-
-              <div class="settings-row">
-                <p>Username</p>
-                <input type="text" class="settings-input" id="settings-username">
+              <div class="settings-stat-chip">
+                <span class="settings-stat-value" id="stat-total-tasks">0</span>
+                <span class="settings-stat-label">Total Tasks</span>
               </div>
 
-              <div class="settings-row">
-                <p>Email</p>
-                <input type="email" class="settings-input" id="settings-email">
+              <div class="settings-stat-chip">
+                <span class="settings-stat-value accent" id="stat-done-tasks">0</span>
+                <span class="settings-stat-label">Completed</span>
               </div>
 
-              <div class="settings-row">
-                <p>Reset Password</p>
-                <button class="btn-ghost">Change</button>
+              <div class="settings-stat-chip">
+                <span class="settings-stat-value" id="stat-notes-count">0</span>
+                <span class="settings-stat-label">Notes</span>
               </div>
 
-            </div>
-
-            <!-- APPEARANCE -->
-            <div class="settings-card">
-
-              <h3 class="settings-title">Appearance</h3>
-
-              <div class="settings-row">
-                <p>Theme</p>
-                <button class="btn-new" id="theme-toggle-settings">Toggle Theme</button>
+              <div class="settings-stat-chip">
+                <span class="settings-stat-value accent" id="stat-completion-rate">0%</span>
+                <span class="settings-stat-label">Completion Rate</span>
               </div>
 
             </div>
 
-            <!-- PRODUCTIVITY -->
+            <!-- ── ACCOUNT ────────────────────────────────────────── -->
             <div class="settings-card">
 
-              <h3 class="settings-title">Productivity Tracking</h3>
+              <div class="settings-card-head">
+                <div class="settings-card-icon">◉</div>
+                <div>
+                  <h3 class="settings-title">Account</h3>
+                  <p class="settings-desc">Your profile and login details</p>
+                </div>
+              </div>
+
+              <div class="settings-fields">
+
+                <div class="settings-field">
+                  <label class="settings-label" for="settings-username">Username</label>
+                  <input
+                    type="text"
+                    class="settings-input"
+                    id="settings-username"
+                    placeholder="Your name"
+                  >
+                </div>
+
+                <div class="settings-field">
+                  <label class="settings-label" for="settings-email">Email</label>
+                  <input
+                    type="email"
+                    class="settings-input"
+                    id="settings-email"
+                    placeholder="you@example.com"
+                  >
+                </div>
+
+              </div>
+
+              <div class="settings-row hidden" id="save-changes-row">
+                <span class="settings-row-label">Unsaved changes</span>
+                <button class="btn-new" id="save-changes-btn">Save Changes</button>
+              </div>
+
+              <div class="settings-divider"></div>
 
               <div class="settings-row">
-                <p>Daily Goal (tasks)</p>
-                <input type="number" class="settings-input" id="daily-goal">
+                <div>
+                  <p class="settings-row-label">Password</p>
+                  <p class="settings-row-hint">Send a reset link to your email</p>
+                </div>
+                <button class="btn-ghost" id="reset-pwd-btn">Reset</button>
+              </div>
+
+            </div>
+
+            <!-- ── APPEARANCE ─────────────────────────────────────── -->
+            <div class="settings-card">
+
+              <div class="settings-card-head">
+                <div class="settings-card-icon">◑</div>
+                <div>
+                  <h3 class="settings-title">Appearance</h3>
+                  <p class="settings-desc">Themes and display preferences</p>
+                </div>
+              </div>
+
+              <!-- theme picker -->
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Theme</p>
+                  <p class="settings-row-hint">Choose your workspace color scheme</p>
+                </div>
+                <div class="theme-chips">
+                  <button class="theme-chip active" data-theme="dark">
+                    <span class="theme-chip-swatch dark-swatch"></span>
+                    Dark
+                  </button>
+                  <button class="theme-chip" data-theme="light">
+                    <span class="theme-chip-swatch light-swatch"></span>
+                    Light
+                  </button>
+                </div>
+              </div>
+
+              <div class="settings-divider"></div>
+
+              <!-- default view -->
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Default View</p>
+                  <p class="settings-row-hint">Where you land after opening dunzo</p>
+                </div>
+                <select class="settings-select" id="default-view">
+                  <option value="dashboard">Dashboard</option>
+                  <option value="today">Today</option>
+                  <option value="upcoming">Upcoming</option>
+                  <option value="analytics">Analytics</option>
+                </select>
+              </div>
+
+              <div class="settings-divider"></div>
+
+              <!-- compact mode -->
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Compact Mode</p>
+                  <p class="settings-row-hint">Reduce spacing for denser layouts</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="compact-mode">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+            </div>
+
+            <!-- ── PRODUCTIVITY ────────────────────────────────────── -->
+            <div class="settings-card">
+
+              <div class="settings-card-head">
+                <div class="settings-card-icon">★</div>
+                <div>
+                  <h3 class="settings-title">Productivity</h3>
+                  <p class="settings-desc">Goals, streaks, and automation</p>
+                </div>
               </div>
 
               <div class="settings-row">
-                <p>Enable streak tracking</p>
+                <div>
+                  <p class="settings-row-label">Daily Goal</p>
+                  <p class="settings-row-hint">Tasks you aim to complete per day</p>
+                </div>
+                <div class="number-stepper">
+                  <button class="stepper-btn" onclick="stepNumber('daily-goal', -1, 1, 50)">−</button>
+                  <input type="number" class="stepper-input" id="daily-goal" min="1" max="50" value="5">
+                  <button class="stepper-btn" onclick="stepNumber('daily-goal', 1, 1, 50)">+</button>
+                </div>
+              </div>
+
+              <div class="settings-divider"></div>
+
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Streak Tracking</p>
+                  <p class="settings-row-hint">Track your daily completion streaks</p>
+                </div>
                 <label class="switch">
                   <input type="checkbox" id="streak-toggle">
                   <span class="slider"></span>
                 </label>
               </div>
 
+              <div class="settings-divider"></div>
+
               <div class="settings-row">
-                <p>Auto archive completed tasks</p>
+                <div>
+                  <p class="settings-row-label">Auto-Archive Completed</p>
+                  <p class="settings-row-hint">Move done tasks out of active views</p>
+                </div>
                 <label class="switch">
                   <input type="checkbox" id="auto-archive">
                   <span class="slider"></span>
@@ -648,22 +775,126 @@
 
             </div>
 
-            <!-- DATA -->
+            <!-- ── FOCUS ──────────────────────────────────────────── -->
             <div class="settings-card">
 
-              <h3 class="settings-title">Data</h3>
-
-              <div class="settings-row">
-                <p>Export all data</p>
-                <button class="btn-ghost" id="export-data">Export JSON</button>
+              <div class="settings-card-head">
+                <div class="settings-card-icon">◎</div>
+                <div>
+                  <h3 class="settings-title">Focus Sessions</h3>
+                  <p class="settings-desc">Pomodoro-style timer preferences</p>
+                </div>
               </div>
 
               <div class="settings-row">
-                <p>Clear workspace</p>
+                <div>
+                  <p class="settings-row-label">Focus Duration</p>
+                  <p class="settings-row-hint">Minutes per work session</p>
+                </div>
+                <div class="number-stepper">
+                  <button class="stepper-btn" onclick="stepNumber('focus-duration', -5, 5, 120)">−</button>
+                  <input type="number" class="stepper-input" id="focus-duration" min="5" max="120" value="25">
+                  <button class="stepper-btn" onclick="stepNumber('focus-duration', 5, 5, 120)">+</button>
+                </div>
+              </div>
+
+              <div class="settings-divider"></div>
+
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Break Duration</p>
+                  <p class="settings-row-hint">Minutes per break</p>
+                </div>
+                <div class="number-stepper">
+                  <button class="stepper-btn" onclick="stepNumber('focus-break', -1, 1, 30)">−</button>
+                  <input type="number" class="stepper-input" id="focus-break" min="1" max="30" value="5">
+                  <button class="stepper-btn" onclick="stepNumber('focus-break', 1, 1, 30)">+</button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- ── NOTIFICATIONS ──────────────────────────────────── -->
+            <div class="settings-card">
+
+              <div class="settings-card-head">
+                <div class="settings-card-icon">🔔</div>
+                <div>
+                  <h3 class="settings-title">Notifications</h3>
+                  <p class="settings-desc">What you get reminded about</p>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Overdue Alerts</p>
+                  <p class="settings-row-hint">Get notified when tasks are past due</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="notify-overdue">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-divider"></div>
+
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Daily Summary</p>
+                  <p class="settings-row-hint">Morning recap of today's tasks</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="notify-daily-summary">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+            </div>
+
+            <!-- ── DATA ───────────────────────────────────────────── -->
+            <div class="settings-card">
+
+              <div class="settings-card-head">
+                <div class="settings-card-icon">⬡</div>
+                <div>
+                  <h3 class="settings-title">Data</h3>
+                  <p class="settings-desc">Export, import, and manage your workspace</p>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Export Data</p>
+                  <p class="settings-row-hint">Download all tasks and notes as JSON</p>
+                </div>
+                <button class="btn-ghost" id="export-data">Export JSON</button>
+              </div>
+
+              <div class="settings-divider"></div>
+
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Import Data</p>
+                  <p class="settings-row-hint">Restore from a previous export</p>
+                </div>
+                <button class="btn-ghost" id="import-data">Import JSON</button>
+                <input type="file" id="import-file-input" accept=".json" style="display:none">
+              </div>
+
+              <div class="settings-divider"></div>
+
+              <div class="settings-row">
+                <div>
+                  <p class="settings-row-label">Clear Workspace</p>
+                  <p class="settings-row-hint danger-hint">Permanently delete all tasks and notes</p>
+                </div>
                 <button class="btn-danger" id="clear-data">Delete All</button>
               </div>
 
             </div>
+
+            <!-- ── VERSION ────────────────────────────────────────── -->
+            <p class="settings-version">dunzo v1.0 · made with focus</p>
 
           </div>
 
@@ -828,6 +1059,7 @@
   <script src="../scripts/dashboard.js"></script>
   <script src="../scripts/notes.js"></script>
   <script src="../scripts/analytics.js"></script>
+  <script src="../scripts/settings.js"></script>
   <script src="../scripts/navigation.js"></script>
   <script src="../scripts/modal.js"></script>
   <script src="../scripts/dashboardData.js"></script>

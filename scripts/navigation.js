@@ -194,8 +194,10 @@ function refreshCurrentView() {
         case "analytics":
             renderAnalytics();
             break;
+        case "settings":
+            renderSettings();
+            break;
         default:
             break;
     }
-
 }
