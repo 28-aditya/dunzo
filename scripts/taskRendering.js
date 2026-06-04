@@ -5,8 +5,7 @@
 function getTodaysTasks() {
     const today = new Date().toISOString().split("T")[0];
     return state.tasks
-        .filter(task => task.task_date === today)
-        .sort((a,b) => a.task_time.localeCompare(b.task_time));
+        .filter(task => task.task_date === today);
 }
 
 function getUpcomingTasks() {
@@ -18,9 +17,10 @@ function getUpcomingTasks() {
 }
 
 function getCompletedTasks() {
-    return state.tasks.filter(task =>
-        task.task_status === "done"
-    );
+    return state.tasks
+        .filter(task =>
+            task.task_status === "done"
+        );
 }
 
 function getOverdueTasks() {
@@ -59,6 +59,8 @@ function renderTaskList({
         return;
     }
 
+    tasks.sort((a,b) => a.task_time.localeCompare(b.task_time));
+    
     let completedCount = 0;
 
     tasks.forEach(task => {

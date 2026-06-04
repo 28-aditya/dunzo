@@ -43,7 +43,7 @@ function getProductivityScore() {
         getOverdueTasksCount();
 
     let score =
-        (completed * 100 + doing * 25 - overdue * 10) / total;
+        (completed * 60 + doing * 10 - overdue * 30) / total;
 
     score += 25;
 
@@ -132,14 +132,12 @@ function renderDashboard() {
     else {
 
         const latestCompletion = Math.max(
-            ...completedTasks.map(task =>
-                new Date(task.time_completed).getTime()
-            )
-        );
+        ...completedTasks.map(task =>
+            new Date(task.time_completed).getTime()
+        )
+    );
 
-    const diffMs =
-        Date.now() -
-        new Date(latestTask.time_completed).getTime();
+    const diffMs = Date.now() - latestCompletion;
 
     const minutes = Math.floor(diffMs / 60000);
     const hours = Math.floor(minutes / 60);
@@ -157,8 +155,11 @@ function renderDashboard() {
         display = `${minutes}m`;
     }
 
-    document.getElementById("timer-stat").textContent = display;
+document.getElementById("timer-stat").textContent = display;
 
+document.getElementById("timer-stat-subtext").textContent =
+    "Since last completion";
+    }
     // ====================
     // TASK BOARD
     // ====================

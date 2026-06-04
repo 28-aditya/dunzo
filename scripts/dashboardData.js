@@ -43,7 +43,6 @@ function generateMockTasks(count = 70) {
     ];
 
     const tasks = [];
-
     const now = new Date();
 
     for (let i = 0; i < count; i++) {
@@ -54,24 +53,28 @@ function generateMockTasks(count = 70) {
         const category =
             categories[Math.floor(Math.random() * categories.length)];
 
-        const rand = Math.random();
+        const randomStatus = Math.random();
 
         let status;
 
-        if (rand < 0.45) {
+        if (randomStatus < 0.5) {
             status = "done";
         }
-        else if (rand < 0.75) {
+        else if (randomStatus < 0.8) {
             status = "doing";
         }
         else {
             status = "todo";
         }
 
+        // =====================
+        // CREATED DATE
+        // =====================
+
         const createdDate = new Date(now);
 
         createdDate.setDate(
-            now.getDate() -
+            createdDate.getDate() -
             Math.floor(Math.random() * 90)
         );
 
@@ -82,11 +85,15 @@ function generateMockTasks(count = 70) {
             0
         );
 
+        // =====================
+        // DUE DATE
+        // =====================
+
         const dueDate = new Date(createdDate);
 
         dueDate.setDate(
             dueDate.getDate() +
-            Math.floor(Math.random() * 14) + 1
+            Math.floor(Math.random() * 21) + 1
         );
 
         const task = new TaskItem(
@@ -101,24 +108,26 @@ function generateMockTasks(count = 70) {
         task.time_created =
             createdDate.toISOString();
 
+        // =====================
+        // COMPLETED DATE
+        // =====================
+
         if (status === "done") {
 
-            const completedDate = new Date(createdDate);
+            const createdMs =
+                createdDate.getTime();
 
-            completedDate.setDate(
-                completedDate.getDate() +
-                Math.floor(Math.random() * 10) + 1
-            );
+            const nowMs =
+                now.getTime();
 
-            completedDate.setHours(
-                Math.floor(Math.random() * 24),
-                Math.floor(Math.random() * 60),
-                0,
-                0
-            );
+            const completionMs =
+                createdMs +
+                Math.random() *
+                (nowMs - createdMs);
 
             task.time_completed =
-                completedDate.toISOString();
+                new Date(completionMs)
+                .toISOString();
         }
 
         tasks.push(task);
