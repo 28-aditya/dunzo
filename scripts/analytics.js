@@ -493,6 +493,429 @@ function drawWeeklyTrend(canvasId) {
     );
 }
 
+// =========================
+// TASK FLOW CHART
+// =========================
+
+function getTaskFlowData() {
+
+    const labels = [];
+    const createdCounts = [];
+    const completedCounts = [];
+
+    for (let i = 6; i >= 0; i--) {
+
+        const day = new Date();
+        day.setDate(day.getDate() - i);
+
+        const dateString =
+            day.toISOString().split("T")[0];
+
+        labels.push(
+            day.toLocaleDateString(
+                "en-US",
+                { weekday: "short" }
+            )
+        );
+
+        createdCounts.push(
+            state.tasks.filter(task =>
+                task.time_created &&
+                task.time_created.startsWith(dateString)
+            ).length
+        );
+
+        completedCounts.push(
+            state.tasks.filter(task =>
+                task.time_completed &&
+                task.time_completed.startsWith(dateString)
+            ).length
+        );
+    }
+
+    return {
+        labels,
+        createdCounts,
+        completedCounts
+    };
+}
+
+// ===================
+// TASK FLOW CHART
+// ===================
+
+function drawTaskFlowChart(canvasId) {
+
+    const canvas =
+        document.getElementById(canvasId);
+
+    if (!canvas) return;
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        rect.width * dpr;
+
+    canvas.height =
+        rect.height * dpr;
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+    const width = rect.width;
+    const height = rect.height;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    const {
+        labels,
+        createdCounts,
+        completedCounts
+    } = getTaskFlowData();
+
+    const padding = 50;
+
+    const graphWidth =
+        width - (padding * 2);
+
+    const graphHeight =
+        height - (padding * 2);
+
+    const maxValue = Math.max(
+        ...createdCounts,
+        ...completedCounts,
+        1
+    );
+
+    const stepX =
+        graphWidth / (labels.length - 1);
+
+    function drawLine(data, color) {
+
+        ctx.beginPath();
+
+        data.forEach((value, index) => {
+
+            const x =
+                padding +
+                (stepX * index);
+
+            const y =
+                height -
+                padding -
+                (
+                    value /
+                    maxValue
+                ) * graphHeight;
+
+            if (index === 0)
+                ctx.moveTo(x, y);
+            else
+                ctx.lineTo(x, y);
+        });
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+        ctx.stroke();
+    }
+
+    drawLine(
+        createdCounts,
+        "#7dd3fc"
+    );
+
+    drawLine(
+        completedCounts,
+        "#c8f261"
+    );
+
+    labels.forEach(
+        (label, index) => {
+
+            const x =
+                padding +
+                (stepX * index);
+
+            ctx.fillStyle = "#888";
+            ctx.font = "12px DM Sans";
+            ctx.textAlign = "center";
+
+            ctx.fillText(
+                label,
+                x,
+                height - 20
+            );
+        }
+    );
+
+    renderTaskFlowLegend();
+}
+
+function renderTaskFlowLegend() {
+
+    const legend =
+        document.getElementById(
+            "task-flow-legend"
+        );
+
+    legend.innerHTML = `
+        <div class="legend-item">
+            <span
+                class="legend-color"
+                style="background:#7dd3fc"
+            ></span>
+            Created
+        </div>
+
+        <div class="legend-item">
+            <span
+                class="legend-color"
+                style="background:#c8f261"
+            ></span>
+            Completed
+        </div>
+    `;
+}
+
+// =========================
+// CATEGORY DONUT CHART
+// =========================
+
+function getCategoryData() {
+
+    const defaultCategories = [
+        "work",
+        "study",
+        "personal",
+        "health",
+        "fitness",
+        "finance"
+    ];
+
+    const counts = {};
+
+    defaultCategories.forEach(cat => {
+        counts[cat] = 0;
+    });
+
+    counts.custom = 0;
+
+    state.tasks.forEach(task => {
+
+        const category =
+            task.task_category.toLowerCase();
+
+        if (defaultCategories.includes(category)) {
+            counts[category]++;
+        }
+        else {
+            counts.custom++;
+        }
+    });
+
+    return counts;
+}
+
+function drawCategoryChart(canvasId) {
+
+    const canvas =
+        document.getElementById(canvasId);
+
+    if (!canvas) return;
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        rect.width * dpr;
+
+    canvas.height =
+        rect.height * dpr;
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+    const width = rect.width;
+    const height = rect.height;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    const categories = {};
+
+    state.tasks.forEach(task => {
+
+        const category =
+            task.task_category || "other";
+
+        categories[category] =
+            (categories[category] || 0) + 1;
+    });
+
+    const entries =
+        Object.entries(categories);
+
+    if (entries.length === 0) {
+
+        ctx.fillStyle = "#666";
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+            "No data",
+            width / 2,
+            height / 2
+        );
+
+        return;
+    }
+
+    const total =
+        entries.reduce(
+            (sum, [, count]) =>
+                sum + count,
+            0
+        );
+
+    const colors = [
+        "#c8f261",
+        "#7dd3fc",
+        "#f472b6",
+        "#fb923c",
+        "#a78bfa",
+        "#34d399",
+        "#94a3b8"
+    ];
+
+    let startAngle =
+        -Math.PI / 2;
+
+    entries.forEach(
+        ([, count], index) => {
+
+            const angle =
+                (count / total) *
+                Math.PI * 2;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                width / 2,
+                height / 2
+            );
+
+            ctx.arc(
+                width / 2,
+                height / 2,
+                90,
+                startAngle,
+                startAngle + angle
+            );
+
+            ctx.arc(
+                width / 2,
+                height / 2,
+                50,
+                startAngle + angle,
+                startAngle,
+                true
+            );
+
+            ctx.closePath();
+
+            ctx.fillStyle =
+                colors[index % colors.length];
+
+            ctx.fill();
+
+            startAngle += angle;
+        }
+    );
+
+    renderCategoryLegend(
+        entries,
+        colors,
+        total
+    );
+}
+
+function renderCategoryLegend(
+    entries,
+    colors,
+    total
+) {
+
+    const legend =
+        document.getElementById(
+            "category-legend"
+        );
+
+    legend.innerHTML = "";
+
+    entries.forEach(
+        ([category, count], index) => {
+
+            const percent =
+                Math.round(
+                    (count / total) * 100
+                );
+
+            legend.innerHTML += `
+                <div class="legend-item">
+                    <span
+                        class="legend-color"
+                        style="
+                            background:
+                            ${colors[index]}
+                        "
+                    ></span>
+
+                    ${category.toUpperCase()}
+                    (${percent}%)
+                </div>
+            `;
+        }
+    );
+}
+
+
+
 // ===========================
 // ANALYTICS RENDERING
 // ===========================
@@ -550,7 +973,7 @@ function renderAnalytics() {
     chartTitle.textContent =
         getTrendData().title;
 
-    drawWeeklyTrend(
-        "weekly-trend-chart"
-    );
+    drawWeeklyTrend("weekly-trend-chart");
+    drawTaskFlowChart("task-flow-chart");
+    drawCategoryChart("category-trend-chart");
 }
