@@ -1,4 +1,4 @@
-# dunzo. v2.0.4.0
+# dunzo. v2.0.4.1
 
 > A modern productivity dashboard focused on clean design, fast workflow, and simple task management.
 
@@ -6,7 +6,7 @@
 
 ## Preview
 
-A responsive productivity workspace built with vanilla HTML, CSS, and JavaScript. Manage tasks, track progress, monitor productivity, and organize work through dedicated workflow views.
+A responsive productivity workspace built entirely with vanilla HTML, CSS, and JavaScript. Manage tasks, organize notes, monitor productivity, and visualize progress through dedicated workflow views and analytics.
 
 ---
 
@@ -19,21 +19,8 @@ A responsive productivity workspace built with vanilla HTML, CSS, and JavaScript
 * Dynamic page header updates
 * Productivity overview cards
 * Workspace statistics dashboard
-* Task status tracking
-* Recent activity section
-* Dedicated workspace views:
-
-  * Dashboard
-  * Today
-  * Upcoming
-  * Completed
-  * Overdue
-  * Analytics
-  * Notes
-  * Search
-  * Settings
-
----
+* Kanban-style task board
+* Dynamic counters and metrics
 
 ### Task Management
 
@@ -50,50 +37,61 @@ A responsive productivity workspace built with vanilla HTML, CSS, and JavaScript
 
 * Dynamic category insertion
 
-* Modal-based task creation workflow
-
-* Form validation system
-
-* Dynamic task status updates
+* Form validation
 
 * Task completion tracking
 
-* Automatic completion timestamps
+* Completion timestamps
 
-* Centralized state management
+* Task status updates
 
-* Reusable rendering architecture
+* Task filtering across views
+
+* Reusable task rendering system
 
 #### Status Workflow
 
 * Todo → In Progress → Completed
-* One-click status cycling
-* Automatic dashboard refresh after updates
+* Automatic analytics updates
+* Automatic dashboard updates
+
+---
+
+### Notes System
+
+* Create notes
+* Edit notes
+* Delete notes
+* Note sidebar navigation
+* Empty state handling
+* Link tasks to notes
+* Multiple task linking
+* Linked task management
+* Persistent note state management
 
 ---
 
 ### Search System
 
-* Real-time task searching
+* Real-time task search
 * Search by title
 * Search by description
 * Search by category
-* Empty-state handling
 * Dynamic search rendering
+* Empty-state handling
 
 ---
 
-### Dashboard Analytics
+### Analytics
 
-* Total tasks counter
-* Tasks completed counter
-* In-progress task counter
-* Overdue task counter
-* Completion rate calculation
-* Productivity score calculation
-* Time since last completed task
-* Dynamic productivity feedback
-* Dashboard task board
+* Weekly completion trend
+* Task flow visualization
+* Category distribution chart
+* Activity heatmap
+* Weekly productivity statistics
+* Completion rate tracking
+* Best day calculation
+* Productivity streak tracking
 
 ---
 
@@ -101,47 +99,38 @@ A responsive productivity workspace built with vanilla HTML, CSS, and JavaScript
 
 #### Today
 
-* Displays tasks due today
-* Automatically sorted by due time
-* Live incomplete task counter
-* Live completed task counter
+* Tasks due today
+* Live incomplete count
+* Live completed count
 
 #### Upcoming
 
-* Displays future scheduled tasks
-* Dynamic completion statistics
+* Future scheduled tasks
+* Completion statistics
 * Chronological task display
 
 #### Completed
 
-* Displays completed tasks across all dates
-* Automatically updates when task status changes
+* Completed tasks across all dates
+* Automatic updates
 
 #### Overdue
 
-* Displays overdue unfinished tasks
-* Automatically excludes completed tasks
+* Overdue unfinished tasks
+* Automatic exclusion of completed tasks
 
 ---
 
 ### User Experience
 
-* Dark mode / light mode toggle
-* Dynamic date restrictions
-* Dynamic time restrictions
-* Real-time form validation
-* Responsive layout system
-* Smooth modal workflow
-* Dynamic view updates
-* Empty-state handling
-
----
-
-## Built With
-
-* HTML5
-* CSS3
-* Vanilla JavaScript (ES6+)
+* Dark / Light mode
+* Dynamic date validation
+* Dynamic time validation
+* Responsive layout
+* Modal workflow
+* Empty states
+* Reusable UI components
+* Modular architecture
 
 ---
 
@@ -174,53 +163,32 @@ state = {
 }
 ```
 
+### Note Object
+
+```js
+{
+    note_id,
+    note_title,
+    note_content,
+    linked_tasks,
+    time_created,
+    time_updated
+}
+```
+
 ### Core Systems
 
 * View Switching System
-* Modal Management System
+* Task Management Engine
 * Analytics Engine
 * Search Engine
-* Task Filtering Engine
-* Reusable Task Rendering Engine
-* Dynamic Category Management
-* Theme Management
+* Notes Engine
+* Modal Management System
+* Category Management System
+* Theme Management System
 * State Management System
+* Reusable Rendering Engine
 
----
-
-## Project Structure
-
-```txt
-dunzo/
-│
-├── assets/
-│
-├── css/
-│   └── styles.css
-│
-├── pages/
-│   ├── create-account.html
-│   ├── dashboard.html
-│   ├── profile.html
-│   └── sign-in.html
-│
-├── scripts/
-│   ├── app.js
-│   ├── dashboard.js
-│   ├── dashboardData.js
-│   ├── modal.js
-│   ├── models.js
-│   ├── navigation.js
-│   ├── search.js
-│   ├── state.js
-│   ├── taskRendering.js
-│   └── utils.js
-│
-├── .gitignore
-├── index.html
-├── LICENSE
-└── README.md
-```
 ---
 
 ## Current Development Progress
@@ -228,75 +196,57 @@ dunzo/
 ### Completed
 
 * Dashboard UI
-* Responsive layout
 * Sidebar navigation
 * Theme switching
-* Task creation modal
+* Task creation
 * Task validation
-* Dynamic category creation
-* State management
+* Dynamic categories
 * Dashboard analytics
 * Productivity score system
 * Completion tracking
-* Today task view
-* Upcoming task view
-* Completed task view
-* Overdue task view
+* Today view
+* Upcoming view
+* Completed view
+* Overdue view
 * Search system
-* Dynamic counters
-* Reusable rendering engine
-* Status update system
-* Completion timestamp tracking
-* Modular JavaScript architecture
 * Notes system
+* Linked task system
+* Analytics page
+* Weekly trend chart
+* Task flow chart
+* Category distribution chart
+* Heatmap visualization
+* Modular JavaScript architecture
 
 ### In Progress
 
-* Analytics page UI
-* Recent activity automation
-* Task editing functionality
+* Task editing
+* Settings functionality
+* Activity feed automation
+* Comprehensive testing
 
 ### Planned
 
 * Local storage persistence
-* Authentication system
+* Authentication
 * Backend integration
 * User accounts
-* Real-time synchronization
-* Notifications and reminders
+* Cloud synchronization
+* Notifications
+* Reminders
 * Database support
 
 ---
 
 ## Known Limitations
 
-* Data is stored only in memory
-* Refreshing the page resets all tasks
-* Analytics page not implemented
-* Notes functionality not implemented
+* Data currently stored in memory
+* Refreshing resets application state
+* No local storage persistence
 * No backend integration
-* No persistent storage
 * No user authentication
-
----
-
-## Getting Started
-
-### Clone Repository
-
-```bash
-git clone https://github.com/28-aditya/dunzo.git
-```
-
-### Run Project
-
-Open:
-
-```txt
-index.html
-```
-
-in any modern web browser.
+* No cloud synchronization
+* Task editing not yet completed
 
 ---
 
@@ -306,37 +256,24 @@ in any modern web browser.
 
 ### Changelog
 
-* Refactored project structure
-* Introduced modular JavaScript architecture
-* Added search functionality
-* Added dedicated navigation module
-* Added dashboard module
-* Added models and state separation
-* Added utility module
-* Improved maintainability and scalability
-* Improved code organization
-* Reduced monolithic script size
-* Updated project directory structure
+* Added Notes system
+* Added linked tasks
+* Added Analytics dashboard
+* Added weekly trend visualization
+* Added task flow visualization
+* Added category distribution chart
+* Added activity heatmap
+* Improved modular architecture
+* Improved maintainability
+* Expanded productivity tracking
+* Refined UI and workflow systems
 
 ---
 
-## Goals
+## Next Milestone (v2.1)
 
-* Improve frontend architecture skills
-* Strengthen DOM manipulation skills
-* Learn scalable state management
-* Practice reusable UI systems
-* Explore productivity application design
-* Build production-style project structure
-
----
-
-## License
-
-MIT
-
----
-
-## Author
-
-Aditya Sharma
+* Task editing
+* Settings completion
+* Full testing pass
+* Local storage implementation
+* Data persistence layer
