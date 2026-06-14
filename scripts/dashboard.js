@@ -116,9 +116,7 @@ function renderDashboard() {
     // =======================
 
     const completedTasks = state.tasks.filter(
-        task =>
-            task.task_status === "done" &&
-            task.time_completed
+        task => task.task_status === "done"
     );
 
     if (completedTasks.length === 0) {
@@ -128,38 +126,37 @@ function renderDashboard() {
 
         document.getElementById("timer-stat-subtext")
             .textContent = "No completed tasks yet";
+
+    } else {
+
+        const completionTimes = completedTasks.map(task => {
+            if (task.time_completed) {
+                return new Date(task.time_completed).getTime();
+            }
+            // task was marked done after creation — fall back to due date/time
+            if (task.task_date && task.task_time) {
+                return new Date(`${task.task_date}T${task.task_time}`).getTime();
+            }
+            // last resort: time it was created
+            return new Date(task.time_created).getTime();
+        });
+
+        const latestCompletion = Math.max(...completionTimes);
+
+        const diffMs  = Date.now() - latestCompletion;
+        const minutes = Math.floor(diffMs / 60000);
+        const hours   = Math.floor(minutes / 60);
+        const days    = Math.floor(hours / 24);
+
+        document.getElementById("timer-stat").textContent =
+            days > 0  ? `${days}d`  :
+            hours > 0 ? `${hours}h` :
+                        `${minutes}m`;
+
+        document.getElementById("timer-stat-subtext")
+            .textContent = "Since last completion";
     }
-    else {
 
-        const latestCompletion = Math.max(
-        ...completedTasks.map(task =>
-            new Date(task.time_completed).getTime()
-        )
-    );
-
-    const diffMs = Date.now() - latestCompletion;
-
-    const minutes = Math.floor(diffMs / 60000);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-
-    let display;
-
-    if (days > 0) {
-        display = `${days}d`;
-    }
-    else if (hours > 0) {
-        display = `${hours}h`;
-    }
-    else {
-        display = `${minutes}m`;
-    }
-
-document.getElementById("timer-stat").textContent = display;
-
-document.getElementById("timer-stat-subtext").textContent =
-    "Since last completion";
-    }
     // ====================
     // TASK BOARD
     // ====================

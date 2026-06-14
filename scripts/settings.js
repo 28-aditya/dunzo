@@ -8,11 +8,14 @@ let settingsEmail;
 let dailyGoalInput;
 let saveChangesRow;
 let saveChangesBtn;
-let themeToggleBtn;
 let autoArchiveToggle;
 let exportBtn;
 let clearBtn;
 let resetPwdBtn;
+
+// focus refs
+let focusDurationInput;
+let focusBreakInput;
 
 // notification refs
 let notifyOverdueToggle;
@@ -31,12 +34,19 @@ function initSettings() {
     dailyGoalInput          = document.getElementById("daily-goal");
     saveChangesRow          = document.getElementById("save-changes-row");
     saveChangesBtn          = document.getElementById("save-changes-btn");
-    themeToggleBtn          = document.getElementById("theme-toggle-settings");
     autoArchiveToggle       = document.getElementById("auto-archive");
     exportBtn               = document.getElementById("export-data");
     clearBtn                = document.getElementById("clear-data");
     resetPwdBtn             = document.getElementById("reset-pwd-btn");
+
+    // focus
+    focusDurationInput      = document.getElementById("focus-duration");
+    focusBreakInput         = document.getElementById("focus-break");
+
+    // notifications
     notifyOverdueToggle     = document.getElementById("notify-overdue");
+
+    // display
     defaultViewSelect       = document.getElementById("default-view");
 
     renderSettings();
@@ -55,10 +65,10 @@ function renderSettings() {
     settingsEmail.value     = state.user.email    || "";
 
     // ---- productivity ----
-    dailyGoalInput.value    = state.settings.dailyGoal   ?? 5;
-    autoArchiveToggle.checked  = state.settings.autoArchive    ?? false;
+    dailyGoalInput.value        = state.settings.dailyGoal  ?? 5;
+    autoArchiveToggle.checked   = state.settings.autoArchive ?? false;
 
-    // ---- focus ----
+    // ---- focus (optional elements) ----
     if (focusDurationInput)
         focusDurationInput.value = state.settings.focusDuration ?? 25;
     if (focusBreakInput)
@@ -66,12 +76,13 @@ function renderSettings() {
 
     // ---- notifications ----
     if (notifyOverdueToggle)
-        notifyOverdueToggle.checked      = state.settings.notifyOverdue      ?? true;
+        notifyOverdueToggle.checked = state.settings.notifyOverdue ?? true;
 
+    // ---- display ----
     if (defaultViewSelect)
-        defaultViewSelect.value   = state.settings.defaultView ?? "dashboard";
+        defaultViewSelect.value = state.settings.defaultView ?? "dashboard";
 
-    // ---- theme chip ----
+    // ---- theme chips ----
     refreshThemeChips();
 
     // ---- stats ----
@@ -88,10 +99,10 @@ function renderSettings() {
 
 function renderSettingsStats() {
 
-    const total      = (state.tasks || []).length;
-    const done       = (state.tasks || []).filter(t => t.status === "done").length;
-    const notes      = (state.notes || []).length;
-    const rate       = total > 0 ? Math.round((done / total) * 100) : 0;
+    const total = (state.tasks || []).length;
+    const done  = (state.tasks || []).filter(t => t.status === "done").length;
+    const notes = (state.notes || []).length;
+    const rate  = total > 0 ? Math.round((done / total) * 100) : 0;
 
     const elTotal = document.getElementById("stat-total-tasks");
     const elDone  = document.getElementById("stat-done-tasks");
@@ -123,9 +134,7 @@ function attachSettingsEvents() {
 
     // notifications
     if (notifyOverdueToggle)
-        notifyOverdueToggle.addEventListener("change",      updateNotifications);
-    if (notifyDailySummaryToggle)
-        notifyDailySummaryToggle.addEventListener("change", updateNotifications);
+        notifyOverdueToggle.addEventListener("change", updateNotifications);
 
     // display
     if (defaultViewSelect)
@@ -134,8 +143,7 @@ function attachSettingsEvents() {
     // theme chips
     document.querySelectorAll(".theme-chip").forEach(chip => {
         chip.addEventListener("click", () => {
-            const theme = chip.dataset.theme;
-            applyTheme(theme);
+            applyTheme(chip.dataset.theme);
         });
     });
 
@@ -200,12 +208,12 @@ function updateUserPanel() {
 
 function handleResetPassword() {
     const btn = resetPwdBtn;
-    btn.textContent  = "Email sent ✓";
-    btn.disabled     = true;
+    btn.textContent   = "Email sent ✓";
+    btn.disabled      = true;
     btn.style.opacity = "0.6";
     setTimeout(() => {
-        btn.textContent  = "Reset";
-        btn.disabled     = false;
+        btn.textContent   = "Reset";
+        btn.disabled      = false;
         btn.style.opacity = "";
     }, 3000);
 }
@@ -229,7 +237,16 @@ function updateAutoArchive() {
 // =========================
 
 function updateNotifications() {
-    state.settings.notifyOverdue      = notifyOverdueToggle?.checked      ?? true;
+    state.settings.notifyOverdue = notifyOverdueToggle?.checked ?? true;
+    saveState();
+}
+
+// =========================
+// DISPLAY
+// =========================
+
+function updateDisplaySettings() {
+    state.settings.defaultView = defaultViewSelect?.value ?? "dashboard";
     saveState();
 }
 
@@ -252,7 +269,7 @@ function applyTheme(theme) {
 function refreshThemeChips() {
     const isDark = !document.body.classList.contains("light-mode");
     document.querySelectorAll(".theme-chip").forEach(chip => {
-        const active = (chip.dataset.theme === "dark" && isDark) ||
+        const active = (chip.dataset.theme === "dark"  &&  isDark) ||
                        (chip.dataset.theme === "light" && !isDark);
         chip.classList.toggle("active", active);
     });
@@ -286,6 +303,48 @@ function exportData() {
 function formatExportDate() {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+// =========================
+// IMPORT
+// =========================
+
+function handleImport(e) {
+
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+        try {
+            const imported = JSON.parse(evt.target.result);
+
+            // Basic shape validation
+            if (typeof imported !== "object" || imported === null) {
+                throw new Error("Invalid file format");
+            }
+
+            if (imported.tasks)    state.tasks    = imported.tasks;
+            if (imported.notes)    state.notes    = imported.notes;
+            if (imported.settings) state.settings = { ...state.settings, ...imported.settings };
+            if (imported.user)     state.user     = { ...state.user,     ...imported.user     };
+
+            saveState();
+            renderSettings();
+
+            ["renderDashboard","renderToday","renderUpcoming",
+             "renderCompleted","renderOverdue","renderNotes","renderAnalytics"
+            ].forEach(fn => { if (typeof window[fn] === "function") window[fn](); });
+
+        } catch (err) {
+            alert("Import failed: " + err.message);
+        }
+    };
+    reader.readAsText(file);
+
+    // Reset so the same file can be re-imported if needed
+    e.target.value = "";
+
 }
 
 // =========================
@@ -326,7 +385,7 @@ function saveState() {
 
 function flashError(el, msg) {
     const orig = el.textContent;
-    el.textContent = msg;
+    el.textContent      = msg;
     el.style.background = "var(--danger)";
     el.style.color      = "#fff";
     setTimeout(() => {
