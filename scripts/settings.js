@@ -28,30 +28,22 @@ let defaultViewSelect;
 // =========================
 
 function initSettings() {
-
-    settingsUsername        = document.getElementById("settings-username");
-    settingsEmail           = document.getElementById("settings-email");
-    dailyGoalInput          = document.getElementById("daily-goal");
-    saveChangesRow          = document.getElementById("save-changes-row");
-    saveChangesBtn          = document.getElementById("save-changes-btn");
-    autoArchiveToggle       = document.getElementById("auto-archive");
-    exportBtn               = document.getElementById("export-data");
-    clearBtn                = document.getElementById("clear-data");
-    resetPwdBtn             = document.getElementById("reset-pwd-btn");
-
-    // focus
-    focusDurationInput      = document.getElementById("focus-duration");
-    focusBreakInput         = document.getElementById("focus-break");
-
-    // notifications
-    notifyOverdueToggle     = document.getElementById("notify-overdue");
-
-    // display
-    defaultViewSelect       = document.getElementById("default-view");
+    settingsUsername   = document.getElementById("settings-username");
+    settingsEmail      = document.getElementById("settings-email");
+    dailyGoalInput     = document.getElementById("daily-goal");
+    saveChangesRow     = document.getElementById("save-changes-row");
+    saveChangesBtn     = document.getElementById("save-changes-btn");
+    autoArchiveToggle  = document.getElementById("auto-archive");
+    exportBtn          = document.getElementById("export-data");
+    clearBtn           = document.getElementById("clear-data");
+    resetPwdBtn        = document.getElementById("reset-pwd-btn");
+    focusDurationInput = document.getElementById("focus-duration");
+    focusBreakInput    = document.getElementById("focus-break");
+    notifyOverdueToggle = document.getElementById("notify-overdue");
+    defaultViewSelect  = document.getElementById("default-view");
 
     renderSettings();
     attachSettingsEvents();
-
 }
 
 // =========================
@@ -59,38 +51,23 @@ function initSettings() {
 // =========================
 
 function renderSettings() {
+    settingsUsername.value      = state.user.username || "";
+    settingsEmail.value         = state.user.email    || "";
+    dailyGoalInput.value        = state.settings.dailyGoal   ?? 5;
+    autoArchiveToggle.checked   = state.settings.autoArchive  ?? false;
 
-    // ---- account ----
-    settingsUsername.value  = state.user.username || "";
-    settingsEmail.value     = state.user.email    || "";
-
-    // ---- productivity ----
-    dailyGoalInput.value        = state.settings.dailyGoal  ?? 5;
-    autoArchiveToggle.checked   = state.settings.autoArchive ?? false;
-
-    // ---- focus (optional elements) ----
     if (focusDurationInput)
         focusDurationInput.value = state.settings.focusDuration ?? 25;
     if (focusBreakInput)
         focusBreakInput.value    = state.settings.focusBreak    ?? 5;
-
-    // ---- notifications ----
     if (notifyOverdueToggle)
         notifyOverdueToggle.checked = state.settings.notifyOverdue ?? true;
-
-    // ---- display ----
     if (defaultViewSelect)
-        defaultViewSelect.value = state.settings.defaultView ?? "dashboard";
+        defaultViewSelect.value  = state.settings.defaultView ?? "dashboard";
 
-    // ---- theme chips ----
     refreshThemeChips();
-
-    // ---- stats ----
     renderSettingsStats();
-
-    // ---- save row hidden by default ----
     saveChangesRow.classList.add("hidden");
-
 }
 
 // =========================
@@ -98,9 +75,8 @@ function renderSettings() {
 // =========================
 
 function renderSettingsStats() {
-
     const total = (state.tasks || []).length;
-    const done  = (state.tasks || []).filter(t => t.status === "done").length;
+    const done  = (state.tasks || []).filter(t => t.task_status === "done").length; // fixed: was t.status
     const notes = (state.notes || []).length;
     const rate  = total > 0 ? Math.round((done / total) * 100) : 0;
 
@@ -113,7 +89,6 @@ function renderSettingsStats() {
     if (elDone)  elDone.textContent  = done;
     if (elNotes) elNotes.textContent = notes;
     if (elRate)  elRate.textContent  = rate + "%";
-
 }
 
 // =========================
@@ -121,44 +96,32 @@ function renderSettingsStats() {
 // =========================
 
 function attachSettingsEvents() {
-
-    // account
     settingsUsername.addEventListener("input",  showSaveButton);
     settingsEmail.addEventListener("input",     showSaveButton);
     saveChangesBtn.addEventListener("click",    saveAccountChanges);
     resetPwdBtn.addEventListener("click",       handleResetPassword);
 
-    // productivity
-    dailyGoalInput.addEventListener("change",   updateDailyGoal);
+    dailyGoalInput.addEventListener("change",    updateDailyGoal);
     autoArchiveToggle.addEventListener("change", updateAutoArchive);
 
-    // notifications
     if (notifyOverdueToggle)
         notifyOverdueToggle.addEventListener("change", updateNotifications);
-
-    // display
     if (defaultViewSelect)
         defaultViewSelect.addEventListener("change", updateDisplaySettings);
 
-    // theme chips
     document.querySelectorAll(".theme-chip").forEach(chip => {
-        chip.addEventListener("click", () => {
-            applyTheme(chip.dataset.theme);
-        });
+        chip.addEventListener("click", () => applyTheme(chip.dataset.theme));
     });
 
-    // data
-    exportBtn.addEventListener("click",  exportData);
-    clearBtn.addEventListener("click",   clearWorkspace);
+    exportBtn.addEventListener("click", exportData);
+    clearBtn.addEventListener("click",  clearWorkspace);
 
-    // import
     const importBtn  = document.getElementById("import-data");
     const importFile = document.getElementById("import-file-input");
     if (importBtn && importFile) {
-        importBtn.addEventListener("click",  () => importFile.click());
+        importBtn.addEventListener("click",   () => importFile.click());
         importFile.addEventListener("change", handleImport);
     }
-
 }
 
 // =========================
@@ -172,7 +135,6 @@ function showSaveButton() {
 }
 
 function saveAccountChanges() {
-
     const newUsername = settingsUsername.value.trim();
     const newEmail    = settingsEmail.value.trim();
 
@@ -186,16 +148,13 @@ function saveAccountChanges() {
 
     saveChangesBtn.textContent = "✓ Saved";
     saveChangesBtn.classList.add("btn-saved");
-
     setTimeout(() => saveChangesRow.classList.add("hidden"), 1400);
 
     updateUserPanel();
     saveState();
-
 }
 
 function updateUserPanel() {
-
     const name   = document.getElementById("user-name");
     const email  = document.getElementById("user-email");
     const avatar = document.getElementById("user-avatar");
@@ -203,18 +162,16 @@ function updateUserPanel() {
     if (name)   name.textContent   = state.user.username;
     if (email)  email.textContent  = state.user.email;
     if (avatar) avatar.textContent = state.user.username.charAt(0).toUpperCase();
-
 }
 
 function handleResetPassword() {
-    const btn = resetPwdBtn;
-    btn.textContent   = "Email sent ✓";
-    btn.disabled      = true;
-    btn.style.opacity = "0.6";
+    resetPwdBtn.textContent   = "Email sent ✓";
+    resetPwdBtn.disabled      = true;
+    resetPwdBtn.style.opacity = "0.6";
     setTimeout(() => {
-        btn.textContent   = "Reset";
-        btn.disabled      = false;
-        btn.style.opacity = "";
+        resetPwdBtn.textContent   = "Reset";
+        resetPwdBtn.disabled      = false;
+        resetPwdBtn.style.opacity = "";
     }, 3000);
 }
 
@@ -275,7 +232,6 @@ function refreshThemeChips() {
     });
 }
 
-// kept for backward-compat (header toggle button)
 function toggleTheme() {
     const isDark = !document.body.classList.contains("light-mode");
     applyTheme(isDark ? "light" : "dark");
@@ -286,18 +242,18 @@ function toggleTheme() {
 // =========================
 
 function exportData() {
-
-    const data = JSON.stringify(state, null, 2);
-    const blob = new Blob([data], { type: "application/json" });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement("a");
-
-    a.href     = url;
-    a.download = `dunzo-export-${formatExportDate()}.json`;
-    a.click();
-
-    URL.revokeObjectURL(url);
-
+    try {
+        const data = JSON.stringify(state, null, 2);
+        const blob = new Blob([data], { type: "application/json" });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement("a");
+        a.href     = url;
+        a.download = `dunzo-export-${formatExportDate()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    } catch (err) {
+        alert("Export failed: " + err.message);
+    }
 }
 
 function formatExportDate() {
@@ -310,7 +266,6 @@ function formatExportDate() {
 // =========================
 
 function handleImport(e) {
-
     const file = e.target.files[0];
     if (!file) return;
 
@@ -319,18 +274,17 @@ function handleImport(e) {
         try {
             const imported = JSON.parse(evt.target.result);
 
-            // Basic shape validation
-            if (typeof imported !== "object" || imported === null) {
+            if (typeof imported !== "object" || imported === null)
                 throw new Error("Invalid file format");
-            }
 
             if (imported.tasks)    state.tasks    = imported.tasks;
             if (imported.notes)    state.notes    = imported.notes;
             if (imported.settings) state.settings = { ...state.settings, ...imported.settings };
-            if (imported.user)     state.user     = { ...state.user,     ...imported.user     };
+            if (imported.user)     state.user     = { ...state.user,     ...imported.user };
 
             saveState();
             renderSettings();
+            renderTaskDropdown(); // refresh notes task dropdown after import
 
             ["renderDashboard","renderToday","renderUpcoming",
              "renderCompleted","renderOverdue","renderNotes","renderAnalytics"
@@ -341,10 +295,7 @@ function handleImport(e) {
         }
     };
     reader.readAsText(file);
-
-    // Reset so the same file can be re-imported if needed
     e.target.value = "";
-
 }
 
 // =========================
@@ -352,7 +303,6 @@ function handleImport(e) {
 // =========================
 
 function clearWorkspace() {
-
     const confirmed = confirm("Delete all tasks and notes? This cannot be undone.");
     if (!confirmed) return;
 
@@ -364,11 +314,10 @@ function clearWorkspace() {
     ["renderDashboard","renderToday","renderUpcoming",
      "renderCompleted","renderOverdue","renderNotes","renderAnalytics"
     ].forEach(fn => { if (typeof window[fn] === "function") window[fn](); });
-
 }
 
 // =========================
-// SAVE STATE HELPER
+// SAVE STATE
 // =========================
 
 function saveState() {

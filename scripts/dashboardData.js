@@ -33,68 +33,31 @@ function generateMockTasks(count = 70) {
         "Research authentication systems"
     ];
 
-    const categories = [
-        "work",
-        "study",
-        "personal",
-        "health",
-        "fitness",
-        "finance"
-    ];
+    const categories = ["work", "study", "personal", "health", "fitness", "finance"];
 
     const tasks = [];
-    const now = new Date();
+    const now   = new Date();
 
     for (let i = 0; i < count; i++) {
 
-        const title =
-            titles[Math.floor(Math.random() * titles.length)];
-
-        const category =
-            categories[Math.floor(Math.random() * categories.length)];
+        const title    = titles[Math.floor(Math.random() * titles.length)];
+        const category = categories[Math.floor(Math.random() * categories.length)];
 
         const randomStatus = Math.random();
-
-        let status;
-
-        if (randomStatus < 0.5) {
-            status = "done";
-        }
-        else if (randomStatus < 0.8) {
-            status = "doing";
-        }
-        else {
-            status = "todo";
-        }
-
-        // =====================
-        // CREATED DATE
-        // =====================
+        const status = randomStatus < 0.5 ? "done"
+                     : randomStatus < 0.8 ? "doing"
+                     : "todo";
 
         const createdDate = new Date(now);
-
-        createdDate.setDate(
-            createdDate.getDate() -
-            Math.floor(Math.random() * 90)
-        );
-
+        createdDate.setDate(createdDate.getDate() - Math.floor(Math.random() * 90));
         createdDate.setHours(
             Math.floor(Math.random() * 24),
             Math.floor(Math.random() * 60),
-            0,
-            0
+            0, 0
         );
-
-        // =====================
-        // DUE DATE
-        // =====================
 
         const dueDate = new Date(createdDate);
-
-        dueDate.setDate(
-            dueDate.getDate() +
-            Math.floor(Math.random() * 21) + 1
-        );
+        dueDate.setDate(dueDate.getDate() + Math.floor(Math.random() * 21) + 1);
 
         const task = new TaskItem(
             title,
@@ -105,29 +68,13 @@ function generateMockTasks(count = 70) {
             dueDate.toTimeString().slice(0, 5)
         );
 
-        task.time_created =
-            createdDate.toISOString();
-
-        // =====================
-        // COMPLETED DATE
-        // =====================
+        task.time_created = createdDate.toISOString();
 
         if (status === "done") {
-
-            const createdMs =
-                createdDate.getTime();
-
-            const nowMs =
-                now.getTime();
-
             const completionMs =
-                createdMs +
-                Math.random() *
-                (nowMs - createdMs);
-
-            task.time_completed =
-                new Date(completionMs)
-                .toISOString();
+                createdDate.getTime() +
+                Math.random() * (now.getTime() - createdDate.getTime());
+            task.time_completed = new Date(completionMs).toISOString();
         }
 
         tasks.push(task);

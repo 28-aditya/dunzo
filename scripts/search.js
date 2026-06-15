@@ -3,9 +3,10 @@
 // ===========================
 
 function renderSearchResults() {
-
     const searchInput           = document.getElementById("search-input");
     const searchBarEmptyResults = document.getElementById("search-bar-empty-result");
+
+    if (!searchInput) return; // guard against pre-DOM calls
 
     const query = searchInput.value.toLowerCase();
 
@@ -18,7 +19,7 @@ function renderSearchResults() {
     searchBarEmptyResults.classList.remove("active");
 
     const requiredTasks = state.tasks.filter(task =>
-        task.task_title.toLowerCase().includes(query)      ||
+        task.task_title.toLowerCase().includes(query)               ||
         (task.task_description || "").toLowerCase().includes(query) ||
         task.task_category.toLowerCase().includes(query)
     );
@@ -29,8 +30,8 @@ function renderSearchResults() {
     });
 }
 
-// attach input listener once DOM is ready
+// wire up the input listener once DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("search-input")
-        .addEventListener("input", renderSearchResults);
+        ?.addEventListener("input", renderSearchResults);
 });

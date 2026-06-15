@@ -10,8 +10,6 @@ document.querySelectorAll(".sidebar-item").forEach(item => {
 
 document.getElementById("nav-dashboard").classList.add("active");
 
-const view_header = document.getElementById("view-header");
-
 // =========================
 // THEME TOGGLE
 // =========================
@@ -19,8 +17,7 @@ const view_header = document.getElementById("view-header");
 const theme_button = document.getElementById("theme-toggle");
 
 theme_button.addEventListener("click", function () {
-    console.log("theme toggled");
-    document.body.classList.toggle("light-mode");
+    toggleTheme(); // uses settings.js toggleTheme — updates class, state, and saves
 });
 
 refreshCurrentView();

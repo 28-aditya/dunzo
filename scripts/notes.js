@@ -1,5 +1,5 @@
 // =====================
-// NOTES MODULE (CLEAN REWRITE)
+// NOTES MODULE
 // =====================
 
 let notesList, noteTitleInput, noteContentInput;
@@ -38,10 +38,10 @@ function clearError() {
 }
 
 function clearEditor() {
-    noteTitleInput.value = "";
-    noteContentInput.value = "";
+    noteTitleInput.value       = "";
+    noteContentInput.value     = "";
     linkedTaskContainer.innerHTML = "";
-    taskSelect.value = "";
+    taskSelect.value           = "";
 }
 
 // =====================
@@ -51,7 +51,6 @@ function clearEditor() {
 function showEditor() {
     noteEditor.classList.remove("hidden");
     emptyState.classList.remove("active");
-
     document.querySelector(".notes-sidebar").style.display = "none";
     document.querySelector(".notes-layout").classList.add("editor-mode");
 }
@@ -59,10 +58,8 @@ function showEditor() {
 function hideEditor() {
     noteEditor.classList.add("hidden");
     emptyState.classList.add("active");
-
     document.querySelector(".notes-sidebar").style.display = "block";
     document.querySelector(".notes-layout").classList.remove("editor-mode");
-
     taskSelect.value = "";
     clearError();
 }
@@ -72,36 +69,30 @@ function hideEditor() {
 // =====================
 
 function initNotes() {
-
-    notesList = document.getElementById("notes-list");
-    noteTitleInput = document.getElementById("note-title");
-    noteContentInput = document.getElementById("note-content");
-
-    newNoteBtn = document.getElementById("new-note-btn");
-    saveNoteBtn = document.getElementById("save-note-btn");
-    deleteNoteBtn = document.getElementById("delete-note-btn");
-
-    taskSelect = document.getElementById("task-link-select");
-    linkTaskBtn = document.getElementById("link-task-btn");
-
+    notesList          = document.getElementById("notes-list");
+    noteTitleInput     = document.getElementById("note-title");
+    noteContentInput   = document.getElementById("note-content");
+    newNoteBtn         = document.getElementById("new-note-btn");
+    saveNoteBtn        = document.getElementById("save-note-btn");
+    deleteNoteBtn      = document.getElementById("delete-note-btn");
+    taskSelect         = document.getElementById("task-link-select");
+    linkTaskBtn        = document.getElementById("link-task-btn");
     linkedTaskContainer = document.getElementById("linked-task-list");
-
-    noteEditor = document.getElementById("note-editor");
-    emptyState = document.getElementById("notes-empty-state");
-
-    errorEl = document.getElementById("note-error");
-    linkedCountEl = document.getElementById("linked-task-count");
+    noteEditor         = document.getElementById("note-editor");
+    emptyState         = document.getElementById("notes-empty-state");
+    errorEl            = document.getElementById("note-error");
+    linkedCountEl      = document.getElementById("linked-task-count");
 
     renderTaskDropdown();
     renderNotes();
     hideEditor();
 
-    newNoteBtn.addEventListener("click", createNewNote);
+    newNoteBtn.addEventListener("click",  createNewNote);
     saveNoteBtn.addEventListener("click", saveNote);
     deleteNoteBtn.addEventListener("click", deleteNote);
     linkTaskBtn.addEventListener("click", linkTask);
 
-    noteTitleInput.addEventListener("input", autosave);
+    noteTitleInput.addEventListener("input",   autosave);
     noteContentInput.addEventListener("input", autosave);
 
     document.getElementById("close-note-editor")
@@ -115,13 +106,11 @@ function initNotes() {
 function createNewNote() {
     draftNote = new NoteItem("", "");
     ensureNote(draftNote);
-
     state.activeNoteId = draftNote.note_id;
 
     clearEditor();
     deleteNoteBtn.classList.add("hidden");
     clearError();
-
     updateLinkedCount(draftNote);
     showEditor();
 }
@@ -135,18 +124,15 @@ function openNote(id) {
     if (!note) return;
 
     ensureNote(note);
-
     state.activeNoteId = id;
     draftNote = null;
 
-    noteTitleInput.value = note.note_title || "";
+    noteTitleInput.value   = note.note_title   || "";
     noteContentInput.value = note.note_content || "";
 
     deleteNoteBtn.classList.remove("hidden");
-
     clearError();
     showEditor();
-
     renderNotes();
     renderLinked(note);
     updateLinkedCount(note);
@@ -159,7 +145,7 @@ function openNote(id) {
 function saveNote() {
     clearError();
 
-    const title = noteTitleInput.value.trim();
+    const title   = noteTitleInput.value.trim();
     const content = noteContentInput.value.trim();
 
     if (!title && !content) {
@@ -178,14 +164,14 @@ function saveNote() {
 
     ensureNote(note);
 
-    note.note_title =
-    title ||
-    `Untitled Note ${state.notes.filter(n => (n.note_title || "").startsWith("Untitled Note")).length + 1}`;
-    note.note_content = content;
+    note.note_title = title ||
+        `Untitled Note ${state.notes.filter(n => (n.note_title || "").startsWith("Untitled Note")).length + 1}`;
+    note.note_content  = content;
     note.time_modified = new Date().toISOString();
 
     draftNote = null;
 
+    saveState();
     renderNotes();
     closeEditor();
 }
@@ -200,6 +186,7 @@ function deleteNote() {
 
     state.notes.splice(idx, 1);
 
+    saveState();
     renderNotes();
     closeEditor();
 }
@@ -211,7 +198,6 @@ function deleteNote() {
 function closeEditor() {
     state.activeNoteId = null;
     draftNote = null;
-
     clearEditor();
     clearError();
     hideEditor();
@@ -224,12 +210,9 @@ function closeEditor() {
 function autosave() {
     const note = getActiveNote();
     if (!note) return;
-
     ensureNote(note);
-
-    note.note_title = noteTitleInput.value;
+    note.note_title   = noteTitleInput.value;
     note.note_content = noteContentInput.value;
-
     renderNotes();
 }
 
@@ -238,11 +221,14 @@ function autosave() {
 // =====================
 
 function renderNotes() {
+    // guard against being called before initNotes
+    if (!notesList) return;
+
     notesList.innerHTML = "";
 
     if (!state.notes || state.notes.length === 0) {
         const empty = document.createElement("div");
-        empty.className = "notes-empty-list";
+        empty.className   = "notes-empty-list";
         empty.textContent = "Get started by creating a new note";
         notesList.appendChild(empty);
         return;
@@ -254,15 +240,12 @@ function renderNotes() {
         const div = document.createElement("div");
         div.className = "note-item";
 
-        if (note.note_id === state.activeNoteId) {
+        if (note.note_id === state.activeNoteId)
             div.classList.add("active");
-        }
 
         div.innerHTML = `
-            <div class="note-title">${note.note_title}</div>
-            <div class="note-meta">
-                🔗 ${note.linked_tasks.length}/${MAX_LINKED_TASKS} tasks linked
-            </div>
+            <div class="note-title">${note.note_title || "Untitled"}</div>
+            <div class="note-meta">🔗 ${note.linked_tasks.length}/${MAX_LINKED_TASKS} tasks linked</div>
         `;
 
         div.addEventListener("click", () => openNote(note.note_id));
@@ -275,11 +258,13 @@ function renderNotes() {
 // =====================
 
 function renderTaskDropdown() {
+    if (!taskSelect) return;
+
     taskSelect.innerHTML = `<option value="">Select task...</option>`;
 
     state.tasks.forEach(task => {
-        const opt = document.createElement("option");
-        opt.value = task.task_id;
+        const opt       = document.createElement("option");
+        opt.value       = task.task_id;
         opt.textContent = task.task_title;
         taskSelect.appendChild(opt);
     });
@@ -294,11 +279,10 @@ function renderTaskDropdown() {
 function linkTask() {
     clearError();
 
-    const note = getActiveNote();
+    const note   = getActiveNote();
     const taskId = taskSelect.value;
 
     if (!note || !taskId) return;
-
     ensureNote(note);
 
     if (note.linked_tasks.includes(taskId)) {
@@ -312,7 +296,6 @@ function linkTask() {
     }
 
     note.linked_tasks.push(taskId);
-
     taskSelect.value = "";
 
     renderLinked(note);
@@ -326,7 +309,6 @@ function linkTask() {
 
 function unlinkTask(note, taskId) {
     note.linked_tasks = note.linked_tasks.filter(id => id !== taskId);
-
     renderLinked(note);
     renderNotes();
     updateLinkedCount(note);
@@ -345,13 +327,12 @@ function renderLinked(note) {
 
         const chip = document.createElement("div");
         chip.className = "linked-task-chip";
-
         chip.innerHTML = `
             <span>${task.task_title}</span>
             <button class="unlink">✕</button>
         `;
 
-        chip.querySelector(".unlink").addEventListener("click", (e) => {
+        chip.querySelector(".unlink").addEventListener("click", e => {
             e.stopPropagation();
             unlinkTask(note, id);
         });

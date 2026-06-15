@@ -77,23 +77,21 @@ function renderTaskList({
             : task.task_time;
 
         taskStatusPill.textContent   = task.task_status;
-        taskCategoryPill.textContent = task.task_category.toUpperCase();
+        taskCategoryPill.textContent = (task.task_category || "uncategorised").toUpperCase(); // null guard
 
         rightDiv.append(taskStatusPill, taskCategoryPill);
         leftDiv.append(taskTitle, taskDesc, taskTime);
         taskRow.append(leftDiv, rightDiv);
         taskList.append(taskRow);
 
-        // open edit modal on row click
         taskRow.addEventListener("click", () => openEditModal(task));
 
-        // cycle status on pill click without opening modal
         taskStatusPill.addEventListener("click", e => {
             e.stopPropagation();
 
-            const statuses    = ["todo", "doing", "done"];
-            const nextIndex   = (statuses.indexOf(task.task_status) + 1) % statuses.length;
-            task.task_status  = statuses[nextIndex];
+            const statuses  = ["todo", "doing", "done"];
+            const nextIndex = (statuses.indexOf(task.task_status) + 1) % statuses.length;
+            task.task_status = statuses[nextIndex];
 
             task.time_completed = task.task_status === "done"
                 ? new Date().toISOString()

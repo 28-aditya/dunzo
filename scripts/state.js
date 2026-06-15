@@ -9,6 +9,8 @@ let state = {
     notes: [],
     addedCategories: [],
 
+    activeNoteId: null,
+
     settings: {
         darkTheme: true,
         dailyGoal: 1,
