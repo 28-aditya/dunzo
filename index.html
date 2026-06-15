@@ -2,118 +2,482 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dunzo. — Get things done.</title>
 
-  <title>dunzo</title>
-
-  <link rel="stylesheet" href="styles.css">
-
+  <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 
+  <style>
+    /* ── Landing-only styles ─────────────────────────────── */
+
+    /* extra bg tiles for landing */
+    .tile-tr {
+      top: -80px;
+      right: -80px;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+
+    .landing-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 48px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .landing-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+
+    .landing-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px 80px;
+      position: relative;
+      z-index: 5;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--accent);
+      background: rgba(200, 242, 97, 0.08);
+      border: 1px solid rgba(200, 242, 97, 0.2);
+      border-radius: 999px;
+      padding: 6px 14px;
+      margin-bottom: 28px;
+    }
+
+    .hero-eyebrow i {
+      font-size: 13px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 8vw, 96px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      max-width: 800px;
+    }
+
+    .hero-title .accent {
+      color: var(--accent);
+    }
+
+    .hero-subtitle {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 420px;
+      line-height: 1.65;
+      margin-bottom: 44px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 72px;
+    }
+
+    .hero-actions .btn-primary {
+      width: auto;
+      padding: 14px 32px;
+      font-size: 15px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-actions .btn-ghost {
+      padding: 13px 28px;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── STATS STRIP ──────────────────────────────────────── */
+
+    .stats-strip {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      overflow: hidden;
+      margin-bottom: 80px;
+    }
+
+    .stat-item {
+      padding: 20px 36px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── FEATURES ─────────────────────────────────────────── */
+
+    .features-section {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--muted2);
+      margin-bottom: 40px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      text-align: left;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-md);
+      background: var(--surface2);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: rgba(200, 242, 97, 0.1);
+      border: 1px solid rgba(200, 242, 97, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .feature-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* wide card spans 2 cols */
+    .feature-card.wide {
+      grid-column: span 2;
+    }
+
+    /* ── CTA BANNER ───────────────────────────────────────── */
+
+    .cta-banner {
+      width: 100%;
+      max-width: 900px;
+      margin: 16px auto 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 48px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .cta-text h2 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .cta-text p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .cta-actions .btn-primary {
+      width: auto;
+      padding: 13px 28px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+    }
+
+    .cta-actions .btn-ghost {
+      padding: 12px 24px;
+      font-size: 14px;
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+
+    .landing-footer {
+      position: relative;
+      z-index: 10;
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      margin-top: 80px;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .footer-logo .dot {
+      color: var(--accent);
+    }
+
+    .footer-tagline {
+      font-size: 12px;
+      color: var(--muted2);
+    }
+
+    .footer-version {
+      font-size: 11px;
+      color: var(--muted2);
+      font-family: monospace;
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────── */
+
+    @media (max-width: 768px) {
+      .landing-nav { padding: 18px 24px; }
+      .landing-footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+      .features-grid { grid-template-columns: 1fr; }
+      .feature-card.wide { grid-column: span 1; }
+      .stats-strip { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); width: 100%; }
+      .stat-item:last-child { border-bottom: none; }
+      .cta-banner { flex-direction: column; text-align: center; padding: 36px 28px; }
+      .cta-actions { justify-content: center; }
+      .hero-title { letter-spacing: -1px; }
+    }
+  </style>
 </head>
 
-<body class="dark-mode" id="homepage-body">
+<body id="homepage-body">
 
   <div class="page" id="homepage-page">
 
     <!-- BACKGROUND -->
-
     <div class="bg-deco" aria-hidden="true">
-
       <div class="tile tile-tl"></div>
+      <div class="tile tile-tr"></div>
       <div class="tile tile-br"></div>
-
     </div>
 
-    <!-- NAVIGATION -->
+    <!-- NAV -->
+    <nav class="landing-nav">
 
-    <nav class="top-nav" id="homepage-nav">
-
-      <button
-        class="logo"
-        id="homepage-logo"
-        onclick="window.location='index.html'">
-
+      <span class="footer-logo">
         dunzo<span class="dot">.</span>
+      </span>
 
-      </button>
-      
-      <button
-        class="btn-icon"
-        id="theme-toggle"
-        type="button">
-
-        🎨
-
-      </button>
+      <div class="landing-nav-actions">
+        <button class="btn-icon" id="theme-toggle" type="button">
+          <i class="ti ti-palette"></i>
+        </button>
+        <a href="pages/sign-in.html" class="btn-ghost">Sign in</a>
+        <a href="pages/create-account.html" class="btn-new">Get started</a>
+      </div>
 
     </nav>
 
-    <!-- MAIN CONTENT -->
+    <!-- HERO -->
+    <main class="landing-main">
 
-    <main class="page-center" id="homepage-center">
+      <div class="hero-eyebrow">
+        <i class="ti ti-bolt"></i>
+        Productivity, simplified
+      </div>
 
-      <section class="auth-card" id="homepage-card">
+      <h1 class="hero-title">
+        Get things<br>
+        <span class="accent">done.</span>
+      </h1>
 
-        <!-- TEXT -->
+      <p class="hero-subtitle">
+        Your workspace for tasks, notes, and focus.
+        No clutter, no noise — just what matters.
+      </p>
 
-        <p class="eyebrow" id="homepage-eyebrow">
-          Welcome
-        </p>
+      <!-- STATS -->
+      <div class="stats-strip">
+        <div class="stat-item">
+          <div class="stat-value">5+</div>
+          <div class="stat-label">Task views</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">∞</div>
+          <div class="stat-label">Notes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Distractions</div>
+        </div>
+      </div>
 
-        <h1 id="homepage-title">
+      <!-- FEATURES -->
+      <div class="features-section">
 
-          Get things
-          <br>
-          done.
+        <p class="section-label">Everything you need</p>
 
-        </h1>
+        <div class="features-grid">
 
-        <p class="subtitle" id="homepage-subtitle">
-
-          Your workspace for what matters.
-
-        </p>
-
-        <!-- ACTION BUTTONS -->
-
-        <div class="homepage-actions" id="homepage-actions">
-
-          <a
-            href="create-account.html"
-            class="btn btn-primary"
-            id="create-account-btn">
-
-            Create account
-
-          </a>
-
-          <div class="divider" id="homepage-divider">
-            or
+          <div class="feature-card wide">
+            <div class="feature-icon">
+              <i class="ti ti-layout-kanban"></i>
+            </div>
+            <div class="feature-title">Task Management</div>
+            <div class="feature-desc">
+              Create, edit, and track tasks across a full kanban board.
+              Cycle statuses, set due dates, filter by view — all in one place.
+            </div>
           </div>
 
-          <a
-            href="sign-in.html"
-            class="btn btn-ghost"
-            id="sign-in-btn">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="ti ti-notes"></i>
+            </div>
+            <div class="feature-title">Notes</div>
+            <div class="feature-desc">
+              Write notes and link them directly to tasks. Keep context close to work.
+            </div>
+          </div>
 
-            Sign in
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="ti ti-chart-bar"></i>
+            </div>
+            <div class="feature-title">Analytics</div>
+            <div class="feature-desc">
+              Track your productivity score, and completion trends.
+            </div>
+          </div>
 
-          </a>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="ti ti-search"></i>
+            </div>
+            <div class="feature-title">Instant Search</div>
+            <div class="feature-desc">
+              Find any task by title, description, or category in real time.
+            </div>
+          </div>
 
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="ti ti-sun"></i>
+            </div>
+            <div class="feature-title">Dark & Light</div>
+            <div class="feature-desc">
+              A theme that follows your preference and persists across sessions.
+            </div>
+          </div>
         </div>
 
-      </section>
+      </div>
+
+      <!-- CTA BANNER -->
+      <div class="cta-banner">
+        <div class="cta-text">
+          <h2>Ready to get started?</h2>
+          <p>Create your workspace in seconds. No credit card, no setup.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="pages/create-account.html" class="btn btn-primary">Create account</a>
+          <a href="pages/sign-in.html" class="btn-ghost">Sign in</a>
+        </div>
+      </div>
 
     </main>
 
+    <!-- FOOTER -->
+    <footer class="landing-footer">
+      <span class="footer-logo">dunzo<span class="dot">.</span></span>
+      <span class="footer-tagline">Ship what matters.</span>
+      <span class="footer-version">v2.1.0.0</span>
+    </footer>
+
   </div>
 
-  <script src="script.js"></script>
-<script src="script.js"></script>
-</body>
+  <script>
+    // theme toggle — mirrors dashboard behaviour
+    document.getElementById("theme-toggle").addEventListener("click", function () {
+      document.body.classList.toggle("light-mode");
+    });
+  </script>
 
+</body>
 </html>
