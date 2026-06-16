@@ -151,7 +151,7 @@ button {
     linear-gradient(var(--text) 1px, transparent 1px),
     linear-gradient(90deg, var(--text) 1px, transparent 1px);
   background-size: 40px 40px;
-  transform: rotate(37deg) scale(1.4);
+  transform: rotate(27deg) scale(1.4);
   transform-origin: center;
   opacity: 0.06;
   top: 0;
