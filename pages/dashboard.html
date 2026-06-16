@@ -11,7 +11,7 @@
   
   <link rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
-  
+
   <link rel="icon" type="image/png" href="../assets/favicon.ico">
 </head>
 
@@ -929,13 +929,13 @@
 
       <!-- FOOTER -->
       <div class="task-modal-footer">
-        <p id="task-error" class="task-error">
-          Please fill in all required fields.
-        </p>
-        <button class="btn-new" id="create-task">
-          Create Task
-        </button>
+        <div class="modal-footer-left">
+          <button id="delete-task-btn" class="btn-danger hidden">Delete</button>
+        </div>
 
+        <div class="modal-footer-right">
+          <button class="btn-new btn-primary">Save</button>
+        </div>
       </div>
 
     </div>

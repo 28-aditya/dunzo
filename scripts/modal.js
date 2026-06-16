@@ -1,212 +1,226 @@
 // =========================
-// TASK MODAL ELEMENTS
+// MODAL MODULE (SAFE VERSION)
 // =========================
 
-const new_task          = document.getElementById("new-task-btn");
-const task_modal        = document.getElementById("task-modal");
-const close_task_modal  = document.getElementById("close-modal");
-const create_task_modal = document.getElementById("create-task");
+document.addEventListener("DOMContentLoaded", initModal);
 
-const date           = document.getElementById("task-date");
-const time           = document.getElementById("task-time");
-
-const categorySelect = document.getElementById("task-category");
-const customInput    = document.getElementById("custom-category");
-const customGroup    = document.getElementById("custom-category-group");
-
-// =========================
-// EDIT STATE
-// =========================
-
+// -------------------------
+// STATE
+// -------------------------
 let editingTaskId = null;
 
-// =========================
-// DATE MIN
-// =========================
+// -------------------------
+// DOM CACHE
+// -------------------------
+let taskModal;
+let newTaskBtn;
+let closeBtns;
+let saveBtn;
+let deleteBtn;
 
-const nowInit = new Date();
-date.min = nowInit.toISOString().split("T")[0];
+let titleEl;
+let descEl;
+let statusEl;
+let categoryEl;
+let customCategoryEl;
+let customGroupEl;
+let dateEl;
+let timeEl;
 
-// =========================
-// CUSTOM CATEGORY TOGGLE
-// =========================
+let timeError;
 
-categorySelect.addEventListener("change", function () {
-    if (this.value === "custom") {
-        customGroup.style.display = "block";
-    } else {
-        customGroup.style.display = "none";
-        customInput.value = "";
+// -------------------------
+// INIT
+// -------------------------
+function initModal() {
+    taskModal = document.getElementById("task-modal");
+    newTaskBtn = document.getElementById("new-task-btn");
+
+    closeBtns = document.querySelectorAll(".close-modal");
+    saveBtn = document.querySelector(".task-modal .btn-primary");
+    deleteBtn = document.getElementById("delete-task-btn");
+
+    titleEl = document.getElementById("task-title");
+    descEl = document.getElementById("task-desc");
+    statusEl = document.getElementById("task-status");
+    categoryEl = document.getElementById("task-category");
+    customCategoryEl = document.getElementById("custom-category");
+    customGroupEl = document.getElementById("custom-category-group");
+    dateEl = document.getElementById("task-date");
+    timeEl = document.getElementById("task-time");
+
+    timeError = document.getElementById("task-time-error");
+
+    if (newTaskBtn) newTaskBtn.addEventListener("click", openCreateModal);
+
+    closeBtns.forEach(btn =>
+        btn.addEventListener("click", closeModal)
+    );
+
+    if (saveBtn) saveBtn.addEventListener("click", handleSave);
+
+    if (deleteBtn) deleteBtn.addEventListener("click", handleDelete);
+
+    if (categoryEl) {
+        categoryEl.addEventListener("change", handleCategoryChange);
     }
-});
 
-// =========================
-// DATE VALIDATION
-// =========================
+    if (dateEl) {
+        dateEl.addEventListener("change", handleDateChange);
+    }
 
-date.addEventListener("click", function () {
-    const now   = new Date();
-    const today = now.toISOString().split("T")[0];
-    date.min    = today;
-});
+    setDateMin();
+}
 
-date.addEventListener("change", function () {
-    const now   = new Date();
+// -------------------------
+// HELPERS
+// -------------------------
+function setDateMin() {
+    if (!dateEl) return;
+    dateEl.min = new Date().toISOString().split("T")[0];
+}
+
+function handleCategoryChange() {
+    if (!categoryEl || !customGroupEl || !customCategoryEl) return;
+
+    if (categoryEl.value === "custom") {
+        customGroupEl.style.display = "block";
+    } else {
+        customGroupEl.style.display = "none";
+        customCategoryEl.value = "";
+    }
+}
+
+function handleDateChange() {
+    if (!dateEl || !timeEl) return;
+
+    const now = new Date();
     const today = now.toISOString().split("T")[0];
 
     const currentTime =
         String(now.getHours()).padStart(2, "0") + ":" +
         String(now.getMinutes()).padStart(2, "0");
 
-    time.min = (date.value === today) ? currentTime : "";
-});
-
-// =========================
-// MODAL HELPERS
-// =========================
-
-function resetModalFields() {
-    document.getElementById("task-title").value  = "";
-    document.getElementById("task-desc").value   = "";
-    document.getElementById("task-status").value = "";
-    document.getElementById("task-category").value         = "";
-    document.getElementById("custom-category").value       = "";
-    document.getElementById("custom-category-group").style.display = "none";
-    document.getElementById("task-date").value   = "";
-    document.getElementById("task-time").value   = "";
-    document.getElementById("task-time").min     = "";
-
-    document.getElementById("task-error").classList.remove("visible");
-    document.getElementById("task-time-error").classList.remove("visible");
+    timeEl.min = (dateEl.value === today) ? currentTime : "";
 }
 
-function setModalMode(mode) {
-    const isEdit = mode === "edit";
-    document.querySelector("#task-modal h2").textContent    = isEdit ? "Edit Task"    : "Create Task";
-    document.getElementById("create-task").textContent      = isEdit ? "Save Changes" : "Create Task";
-    document.getElementById("create-task").dataset.mode     = mode;
-}
-
+// -------------------------
+// MODAL ACTIONS
+// -------------------------
 function openCreateModal() {
     editingTaskId = null;
-    resetModalFields();
-    setModalMode("create");
-    document.getElementById("task-modal").classList.add("active");
+    resetFields();
+    setMode("create");
+
+    taskModal?.classList.add("active");
 }
 
-// called from taskRendering.js — fully self-contained, no top-level refs
 function openEditModal(task) {
+    if (!task) return;
+    setMode("edit");
+
     editingTaskId = task.task_id;
 
-    document.getElementById("task-title").value  = task.task_title;
-    document.getElementById("task-desc").value   = task.task_description;
-    document.getElementById("task-status").value = task.task_status;
-    document.getElementById("task-date").value   = task.task_date;
-    document.getElementById("task-time").value   = task.task_time;
+    titleEl.value = task.task_title || "";
+    descEl.value = task.task_description || "";
+    statusEl.value = task.task_status || "";
+    dateEl.value = task.task_date || "";
+    timeEl.value = task.task_time || "";
 
-    const catSelect  = document.getElementById("task-category");
-    const catCustom  = document.getElementById("custom-category");
-    const catGroup   = document.getElementById("custom-category-group");
+    // ensure category exists
+    if (categoryEl) {
+        const exists = [...categoryEl.options]
+            .some(opt => opt.value === task.task_category);
 
-    const optionExists = [...catSelect.options].some(
-        opt => opt.value === task.task_category
-    );
+        if (!exists) {
+            const opt = document.createElement("option");
+            opt.value = task.task_category;
+            opt.textContent = task.task_category;
 
-    if (!optionExists) {
-        const option       = document.createElement("option");
-        option.value       = task.task_category;
-        option.textContent = task.task_category;
-        const customOption = catSelect.querySelector('option[value="custom"]');
-        catSelect.insertBefore(option, customOption);
+            const customOpt = categoryEl.querySelector('option[value="custom"]');
+            categoryEl.insertBefore(opt, customOpt);
+        }
+
+        categoryEl.value = task.task_category;
     }
 
-    catSelect.value        = task.task_category;
-    catGroup.style.display = "none";
-    catCustom.value        = "";
-
-    document.getElementById("task-error").classList.remove("visible");
-    document.getElementById("task-time-error").classList.remove("visible");
-
-    setModalMode("edit");
-    document.getElementById("task-modal").classList.add("active");
+    taskModal?.classList.add("active");
 }
 
 function closeModal() {
     editingTaskId = null;
-    resetModalFields();
-    setModalMode("create");
-    document.getElementById("task-modal").classList.remove("active");
+    resetFields();
+    setMode("create");
+    taskModal?.classList.remove("active");
 }
 
-// =========================
-// CATEGORY HELPER
-// =========================
+// -------------------------
+// RESET
+// -------------------------
+function resetFields() {
+    if (titleEl) titleEl.value = "";
+    if (descEl) descEl.value = "";
+    if (statusEl) statusEl.value = "";
+    if (categoryEl) categoryEl.value = "";
+    if (customCategoryEl) customCategoryEl.value = "";
+    if (dateEl) dateEl.value = "";
+    if (timeEl) timeEl.value = "";
 
-function resolveFinalCategory() {
-    const catSelect  = document.getElementById("task-category");
-    const catCustom  = document.getElementById("custom-category");
-    const task_error = document.getElementById("task-error");
+    if (customGroupEl) customGroupEl.style.display = "none";
+    if (timeEl) timeEl.min = "";
 
-    if (catSelect.value !== "custom")
-        return catSelect.value;
-
-    const custom = catCustom.value.trim();
-
-    if (!custom) {
-        task_error.classList.add("visible");
-        return null;
-    }
-
-    const exists = [...catSelect.options].some(opt => opt.value === custom);
-
-    if (!exists) {
-        const option       = document.createElement("option");
-        option.value       = custom;
-        option.textContent = custom;
-        const customOption = catSelect.querySelector('option[value="custom"]');
-        catSelect.insertBefore(option, customOption);
-        state.addedCategories.push(custom);
-    }
-
-    return custom;
+    if (timeError) timeError.classList.remove("visible");
 }
 
-// =========================
+// -------------------------
+// MODE
+// -------------------------
+function setMode(mode) {
+    const isEdit = mode === "edit";
+
+    const header = document.querySelector("#task-modal h2");
+    if (header) header.textContent = isEdit ? "Edit Task" : "Create Task";
+
+    if (saveBtn) {
+        saveBtn.textContent = isEdit ? "Save Changes" : "Create Task";
+        saveBtn.dataset.mode = mode;
+    }
+
+    if (deleteBtn) {
+        deleteBtn.classList.toggle("hidden", !isEdit);
+    }
+}
+
+// -------------------------
 // VALIDATION
-// =========================
+// -------------------------
+function validate(skipTimeCheck = false) {
+    const taskError = ensureTaskError();
 
-function validateFields(skipTimeCheck = false) {
-    const title      = document.getElementById("task-title");
-    const status     = document.getElementById("task-status");
-    const catSelect  = document.getElementById("task-category");
-    const dateEl     = document.getElementById("task-date");
-    const timeEl     = document.getElementById("task-time");
-    const task_error = document.getElementById("task-error");
-    const time_error = document.getElementById("task-time-error");
-
-    task_error.classList.remove("visible");
-    time_error.classList.remove("visible");
+    taskError.classList.remove("visible");
+    if (timeError) timeError.classList.remove("visible");
 
     if (
-        title.value.trim() === "" ||
-        status.value       === "" ||
-        catSelect.value    === "" ||
-        dateEl.value       === "" ||
-        timeEl.value       === ""
+        !titleEl?.value.trim() ||
+        !statusEl?.value ||
+        !categoryEl?.value ||
+        !dateEl?.value ||
+        !timeEl?.value
     ) {
-        task_error.classList.add("visible");
+        taskError.classList.add("visible");
         return false;
     }
 
     if (!skipTimeCheck) {
-        const now         = new Date();
-        const today       = now.toISOString().split("T")[0];
+        const now = new Date();
+        const today = now.toISOString().split("T")[0];
+
         const currentTime =
             String(now.getHours()).padStart(2, "0") + ":" +
             String(now.getMinutes()).padStart(2, "0");
 
         if (dateEl.value === today && timeEl.value < currentTime) {
-            time_error.classList.add("visible");
+            if (timeError) timeError.classList.add("visible");
             return false;
         }
     }
@@ -214,95 +228,121 @@ function validateFields(skipTimeCheck = false) {
     return true;
 }
 
-// =========================
-// CREATE / SAVE HANDLER
-// =========================
+// fallback so you NEVER get null crash
+function ensureTaskError() {
+    let el = document.getElementById("task-error");
 
-create_task_modal.addEventListener("click", function () {
+    if (!el) {
+        el = document.createElement("p");
+        el.id = "task-error";
+        el.className = "task-error";
+        el.textContent = "Please fill all required fields";
 
-    const isEdit = document.getElementById("create-task").dataset.mode === "edit";
+        const body = document.querySelector(".task-modal-body");
+        body?.appendChild(el);
+    }
 
-    if (!validateFields(isEdit)) return;
+    return el;
+}
 
-    const finalCategory = resolveFinalCategory();
+// -------------------------
+// SAVE
+// -------------------------
+function handleSave() {
+    const isEdit = saveBtn?.dataset.mode === "edit";
+    if (!validate(isEdit)) return;
+
+    const finalCategory = resolveCategory();
     if (!finalCategory) return;
 
-    const title       = document.getElementById("task-title");
-    const description = document.getElementById("task-desc");
-    const status      = document.getElementById("task-status");
-    const dateEl      = document.getElementById("task-date");
-    const timeEl      = document.getElementById("task-time");
+    const taskData = {
+        title: titleEl.value.trim(),
+        desc: descEl.value,
+        status: statusEl.value,
+        category: finalCategory,
+        date: dateEl.value,
+        time: timeEl.value
+    };
 
     if (isEdit) {
-        const task = state.tasks.find(t => t.task_id === editingTaskId);
+        const t = state.tasks.find(x => x.task_id === editingTaskId);
 
-        if (task) {
-            task.task_title       = title.value.trim();
-            task.task_description = description.value;
-            task.task_category    = finalCategory;
-            task.task_date        = dateEl.value;
-            task.task_time        = timeEl.value;
+        if (t) {
+            t.task_title = taskData.title;
+            t.task_description = taskData.desc;
+            t.task_category = taskData.category;
+            t.task_date = taskData.date;
+            t.task_time = taskData.time;
 
-            if (status.value === "done" && task.task_status !== "done") {
-                task.time_completed = new Date().toISOString();
-            } else if (status.value !== "done") {
-                task.time_completed = null;
+            if (taskData.status === "done" && t.task_status !== "done") {
+                t.time_completed = new Date().toISOString();
+            } else if (taskData.status !== "done") {
+                t.time_completed = null;
             }
 
-            task.task_status = status.value;
+            t.task_status = taskData.status;
         }
-
     } else {
-        const task = new TaskItem(
-            title.value.trim(),
-            description.value,
-            status.value,
-            finalCategory,
-            dateEl.value,
-            timeEl.value
+        state.tasks.push(
+            new TaskItem(
+                taskData.title,
+                taskData.desc,
+                taskData.status,
+                taskData.category,
+                taskData.date,
+                taskData.time
+            )
         );
-        state.tasks.push(task);
     }
 
     saveState();
     refreshCurrentView();
     closeModal();
-});
+}
 
-// =========================
-// MODAL CONTROLS
-// =========================
+// -------------------------
+// DELETE
+// -------------------------
+function handleDelete() {
+    if (!editingTaskId) return;
 
-new_task.addEventListener("click", openCreateModal);
-close_task_modal.addEventListener("click", closeModal);
+    if (!confirm("Delete this task?")) return;
 
-// =========================
-// QUICK ADD
-// =========================
-
-const quickAddInput  = document.getElementById("quick-add-input");
-const quickAddButton = document.getElementById("quick-add-button");
-
-quickAddButton.addEventListener("click", function () {
-    const val = quickAddInput.value.trim();
-
-    if (!val) {
-        alert("Please enter a valid task title");
-        return;
-    }
-
-    const quickTask = new TaskItem(
-        val,
-        "",
-        "todo",
-        "quick",
-        new Date().toISOString().split("T")[0],
-        "23:59"
-    );
-
-    state.tasks.push(quickTask);
-    quickAddInput.value = "";
+    state.tasks = state.tasks.filter(t => t.task_id !== editingTaskId);
 
     saveState();
     refreshCurrentView();
-});
+    closeModal();
+}
+
+// -------------------------
+// CATEGORY
+// -------------------------
+function resolveCategory() {
+    if (categoryEl.value !== "custom") return categoryEl.value;
+
+    const custom = customCategoryEl.value.trim();
+
+    if (!custom) {
+        ensureTaskError().classList.add("visible");
+        return null;
+    }
+
+    const exists = [...categoryEl.options].some(o => o.value === custom);
+
+    if (!exists) {
+        const opt = document.createElement("option");
+        opt.value = custom;
+        opt.textContent = custom;
+
+        const customOpt = categoryEl.querySelector('option[value="custom"]');
+        categoryEl.insertBefore(opt, customOpt);
+
+        state.addedCategories.push(custom);
+    }
+
+    return custom;
+}
+
+// expose edit function globally (used by renderer)
+window.openEditModal = openEditModal;
