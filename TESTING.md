@@ -75,10 +75,10 @@ Test every field.
 
 ## Deletion
 
-* [ ] Delete todo task
-* [ ] Delete in-progress task
-* [ ] Delete completed task
-* [ ] Delete overdue task
+* [x] Delete todo task
+* [x] Delete in-progress task
+* [x] Delete completed task
+* [x] Delete overdue task
 
 ## Status Changes
 
@@ -289,9 +289,9 @@ Test every field.
 
 * [x] Create task → refresh
 * [x] Edit task → refresh
-* [x] Delete task → refresh
+* [ ] Delete task → refresh
 * [x] Create note → refresh
-* [x] Delete note → refresh
+* [ ] Delete note → refresh
 
 ---
 
