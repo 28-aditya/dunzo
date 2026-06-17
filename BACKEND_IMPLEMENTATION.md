@@ -2,9 +2,13 @@
 
 # Backend Implementation Checklist (FastAPI + PostgreSQL)
 
+## Frontend Hosting - Cloudflare pages
+## Backend Hosting - Render (FastAPI)
+
+
 ## Phase 1 -- Planning
 
--   [ ] Decide on hosting provider
+-   [x] Decide on hosting provider
 -   [ ] Decide on domain and environment variables
 -   [ ] Create Git repository for backend
 
