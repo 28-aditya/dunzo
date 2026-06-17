@@ -9,14 +9,14 @@
 ## Phase 1 -- Planning
 
 -   [x] Decide on hosting provider
--   [ ] Decide on domain and environment variables
--   [ ] Create Git repository for backend
+-   [x] Decide on domain and environment variables
+-   [x] Create Git repository for backend
 
 ## Phase 2 -- Project Setup
 
--   [ ] Create Python virtual environment
--   [ ] Install FastAPI
--   [ ] Install Uvicorn
+-   [x] Create Python virtual environment
+-   [x] Install FastAPI
+-   [x] Install Uvicorn
 -   [ ] Install SQLAlchemy
 -   [ ] Install Alembic
 -   [ ] Install psycopg (PostgreSQL driver)
