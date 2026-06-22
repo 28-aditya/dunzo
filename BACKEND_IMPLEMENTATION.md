@@ -17,22 +17,22 @@
 -   [x] Create Python virtual environment
 -   [x] Install FastAPI
 -   [x] Install Uvicorn
--   [ ] Install SQLAlchemy
+-   [x] Install SQLAlchemy
 -   [ ] Install Alembic
--   [ ] Install psycopg (PostgreSQL driver)
--   [ ] Install python-dotenv
--   [ ] Create `.env` file
+-   [x] Install psycopg (PostgreSQL driver)
+-   [x] Install python-dotenv
+-   [x] Create `.env` file
 
 ## Phase 3 -- PostgreSQL
 
--   [ ] Create PostgreSQL database
--   [ ] Create development user
--   [ ] Test connection from FastAPI
+-   [x] Create PostgreSQL database
+-   [x] Create development user
+-   [x] Test connection from FastAPI
 -   [ ] Configure Alembic migrations
 
 ## Phase 4 -- Database Models
 
--   [ ] User table
+-   [x] User table
 -   [ ] OAuth account table
 -   [ ] Tasks table
 -   [ ] Notes table
@@ -42,9 +42,9 @@
 
 ## Phase 5 -- Authentication
 
--   [ ] Register Google OAuth application
+-   [x] Register Google OAuth application
 -   [ ] Register GitHub OAuth application
--   [ ] Implement OAuth callback endpoints
+-   [x] Implement OAuth callback endpoints
 -   [ ] Create login/logout endpoints
 -   [ ] Persist user records
 -   [ ] Issue secure session/JWT
