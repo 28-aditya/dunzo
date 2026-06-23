@@ -19,7 +19,7 @@ let state = {
     },
 
     user: {
-        username: "28-aditya",
-        email: "28-aditya@gmail.com"
+        username: "name",
+        email: "email"
     }
 };
