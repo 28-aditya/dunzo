@@ -1,6 +1,6 @@
 // scripts/api.js
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "http://localhost:8000";
 
 async function loadUserData() {
     try {
@@ -31,6 +31,8 @@ async function loadUserData() {
             t.created_at,
             t.is_completed ? t.created_at : null
         ));
+
+        state.addedCategories = data.added_categories.map(c => c.name);
 
         // Map backend notes → NoteItem objects
         state.notes = data.notes.map(n => {

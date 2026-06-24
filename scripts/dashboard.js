@@ -171,4 +171,7 @@ function renderDashboard() {
                 break;
         }
     }
+    document.getElementById("user-name").textContent  = state.user.username;
+    document.getElementById("user-email").textContent = state.user.email;
+    document.getElementById("user-avatar").textContent = state.user.username.charAt(0).toUpperCase();
 }

@@ -30,12 +30,12 @@ document.querySelectorAll(".sidebar-item").forEach(item => {
 });
 document.getElementById("nav-dashboard").classList.add("active");
 
-const theme_button = document.getElementById("theme-toggle");
 theme_button.addEventListener("click", function () {
     toggleTheme();
 });
 
-// Load real data from backend, then render
-loadUserData();
+async function initApp() {
+    await loadUserData();
+}
 
-refreshCurrentView();
+initApp();
