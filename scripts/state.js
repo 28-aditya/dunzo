@@ -6,6 +6,7 @@ let state = {
     currentView: "dashboard",
 
     tasks: [],
+    archivedTasks: [],
     notes: [],
     addedCategories: [],
 
