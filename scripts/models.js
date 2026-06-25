@@ -11,7 +11,8 @@ class TaskItem {
         date,
         time,
         timeCreated = null,
-        timeCompleted = null
+        timeCompleted = null,
+        isArchived = false
     ) {
 
         this.task_id = crypto.randomUUID();
@@ -34,6 +35,10 @@ class TaskItem {
                 : parsed.toISOString();
         } else {
             this.time_completed = null;
+        }
+
+        if (isArchived) {
+            this.is_archived = true
         }
     }
 }
