@@ -2,6 +2,8 @@
 // ANALYTICS HELPER FUNCTIONS
 // ===========================
 
+const allTasks = [...state.tasks, ...state.archivedTasks]
+
 function getWeekBounds() {
 
     const today = new Date();
@@ -47,7 +49,7 @@ function getBestDay() {
         Sunday: 0
     };
 
-    state.tasks.forEach(task => {
+    allTasks.forEach(task => {
 
         if (
             task.task_status !== "done" ||
@@ -82,7 +84,7 @@ function getBestDay() {
 function getCurrentStreak() {
 
     const completedDates = new Set(
-        state.tasks
+        allTasks
             .filter(
                 task =>
                     task.task_status === "done" &&
@@ -126,7 +128,7 @@ function getCurrentStreak() {
 
 function getTrendData() {
 
-    const completedTasks = state.tasks
+    const completedTasks = allTasks
         .filter(task =>
             task.task_status === "done" &&
             task.time_completed
@@ -519,14 +521,14 @@ function getTaskFlowData() {
         );
 
         createdCounts.push(
-            state.tasks.filter(task =>
+            allTasks.filter(task =>
                 task.time_created &&
                 task.time_created.startsWith(dateString)
             ).length
         );
 
         completedCounts.push(
-            state.tasks.filter(task =>
+            allTasks.filter(task =>
                 task.time_completed &&
                 task.time_completed.startsWith(dateString)
             ).length
@@ -721,7 +723,7 @@ function getCategoryData() {
 
     counts.custom = 0;
 
-    state.tasks.forEach(task => {
+    allTasks.forEach(task => {
 
         const category =
             task.task_category.toLowerCase();
@@ -780,7 +782,7 @@ function drawCategoryChart(canvasId) {
 
     const categories = {};
 
-    state.tasks.forEach(task => {
+    allTasks.forEach(task => {
 
         const category =
             task.task_category || "other";

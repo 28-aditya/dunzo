@@ -21,7 +21,9 @@ async function loadUserData() {
         state.user.email    = data.user.email;
 
         // Map backend tasks → TaskItem objects
-        state.tasks = data.tasks.map(t => new TaskItem(
+        state.tasks = data.tasks
+        .filter(t=> !t.is_archived)
+        .map(t => new TaskItem(
             t.title,
             t.description || "",
             t.is_completed ? "done" : "todo",
@@ -29,7 +31,22 @@ async function loadUserData() {
             t.created_at?.split("T")[0] || "",
             "",
             t.created_at,
-            t.is_completed ? t.created_at : null
+            t.is_completed ? t.created_at : null,
+            t.is_archived
+        ));
+
+        state.archivedTasks = data.tasks
+        .filter(t=> t.is_archived)
+        .map(t => new TaskItem(
+                        t.title,
+            t.description || "",
+            t.is_completed ? "done" : "todo",
+            "",                        // category not in DB yet
+            t.created_at?.split("T")[0] || "",
+            "",
+            t.created_at,
+            t.is_completed ? t.created_at : null,
+            t.is_archived
         ));
 
         state.addedCategories = data.added_categories.map(c => c.name);
