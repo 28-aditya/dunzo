@@ -97,6 +97,10 @@ let settingsInitialised = false;
 function refreshCurrentView() {
 
     renderDashboard();
+    saveUIState();
+    saveSettings();
+    saveTask();
+    saveNote();
 
     switch (state.currentView) {
         case "today":

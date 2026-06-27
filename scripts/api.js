@@ -72,3 +72,63 @@ async function loadUserData() {
         console.error("Failed to load user data:", err);
     }
 }
+
+async function saveTask(task) {
+    const response = await fetch(`${API_URL}/tasks`, {
+        method: task.id ? "PUT" : "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(task)
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to save task");
+    }
+}
+
+async function saveNote(note) {
+    const response = await fetch(`${API_URL}/notes`, {
+        method: note.id ? "PUT" : "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(note)
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to save note");
+    }
+}
+
+async function saveSettings(settings) {
+    const response = await fetch(`${API_URL}/settings`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(settings)
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to save settings");
+    }
+}
+
+async function saveUIState(currentView) {
+    const response = await fetch(`${API_URL}/user/state`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ current_view: currentView })
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to save UI state");
+    }
+}
