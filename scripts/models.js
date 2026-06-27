@@ -37,9 +37,7 @@ class TaskItem {
             this.time_completed = null;
         }
 
-        if (isArchived) {
-            this.is_archived = true
-        }
+        this.is_archived = isArchived
     }
 }
 
