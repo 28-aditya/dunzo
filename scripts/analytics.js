@@ -2,8 +2,6 @@
 // ANALYTICS HELPER FUNCTIONS
 // ===========================
 
-const allTasks = [...state.tasks, ...state.archivedTasks]
-
 function getWeekBounds() {
 
     const today = new Date();
@@ -923,6 +921,8 @@ function renderCategoryLegend(
 // ===========================
 
 function renderAnalytics() {
+    
+    const allTasks = [...state.tasks, ...state.archivedTasks]
 
     const weekTasks =
         document.getElementById("week-tasks");

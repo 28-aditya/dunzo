@@ -1,71 +1,105 @@
-// scripts/api.js
+// =========================
+// API CONFIG
+// =========================
 
 const API_URL = "http://localhost:8000";
+
+// =========================
+// LOAD USER DATA
+// =========================
 
 async function loadUserData() {
     try {
         const res = await fetch(`${API_URL}/api/me`, {
-            credentials: "include"  // sends the httpOnly cookie
+            credentials: "include"
         });
 
         if (res.status === 401) {
-            // Not logged in — send back to sign-in
             window.location.href = "/pages/sign-in.html";
             return;
         }
 
         const data = await res.json();
 
-        // Populate user
+        // -------------------------
+        // USER
+        // -------------------------
         state.user.username = data.user.name;
-        state.user.email    = data.user.email;
+        state.user.email = data.user.email;
 
-        // Map backend tasks → TaskItem objects
+        // -------------------------
+        // TASKS
+        // -------------------------
         state.tasks = data.tasks
-        .filter(t=> !t.is_archived)
-        .map(t => new TaskItem(
-            t.title,
-            t.description || "",
-            t.is_completed ? "done" : "todo",
-            "",                        // category not in DB yet
-            t.created_at?.split("T")[0] || "",
-            "",
-            t.created_at,
-            t.is_completed ? t.created_at : null,
-            t.is_archived
-        ));
+            .filter(t => !t.is_archived)
+            .map(t => {
+                const task = new TaskItem(
+                    t.title,
+                    t.description || "",
+                    t.status,
+                    t.category || "",
+                    t.due_date || "",
+                    t.due_time || "",
+                    t.created_at,
+                    t.status === "done" ? t.created_at : null,
+                    t.is_archived
+                );
+
+                task.task_id = t.id;
+                return task;
+            });
 
         state.archivedTasks = data.tasks
-        .filter(t=> t.is_archived)
-        .map(t => new TaskItem(
-                        t.title,
-            t.description || "",
-            t.is_completed ? "done" : "todo",
-            "",                        // category not in DB yet
-            t.created_at?.split("T")[0] || "",
-            "",
-            t.created_at,
-            t.is_completed ? t.created_at : null,
-            t.is_archived
-        ));
+            .filter(t => t.is_archived)
+            .map(t => {
+                const task = new TaskItem(
+                    t.title,
+                    t.description || "",
+                    t.status,
+                    t.category || "",
+                    t.due_date || "",
+                    t.due_time || "",
+                    t.created_at,
+                    t.status === "done" ? t.created_at : null,
+                    t.is_archived
+                );
 
+                task.task_id = t.id;
+                return task;
+            });
+
+        // -------------------------
+        // CATEGORIES
+        // -------------------------
         state.addedCategories = data.added_categories.map(c => c.name);
 
-        // Map backend notes → NoteItem objects
+        // -------------------------
+        // NOTES
+        // -------------------------
         state.notes = data.notes.map(n => {
-            const note = new NoteItem(n.title || "", n.content);
-            note.note_id      = n.id;
+            const note = new NoteItem(
+                n.title || "",
+                n.content
+            );
+
+            note.note_id = n.id;
             note.time_created = n.created_at;
+            note.time_modified = n.updated_at;
+
             return note;
         });
 
-        // Map settings
-        state.settings.darkTheme      = data.settings.dark_theme;
-        state.settings.dailyGoal      = data.settings.daily_goal;
-        state.settings.autoArchive    = data.settings.auto_archive;
-        state.settings.notifyOverdue  = data.settings.notify_overdue;
+        // -------------------------
+        // SETTINGS
+        // -------------------------
+        state.settings.darkTheme = data.settings.dark_theme;
+        state.settings.dailyGoal = data.settings.daily_goal;
+        state.settings.autoArchive = data.settings.auto_archive;
+        state.settings.notifyOverdue = data.settings.notify_overdue;
 
-        // Re-render with real data
+        // -------------------------
+        // FIRST RENDER
+        // -------------------------
         refreshCurrentView();
 
     } catch (err) {
@@ -73,62 +107,104 @@ async function loadUserData() {
     }
 }
 
+// =========================
+// TASK API
+// =========================
+
 async function saveTask(task) {
-    const response = await fetch(`${API_URL}/tasks`, {
-        method: task.id ? "PUT" : "POST",
+    const payload = {
+        title: task.task_title,
+        description: task.task_description,
+        status: task.task_status,
+        category: task.task_category,
+        due_date: task.task_date,
+        due_time: task.task_time,
+        is_archived: task.is_archived || false
+    };
+
+    const url = task.task_id
+        ? `${API_URL}/api/tasks/${task.task_id}`
+        : `${API_URL}/api/tasks`;
+
+    const method = task.task_id ? "PUT" : "POST";
+
+    const res = await fetch(url, {
+        method,
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(task)
+        credentials: "include",
+        body: JSON.stringify(payload)
     });
 
-    if (!response.ok) {
-        throw new Error("Failed to save task");
-    }
+    if (!res.ok) throw new Error("Failed to save task");
 }
+
+// =========================
+// NOTE API
+// =========================
 
 async function saveNote(note) {
-    const response = await fetch(`${API_URL}/notes`, {
-        method: note.id ? "PUT" : "POST",
+    const payload = {
+        title: note.note_title,
+        content: note.note_content
+    };
+
+    const url = note.note_id
+        ? `${API_URL}/api/notes/${note.note_id}`
+        : `${API_URL}/api/notes`;
+
+    const method = note.note_id ? "PUT" : "POST";
+
+    const res = await fetch(url, {
+        method,
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(note)
+        credentials: "include",
+        body: JSON.stringify(payload)
     });
 
-    if (!response.ok) {
-        throw new Error("Failed to save note");
-    }
+    if (!res.ok) throw new Error("Failed to save note");
 }
+
+// =========================
+// SETTINGS API
+// =========================
 
 async function saveSettings(settings) {
-    const response = await fetch(`${API_URL}/settings`, {
+    const res = await fetch(`${API_URL}/api/settings`, {
         method: "PUT",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify(settings)
+        credentials: "include",
+        body: JSON.stringify({
+            dark_theme: settings.darkTheme,
+            daily_goal: settings.dailyGoal,
+            auto_archive: settings.autoArchive,
+            notify_overdue: settings.notifyOverdue
+        })
     });
 
-    if (!response.ok) {
-        throw new Error("Failed to save settings");
-    }
+    if (!res.ok) throw new Error("Failed to save settings");
 }
 
+// =========================
+// UI STATE
+// =========================
+
 async function saveUIState(currentView) {
-    const response = await fetch(`${API_URL}/user/state`, {
+    const res = await fetch(`${API_URL}/user/state`, {
         method: "PUT",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Content-Type": "application/json"
         },
-        body: JSON.stringify({ current_view: currentView })
+        credentials: "include",
+        body: JSON.stringify({
+            current_view: currentView
+        })
     });
 
-    if (!response.ok) {
-        throw new Error("Failed to save UI state");
-    }
+    if (!res.ok) throw new Error("Failed to save UI state");
 }
