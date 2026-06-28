@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dunzo — Verify Email</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/png" href="../assets/favicon.ico">
+</head>
+<body class="dark-mode">
+  <div class="page">
+    <div class="bg-deco" aria-hidden="true"><div class="tile tile-tl"></div></div>
+
+    <nav class="top-nav">
+      <span class="logo">dunzo<span class="dot">.</span></span>
+    </nav>
+
+    <main class="page-center">
+      <section class="auth-card" id="verify-card" style="text-align:center">
+        <p style="font-size:48px;margin-bottom:16px" id="verify-icon">⏳</p>
+        <h2 style="font-family:var(--font-display);margin-bottom:12px" id="verify-title">
+          Verifying your email…
+        </h2>
+        <p style="color:var(--muted);line-height:1.6" id="verify-msg">
+          Please wait a moment.
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const API_URL = "http://localhost:8000";
+
+    async function verify() {
+      const token = new URLSearchParams(window.location.search).get("token");
+
+      if (!token) {
+        show("❌", "Invalid link", "This verification link is missing a token.");
+        return;
+      }
+
+      try {
+        // The backend redirects to dashboard on success — if we land here
+        // something went wrong, so we follow the redirect manually.
+        const res = await fetch(`${API_URL}/auth/email/verify?token=${token}`, {
+          credentials: "include",
+          redirect: "follow",
+        });
+
+        if (res.redirected) {
+          window.location.href = res.url;
+          return;
+        }
+
+        if (res.ok) {
+          window.location.href = "/pages/dashboard.html";
+          return;
+        }
+
+        const data = await res.json().catch(() => ({}));
+        show("❌", "Verification failed", data.detail || "This link may have expired. Please register again.");
+
+      } catch (err) {
+        show("❌", "Something went wrong", "Please try again or contact support.");
+        console.error(err);
+      }
+    }
+
+    function show(icon, title, msg) {
+      document.getElementById("verify-icon").textContent  = icon;
+      document.getElementById("verify-title").textContent = title;
+      document.getElementById("verify-msg").textContent   = msg;
+    }
+
+    verify();
+  </script>
+</body>
+</html>
