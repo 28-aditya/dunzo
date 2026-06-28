@@ -38,10 +38,10 @@ function clearError() {
 }
 
 function clearEditor() {
-    noteTitleInput.value       = "";
-    noteContentInput.value     = "";
+    noteTitleInput.value          = "";
+    noteContentInput.value        = "";
     linkedTaskContainer.innerHTML = "";
-    taskSelect.value           = "";
+    taskSelect.value              = "";
 }
 
 // =====================
@@ -69,28 +69,28 @@ function hideEditor() {
 // =====================
 
 function initNotes() {
-    notesList          = document.getElementById("notes-list");
-    noteTitleInput     = document.getElementById("note-title");
-    noteContentInput   = document.getElementById("note-content");
-    newNoteBtn         = document.getElementById("new-note-btn");
-    saveNoteBtn        = document.getElementById("save-note-btn");
-    deleteNoteBtn      = document.getElementById("delete-note-btn");
-    taskSelect         = document.getElementById("task-link-select");
-    linkTaskBtn        = document.getElementById("link-task-btn");
+    notesList           = document.getElementById("notes-list");
+    noteTitleInput      = document.getElementById("note-title");
+    noteContentInput    = document.getElementById("note-content");
+    newNoteBtn          = document.getElementById("new-note-btn");
+    saveNoteBtn         = document.getElementById("save-note-btn");
+    deleteNoteBtn       = document.getElementById("delete-note-btn");
+    taskSelect          = document.getElementById("task-link-select");
+    linkTaskBtn         = document.getElementById("link-task-btn");
     linkedTaskContainer = document.getElementById("linked-task-list");
-    noteEditor         = document.getElementById("note-editor");
-    emptyState         = document.getElementById("notes-empty-state");
-    errorEl            = document.getElementById("note-error");
-    linkedCountEl      = document.getElementById("linked-task-count");
+    noteEditor          = document.getElementById("note-editor");
+    emptyState          = document.getElementById("notes-empty-state");
+    errorEl             = document.getElementById("note-error");
+    linkedCountEl       = document.getElementById("linked-task-count");
 
     renderTaskDropdown();
     renderNotes();
     hideEditor();
 
-    newNoteBtn.addEventListener("click",  createNewNote);
-    saveNoteBtn.addEventListener("click", saveNote);
+    newNoteBtn.addEventListener("click",    createNewNote);
+    saveNoteBtn.addEventListener("click",   saveNote);
     deleteNoteBtn.addEventListener("click", deleteNote);
-    linkTaskBtn.addEventListener("click", linkTask);
+    linkTaskBtn.addEventListener("click",   linkTask);
 
     noteTitleInput.addEventListener("input",   autosave);
     noteContentInput.addEventListener("input", autosave);
@@ -125,7 +125,7 @@ function openNote(id) {
 
     ensureNote(note);
     state.activeNoteId = id;
-    draftNote = null;
+    draftNote          = null;
 
     noteTitleInput.value   = note.note_title   || "";
     noteContentInput.value = note.note_content || "";
@@ -142,7 +142,7 @@ function openNote(id) {
 // SAVE NOTE
 // =====================
 
-function saveNote() {
+async function saveNote() {
     clearError();
 
     const title   = noteTitleInput.value.trim();
@@ -154,8 +154,9 @@ function saveNote() {
     }
 
     let note = state.notes.find(n => n.note_id === state.activeNoteId);
+    const isNew = !note && draftNote;
 
-    if (!note && draftNote) {
+    if (isNew) {
         note = draftNote;
         state.notes.push(note);
     }
@@ -163,15 +164,23 @@ function saveNote() {
     if (!note) return;
 
     ensureNote(note);
-
-    note.note_title = title ||
-        `Untitled Note ${state.notes.filter(n => (n.note_title || "").startsWith("Untitled Note")).length + 1}`;
+    note.note_title    = title ||
+        `Untitled Note ${state.notes.filter(n => (n.note_title || "").startsWith("Untitled Note")).length}`;
     note.note_content  = content;
     note.time_modified = new Date().toISOString();
 
     draftNote = null;
 
-    saveState();
+    try {
+        if (isNew) {
+            await apiCreateNote(note);    // sets note.note_id to real DB id
+        } else {
+            await apiUpdateNote(note);
+        }
+    } catch (err) {
+        console.error("Save note failed:", err);
+    }
+
     renderNotes();
     closeEditor();
 }
@@ -180,13 +189,19 @@ function saveNote() {
 // DELETE NOTE
 // =====================
 
-function deleteNote() {
-    const idx = state.notes.findIndex(n => n.note_id === state.activeNoteId);
+async function deleteNote() {
+    const noteId = state.activeNoteId;
+    const idx    = state.notes.findIndex(n => n.note_id === noteId);
     if (idx === -1) return;
 
     state.notes.splice(idx, 1);
 
-    saveState();
+    try {
+        await apiDeleteNote(noteId);
+    } catch (err) {
+        console.error("Delete note failed:", err);
+    }
+
     renderNotes();
     closeEditor();
 }
@@ -197,14 +212,14 @@ function deleteNote() {
 
 function closeEditor() {
     state.activeNoteId = null;
-    draftNote = null;
+    draftNote          = null;
     clearEditor();
     clearError();
     hideEditor();
 }
 
 // =====================
-// AUTOSAVE
+// AUTOSAVE (local only — updates in-memory while typing)
 // =====================
 
 function autosave() {
@@ -221,7 +236,6 @@ function autosave() {
 // =====================
 
 function renderNotes() {
-    // guard against being called before initNotes
     if (!notesList) return;
 
     notesList.innerHTML = "";
@@ -237,11 +251,9 @@ function renderNotes() {
     state.notes.forEach(note => {
         ensureNote(note);
 
-        const div = document.createElement("div");
-        div.className = "note-item";
-
-        if (note.note_id === state.activeNoteId)
-            div.classList.add("active");
+        const div       = document.createElement("div");
+        div.className   = "note-item";
+        if (note.note_id === state.activeNoteId) div.classList.add("active");
 
         div.innerHTML = `
             <div class="note-title">${note.note_title || "Untitled"}</div>
@@ -259,16 +271,13 @@ function renderNotes() {
 
 function renderTaskDropdown() {
     if (!taskSelect) return;
-
     taskSelect.innerHTML = `<option value="">Select task...</option>`;
-
     state.tasks.forEach(task => {
         const opt       = document.createElement("option");
         opt.value       = task.task_id;
         opt.textContent = task.task_title;
         taskSelect.appendChild(opt);
     });
-
     taskSelect.value = "";
 }
 
@@ -276,7 +285,7 @@ function renderTaskDropdown() {
 // LINK TASK
 // =====================
 
-function linkTask() {
+async function linkTask() {
     clearError();
 
     const note   = getActiveNote();
@@ -298,6 +307,15 @@ function linkTask() {
     note.linked_tasks.push(taskId);
     taskSelect.value = "";
 
+    try {
+        await apiLinkTask(note.note_id, taskId);
+    } catch (err) {
+        // Roll back optimistic update
+        note.linked_tasks = note.linked_tasks.filter(id => id !== taskId);
+        showError("Failed to link task");
+        console.error(err);
+    }
+
     renderLinked(note);
     renderNotes();
     updateLinkedCount(note);
@@ -307,8 +325,15 @@ function linkTask() {
 // UNLINK TASK
 // =====================
 
-function unlinkTask(note, taskId) {
+async function unlinkTask(note, taskId) {
     note.linked_tasks = note.linked_tasks.filter(id => id !== taskId);
+
+    try {
+        await apiUnlinkTask(note.note_id, taskId);
+    } catch (err) {
+        console.error("Unlink task failed:", err);
+    }
+
     renderLinked(note);
     renderNotes();
     updateLinkedCount(note);
@@ -325,9 +350,9 @@ function renderLinked(note) {
         const task = state.tasks.find(t => t.task_id === id);
         if (!task) return;
 
-        const chip = document.createElement("div");
-        chip.className = "linked-task-chip";
-        chip.innerHTML = `
+        const chip       = document.createElement("div");
+        chip.className   = "linked-task-chip";
+        chip.innerHTML   = `
             <span>${task.task_title}</span>
             <button class="unlink">✕</button>
         `;

@@ -2,7 +2,6 @@
 // SETTINGS MODULE — dunzo
 // =========================
 
-// ---- DOM refs ----
 let settingsUsername;
 let settingsEmail;
 let dailyGoalInput;
@@ -12,15 +11,9 @@ let autoArchiveToggle;
 let exportBtn;
 let clearBtn;
 let resetPwdBtn;
-
-// focus refs
 let focusDurationInput;
 let focusBreakInput;
-
-// notification refs
 let notifyOverdueToggle;
-
-// display refs
 let defaultViewSelect;
 
 // =========================
@@ -28,19 +21,19 @@ let defaultViewSelect;
 // =========================
 
 function initSettings() {
-    settingsUsername   = document.getElementById("settings-username");
-    settingsEmail      = document.getElementById("settings-email");
-    dailyGoalInput     = document.getElementById("daily-goal");
-    saveChangesRow     = document.getElementById("save-changes-row");
-    saveChangesBtn     = document.getElementById("save-changes-btn");
-    autoArchiveToggle  = document.getElementById("auto-archive");
-    exportBtn          = document.getElementById("export-data");
-    clearBtn           = document.getElementById("clear-data");
-    resetPwdBtn        = document.getElementById("reset-pwd-btn");
-    focusDurationInput = document.getElementById("focus-duration");
-    focusBreakInput    = document.getElementById("focus-break");
+    settingsUsername    = document.getElementById("settings-username");
+    settingsEmail       = document.getElementById("settings-email");
+    dailyGoalInput      = document.getElementById("daily-goal");
+    saveChangesRow      = document.getElementById("save-changes-row");
+    saveChangesBtn      = document.getElementById("save-changes-btn");
+    autoArchiveToggle   = document.getElementById("auto-archive");
+    exportBtn           = document.getElementById("export-data");
+    clearBtn            = document.getElementById("clear-data");
+    resetPwdBtn         = document.getElementById("reset-pwd-btn");
+    focusDurationInput  = document.getElementById("focus-duration");
+    focusBreakInput     = document.getElementById("focus-break");
     notifyOverdueToggle = document.getElementById("notify-overdue");
-    defaultViewSelect  = document.getElementById("default-view");
+    defaultViewSelect   = document.getElementById("default-view");
 
     renderSettings();
     attachSettingsEvents();
@@ -51,19 +44,15 @@ function initSettings() {
 // =========================
 
 function renderSettings() {
-    settingsUsername.value      = state.user.username || "";
-    settingsEmail.value         = state.user.email    || "";
-    dailyGoalInput.value        = state.settings.dailyGoal   ?? 5;
-    autoArchiveToggle.checked   = state.settings.autoArchive  ?? false;
+    settingsUsername.value    = state.user.username || "";
+    settingsEmail.value       = state.user.email    || "";
+    dailyGoalInput.value      = state.settings.dailyGoal  ?? 5;
+    autoArchiveToggle.checked = state.settings.autoArchive ?? false;
 
-    if (focusDurationInput)
-        focusDurationInput.value = state.settings.focusDuration ?? 25;
-    if (focusBreakInput)
-        focusBreakInput.value    = state.settings.focusBreak    ?? 5;
-    if (notifyOverdueToggle)
-        notifyOverdueToggle.checked = state.settings.notifyOverdue ?? true;
-    if (defaultViewSelect)
-        defaultViewSelect.value  = state.settings.defaultView ?? "dashboard";
+    if (focusDurationInput)  focusDurationInput.value       = state.settings.focusDuration ?? 25;
+    if (focusBreakInput)     focusBreakInput.value           = state.settings.focusBreak    ?? 5;
+    if (notifyOverdueToggle) notifyOverdueToggle.checked     = state.settings.notifyOverdue ?? true;
+    if (defaultViewSelect)   defaultViewSelect.value         = state.settings.defaultView   ?? "dashboard";
 
     refreshThemeChips();
     renderSettingsStats();
@@ -76,7 +65,7 @@ function renderSettings() {
 
 function renderSettingsStats() {
     const total = (state.tasks || []).length;
-    const done  = (state.tasks || []).filter(t => t.task_status === "done").length; // fixed: was t.status
+    const done  = (state.tasks || []).filter(t => t.task_status === "done").length;
     const notes = (state.notes || []).length;
     const rate  = total > 0 ? Math.round((done / total) * 100) : 0;
 
@@ -96,18 +85,16 @@ function renderSettingsStats() {
 // =========================
 
 function attachSettingsEvents() {
-    settingsUsername.addEventListener("input",  showSaveButton);
-    settingsEmail.addEventListener("input",     showSaveButton);
-    saveChangesBtn.addEventListener("click",    saveAccountChanges);
-    resetPwdBtn.addEventListener("click",       handleResetPassword);
+    settingsUsername.addEventListener("input", showSaveButton);
+    settingsEmail.addEventListener("input",    showSaveButton);
+    saveChangesBtn.addEventListener("click",   saveAccountChanges);
+    resetPwdBtn.addEventListener("click",      handleResetPassword);
 
     dailyGoalInput.addEventListener("change",    updateDailyGoal);
     autoArchiveToggle.addEventListener("change", updateAutoArchive);
 
-    if (notifyOverdueToggle)
-        notifyOverdueToggle.addEventListener("change", updateNotifications);
-    if (defaultViewSelect)
-        defaultViewSelect.addEventListener("change", updateDisplaySettings);
+    if (notifyOverdueToggle) notifyOverdueToggle.addEventListener("change", updateNotifications);
+    if (defaultViewSelect)   defaultViewSelect.addEventListener("change",   updateDisplaySettings);
 
     document.querySelectorAll(".theme-chip").forEach(chip => {
         chip.addEventListener("click", () => applyTheme(chip.dataset.theme));
@@ -151,7 +138,6 @@ function saveAccountChanges() {
     setTimeout(() => saveChangesRow.classList.add("hidden"), 1400);
 
     updateUserPanel();
-    saveState();
 }
 
 function updateUserPanel() {
@@ -181,12 +167,12 @@ function handleResetPassword() {
 
 function updateDailyGoal() {
     state.settings.dailyGoal = Number(dailyGoalInput.value) || 1;
-    saveState();
+    apiSaveSettings().catch(() => {});
 }
 
 function updateAutoArchive() {
     state.settings.autoArchive = autoArchiveToggle.checked;
-    saveState();
+    apiSaveSettings().catch(() => {});
 }
 
 // =========================
@@ -195,7 +181,7 @@ function updateAutoArchive() {
 
 function updateNotifications() {
     state.settings.notifyOverdue = notifyOverdueToggle?.checked ?? true;
-    saveState();
+    apiSaveSettings().catch(() => {});
 }
 
 // =========================
@@ -204,7 +190,7 @@ function updateNotifications() {
 
 function updateDisplaySettings() {
     state.settings.defaultView = defaultViewSelect?.value ?? "dashboard";
-    saveState();
+    // defaultView is frontend-only, no backend field for it — no API call needed
 }
 
 // =========================
@@ -220,7 +206,7 @@ function applyTheme(theme) {
         state.settings.darkTheme = true;
     }
     refreshThemeChips();
-    saveState();
+    apiSaveSettings().catch(() => {});
 }
 
 function refreshThemeChips() {
@@ -273,7 +259,6 @@ function handleImport(e) {
     reader.onload = (evt) => {
         try {
             const imported = JSON.parse(evt.target.result);
-
             if (typeof imported !== "object" || imported === null)
                 throw new Error("Invalid file format");
 
@@ -282,9 +267,8 @@ function handleImport(e) {
             if (imported.settings) state.settings = { ...state.settings, ...imported.settings };
             if (imported.user)     state.user     = { ...state.user,     ...imported.user };
 
-            saveState();
             renderSettings();
-            renderTaskDropdown(); // refresh notes task dropdown after import
+            renderTaskDropdown();
 
             ["renderDashboard","renderToday","renderUpcoming",
              "renderCompleted","renderOverdue","renderNotes","renderAnalytics"
@@ -308,7 +292,6 @@ function clearWorkspace() {
 
     state.tasks = [];
     state.notes = [];
-    saveState();
     renderSettingsStats();
 
     ["renderDashboard","renderToday","renderUpcoming",
@@ -317,20 +300,12 @@ function clearWorkspace() {
 }
 
 // =========================
-// SAVE STATE
+// UTIL
 // =========================
 
 function saveState() {
-    try {
-        localStorage.setItem("dunzo-state", JSON.stringify(state));
-    } catch {
-        // storage unavailable
-    }
+    // kept as no-op for any legacy calls — DB is source of truth now
 }
-
-// =========================
-// UTIL
-// =========================
 
 function flashError(el, msg) {
     const orig = el.textContent;
