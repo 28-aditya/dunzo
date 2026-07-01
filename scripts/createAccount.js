@@ -108,24 +108,8 @@ document.getElementById("create-account-form")
                 return;
             }
 
-            // Success — show confirmation UI
-            document.getElementById("create-account-card").innerHTML = `
-                <div style="text-align:center;padding:32px 0">
-                    <p style="font-size:48px;margin-bottom:16px">✉️</p>
-                    <h2 style="font-family:var(--font-display);margin-bottom:12px">Check your email</h2>
-                    <p style="color:var(--muted);line-height:1.6">
-                        We sent a verification link to<br>
-                        <strong style="color:var(--text)">${email}</strong>
-                    </p>
-                    <p style="color:var(--muted);font-size:13px;margin-top:16px">
-                        Click the link to activate your account. It expires in 24 hours.
-                    </p>
-                    <a href="sign-in.html" style="display:inline-block;margin-top:28px;
-                        color:var(--accent);font-size:14px">
-                        Back to sign in
-                    </a>
-                </div>
-            `;
+            // Success — redirect to sign in
+            window.location.href = "dashboard.html";
 
         } catch (err) {
             alert("Something went wrong. Please try again.");

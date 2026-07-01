@@ -47,7 +47,7 @@ function getBestDay() {
         Sunday: 0
     };
 
-    allTasks.forEach(task => {
+    getAllTasks().forEach(task => {
 
         if (
             task.task_status !== "done" ||
@@ -82,7 +82,7 @@ function getBestDay() {
 function getCurrentStreak() {
 
     const completedDates = new Set(
-        allTasks
+        getAllTasks()
             .filter(
                 task =>
                     task.task_status === "done" &&
@@ -126,7 +126,7 @@ function getCurrentStreak() {
 
 function getTrendData() {
 
-    const completedTasks = allTasks
+    const completedTasks = getAllTasks()
         .filter(task =>
             task.task_status === "done" &&
             task.time_completed
@@ -519,14 +519,14 @@ function getTaskFlowData() {
         );
 
         createdCounts.push(
-            allTasks.filter(task =>
+            getAllTasks().filter(task =>
                 task.time_created &&
                 task.time_created.startsWith(dateString)
             ).length
         );
 
         completedCounts.push(
-            allTasks.filter(task =>
+            getAllTasks().filter(task =>
                 task.time_completed &&
                 task.time_completed.startsWith(dateString)
             ).length
@@ -721,7 +721,7 @@ function getCategoryData() {
 
     counts.custom = 0;
 
-    allTasks.forEach(task => {
+    getAllTasks().forEach(task => {
 
         const category =
             task.task_category.toLowerCase();
@@ -780,7 +780,7 @@ function drawCategoryChart(canvasId) {
 
     const categories = {};
 
-    allTasks.forEach(task => {
+    getAllTasks().forEach(task => {
 
         const category =
             task.task_category || "other";
@@ -914,6 +914,9 @@ function renderCategoryLegend(
     );
 }
 
+function getAllTasks() {
+    return [...state.tasks, ...state.archivedTasks];
+}
 
 
 // ===========================
@@ -921,8 +924,6 @@ function renderCategoryLegend(
 // ===========================
 
 function renderAnalytics() {
-    
-    const allTasks = [...state.tasks, ...state.archivedTasks]
 
     const weekTasks =
         document.getElementById("week-tasks");
