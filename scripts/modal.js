@@ -219,7 +219,6 @@ async function handleSave() {
             await apiCreateTask(task);
         } catch (err) {
             console.error("Create task failed:", err);
-            // task stays in local state so the user doesn't lose their work
         }
     }
 

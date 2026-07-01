@@ -22,12 +22,10 @@ theme_button.addEventListener("click", function () {
 // QUICK ADD
 // =========================
 
-document.addEventListener("DOMContentLoaded", () => {
-    const quickInput  = document.getElementById("quick-add-input");
-    const quickButton = document.getElementById("quick-add-button");
+const quickInput  = document.getElementById("quick-add-input");
+const quickButton = document.getElementById("quick-add-button");
 
-    if (!quickInput || !quickButton) return;
-
+if (quickInput && quickButton) {
     async function handleQuickAdd() {
         const title = quickInput.value.trim();
         if (!title) return;
@@ -38,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
                       String(now.getMinutes()).padStart(2, "0");
 
         const task = new TaskItem(title, "", "todo", "personal", today, time);
-
         state.tasks.push(task);
         quickInput.value = "";
 
@@ -52,11 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     quickButton.addEventListener("click", handleQuickAdd);
-
     quickInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") handleQuickAdd();
     });
-});
+}
 
 // =========================
 // BOOT
