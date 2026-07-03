@@ -46,6 +46,25 @@ function setDateMin() {
     dateEl.min = new Date().toISOString().split("T")[0];
 }
 
+// Renders any custom categories already known (from a previous session,
+// loaded via /api/me) as <option> elements. Without this, custom categories
+// were saved to the backend correctly but never showed up in the dropdown
+// again after a reload.
+function populateCategoryDropdown() {
+    if (!categoryEl) return;
+    const customOpt = categoryEl.querySelector('option[value="custom"]');
+
+    state.addedCategories.forEach(name => {
+        const exists = [...categoryEl.options].some(opt => opt.value === name);
+        if (!exists) {
+            const opt = document.createElement("option");
+            opt.value = name;
+            opt.textContent = name;
+            categoryEl.insertBefore(opt, customOpt);
+        }
+    });
+}
+
 function handleCategoryChange() {
     if (!categoryEl || !customGroupEl || !customCategoryEl) return;
     if (categoryEl.value === "custom") {
@@ -174,56 +193,70 @@ function ensureTaskError() {
 // -------------------------
 // SAVE
 // -------------------------
+let isSaving = false; // guards against duplicate tasks from double-click/double-tap
+
 async function handleSave() {
+    if (isSaving) return;
+
     const isEdit = saveBtn?.dataset.mode === "edit";
     if (!validate(isEdit)) return;
 
-    const finalCategory = resolveCategory();
+    const finalCategory = await resolveCategory();
     if (!finalCategory) return;
 
-    if (isEdit) {
-        const t = state.tasks.find(x => x.task_id === editingTaskId);
-        if (!t) return;
+    isSaving = true;
+    if (saveBtn) saveBtn.disabled = true;
 
-        t.task_title       = titleEl.value.trim();
-        t.task_description = descEl.value;
-        t.task_category    = finalCategory;
-        t.task_date        = dateEl.value;
-        t.task_time        = timeEl.value;
+    try {
+        if (isEdit) {
+            const t = state.tasks.find(x => x.task_id === editingTaskId);
+            if (!t) return;
 
-        if (statusEl.value === "done" && t.task_status !== "done") {
-            t.time_completed = new Date().toISOString();
-        } else if (statusEl.value !== "done") {
-            t.time_completed = null;
+            t.task_title       = titleEl.value.trim();
+            t.task_description = descEl.value;
+            t.task_category    = finalCategory;
+            t.task_date        = dateEl.value;
+            t.task_time        = timeEl.value;
+
+            // Optimistic local update — the backend is the source of truth
+            // for completed_at and will correct this on the next reload.
+            if (statusEl.value === "done" && t.task_status !== "done") {
+                t.time_completed = new Date().toISOString();
+            } else if (statusEl.value !== "done") {
+                t.time_completed = null;
+            }
+            t.task_status = statusEl.value;
+
+            try {
+                await apiUpdateTask(t);
+            } catch (err) {
+                console.error("Update task failed:", err);
+            }
+
+        } else {
+            const task = new TaskItem(
+                titleEl.value.trim(),
+                descEl.value,
+                statusEl.value,
+                finalCategory,
+                dateEl.value,
+                timeEl.value
+            );
+            state.tasks.push(task);
+
+            try {
+                await apiCreateTask(task);
+            } catch (err) {
+                console.error("Create task failed:", err);
+            }
         }
-        t.task_status = statusEl.value;
 
-        try {
-            await apiUpdateTask(t);
-        } catch (err) {
-            console.error("Update task failed:", err);
-        }
-
-    } else {
-        const task = new TaskItem(
-            titleEl.value.trim(),
-            descEl.value,
-            statusEl.value,
-            finalCategory,
-            dateEl.value,
-            timeEl.value
-        );
-        state.tasks.push(task);
-
-        try {
-            await apiCreateTask(task);
-        } catch (err) {
-            console.error("Create task failed:", err);
-        }
+        refreshCurrentView();
+        closeModal();
+    } finally {
+        isSaving = false;
+        if (saveBtn) saveBtn.disabled = false;
     }
-
-    refreshCurrentView();
-    closeModal();
 }
 
 // -------------------------
@@ -249,7 +282,7 @@ async function handleDelete() {
 // -------------------------
 // CATEGORY
 // -------------------------
-function resolveCategory() {
+async function resolveCategory() {
     if (categoryEl.value !== "custom") return categoryEl.value;
 
     const custom = customCategoryEl.value.trim();
@@ -266,6 +299,12 @@ function resolveCategory() {
         const customOpt = categoryEl.querySelector('option[value="custom"]');
         categoryEl.insertBefore(opt, customOpt);
         state.addedCategories.push(custom);
+
+        try {
+            await apiCreateCategory(custom);
+        } catch (err) {
+            console.error("Create category failed:", err);
+        }
     }
 
     return custom;
