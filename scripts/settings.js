@@ -14,7 +14,6 @@ let resetPwdBtn;
 let focusDurationInput;
 let focusBreakInput;
 let notifyOverdueToggle;
-let defaultViewSelect;
 
 // =========================
 // INIT
@@ -33,7 +32,6 @@ function initSettings() {
     focusDurationInput  = document.getElementById("focus-duration");
     focusBreakInput     = document.getElementById("focus-break");
     notifyOverdueToggle = document.getElementById("notify-overdue");
-    defaultViewSelect   = document.getElementById("default-view");
 
     renderSettings();
     attachSettingsEvents();
@@ -52,7 +50,6 @@ function renderSettings() {
     if (focusDurationInput)  focusDurationInput.value       = state.settings.focusDuration ?? 25;
     if (focusBreakInput)     focusBreakInput.value           = state.settings.focusBreak    ?? 5;
     if (notifyOverdueToggle) notifyOverdueToggle.checked     = state.settings.notifyOverdue ?? true;
-    if (defaultViewSelect)   defaultViewSelect.value         = state.settings.defaultView   ?? "dashboard";
 
     refreshThemeChips();
     renderSettingsStats();
@@ -94,7 +91,6 @@ function attachSettingsEvents() {
     autoArchiveToggle.addEventListener("change", updateAutoArchive);
 
     if (notifyOverdueToggle) notifyOverdueToggle.addEventListener("change", updateNotifications);
-    if (defaultViewSelect)   defaultViewSelect.addEventListener("change",   updateDisplaySettings);
 
     document.querySelectorAll(".theme-chip").forEach(chip => {
         chip.addEventListener("click", () => applyTheme(chip.dataset.theme));
@@ -182,15 +178,6 @@ function updateAutoArchive() {
 function updateNotifications() {
     state.settings.notifyOverdue = notifyOverdueToggle?.checked ?? true;
     apiSaveSettings().catch(() => {});
-}
-
-// =========================
-// DISPLAY
-// =========================
-
-function updateDisplaySettings() {
-    state.settings.defaultView = defaultViewSelect?.value ?? "dashboard";
-    // defaultView is frontend-only, no backend field for it — no API call needed
 }
 
 // =========================
