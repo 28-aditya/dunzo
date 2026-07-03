@@ -2,6 +2,23 @@
 
 const API_URL = "http://localhost:8000";
 
+// ── Auto-login if a valid session already exists ─────────
+// Covers landing directly on this page (bookmark, back button, etc.)
+// rather than clicking through from index.html.
+(async () => {
+    try {
+        const res = await fetch(`${API_URL}/auth/refresh`, {
+            method:      "POST",
+            credentials: "include"
+        });
+        if (res.ok) {
+            window.location.href = "/pages/dashboard.html";
+        }
+    } catch (err) {
+        // No valid session — just show the sign-in form as normal.
+    }
+})();
+
 // ── Google OAuth ──────────────────────────────────────────
 document.getElementById("google-signin-btn")
     ?.addEventListener("click", () => {
@@ -49,6 +66,7 @@ document.getElementById("signin-form")
 
         const email    = document.getElementById("email-input").value.trim();
         const password = document.getElementById("password-input").value;
+        const remember = document.getElementById("remember-checkbox")?.checked ?? false;
 
         if (!email || !password) {
             alert("Please enter your email and password.");
@@ -64,7 +82,7 @@ document.getElementById("signin-form")
                 method:      "POST",
                 credentials: "include",       // receive the httpOnly cookie
                 headers:     { "Content-Type": "application/json" },
-                body:        JSON.stringify({ email, password }),
+                body:        JSON.stringify({ email, password, remember }),
             });
 
             const data = await res.json();
