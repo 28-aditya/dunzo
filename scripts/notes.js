@@ -343,17 +343,21 @@ async function unlinkTask(note, taskId) {
 // RENDER LINKED TASKS
 // =====================
 
+function findLinkableTask(id) {
+    return state.tasks.find(t => t.task_id === id);
+}
+
 function renderLinked(note) {
     linkedTaskContainer.innerHTML = "";
 
     note.linked_tasks.forEach(id => {
-        const task = state.tasks.find(t => t.task_id === id);
+        const task = findLinkableTask(id);
         if (!task) return;
 
         const chip       = document.createElement("div");
         chip.className   = "linked-task-chip";
         chip.innerHTML   = `
-            <span>${task.task_title}</span>
+            <span>${task.task_title}${task.is_archived ? " (archived)" : ""}</span>
             <button class="unlink">✕</button>
         `;
 
