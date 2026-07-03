@@ -86,19 +86,32 @@ function renderTaskList({
 
         taskRow.addEventListener("click", () => openEditModal(task));
 
-        taskStatusPill.addEventListener("click", e => {
+        taskStatusPill.addEventListener("click", async e => {
             e.stopPropagation();
 
             const statuses  = ["todo", "doing", "done"];
-            const nextIndex = (statuses.indexOf(task.task_status) + 1) % statuses.length;
+            const prevStatus = task.task_status;
+            const nextIndex  = (statuses.indexOf(task.task_status) + 1) % statuses.length;
+
             task.task_status = statuses[nextIndex];
 
+            // Optimistic — the backend is the source of truth for
+            // completed_at and will correct this on the next reload.
             task.time_completed = task.task_status === "done"
                 ? new Date().toISOString()
                 : null;
 
-            saveState();
             refreshCurrentView();
+
+            try {
+                await apiUpdateTask(task);
+            } catch (err) {
+                console.error("Update task status failed:", err);
+                // Roll back the optimistic change if the API call failed
+                task.task_status   = prevStatus;
+                task.time_completed = prevStatus === "done" ? task.time_completed : null;
+                refreshCurrentView();
+            }
         });
     });
 
