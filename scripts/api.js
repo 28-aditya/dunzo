@@ -3,14 +3,55 @@
 const API_URL = "http://localhost:8000";
 
 // ─────────────────────────────────────────
+// SESSION (refresh token / logout)
+// ─────────────────────────────────────────
+
+// Returns true if a valid refresh_token cookie exists and a new
+// access_token was issued, false otherwise. Never throws.
+async function apiRefreshToken() {
+    try {
+        const res = await fetch(`${API_URL}/auth/refresh`, {
+            method:      "POST",
+            credentials: "include"
+        });
+        return res.ok;
+    } catch (err) {
+        console.error("Token refresh failed:", err);
+        return false;
+    }
+}
+
+async function apiLogout() {
+    try {
+        await fetch(`${API_URL}/auth/logout`, {
+            method:      "POST",
+            credentials: "include"
+        });
+    } catch (err) {
+        console.error("Logout failed:", err);
+    }
+}
+
+// ─────────────────────────────────────────
 // LOAD (called once on app boot)
 // ─────────────────────────────────────────
 
 async function loadUserData() {
     try {
-        const res = await fetch(`${API_URL}/api/me`, {
+        let res = await fetch(`${API_URL}/api/me`, {
             credentials: "include"
         });
+
+        if (res.status === 401) {
+            // Access token expired/missing — try a silent refresh using the
+            // refresh_token cookie before booting the user to sign-in.
+            const refreshed = await apiRefreshToken();
+            if (!refreshed) {
+                window.location.href = "/pages/sign-in.html";
+                return;
+            }
+            res = await fetch(`${API_URL}/api/me`, { credentials: "include" });
+        }
 
         if (res.status === 401) {
             window.location.href = "/pages/sign-in.html";
@@ -33,7 +74,7 @@ async function loadUserData() {
                 t.due_date   || "",
                 t.due_time   || "",
                 t.created_at || null,
-                t.status === "done" ? (t.updated_at || t.created_at) : null,
+                t.completed_at || null,      // real completion timestamp from the backend
                 t.is_archived || false
             );
             item.task_id = t.id;            // keep the real DB UUID so PATCH/DELETE work
@@ -60,6 +101,12 @@ async function loadUserData() {
         state.settings.dailyGoal     = data.settings.daily_goal;
         state.settings.autoArchive   = data.settings.auto_archive;
         state.settings.notifyOverdue = data.settings.notify_overdue;
+
+        // These render functions run at DOMContentLoaded, before this fetch
+        // resolves, so their initial pass has nothing to show. Re-run them
+        // now that state.tasks / state.addedCategories are actually populated.
+        if (typeof populateCategoryDropdown === "function") populateCategoryDropdown();
+        if (typeof renderTaskDropdown       === "function") renderTaskDropdown();
 
         refreshCurrentView();
 
@@ -124,6 +171,21 @@ async function apiDeleteTask(taskId) {
         credentials: "include"
     });
     if (!res.ok) throw new Error("Failed to delete task");
+    return res.json();
+}
+
+// ─────────────────────────────────────────
+// CATEGORIES
+// ─────────────────────────────────────────
+
+async function apiCreateCategory(name) {
+    const res = await fetch(`${API_URL}/api/categories/`, {
+        method:      "POST",
+        credentials: "include",
+        headers:     { "Content-Type": "application/json" },
+        body:        JSON.stringify({ name })
+    });
+    if (!res.ok) throw new Error("Failed to create category");
     return res.json();
 }
 
