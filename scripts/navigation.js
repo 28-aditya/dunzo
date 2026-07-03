@@ -131,6 +131,7 @@ function refreshCurrentView() {
             renderSearchResults();
             break;
         case "notes":
+            renderTaskDropdown();
             renderNotes();
             break;
         case "analytics":
