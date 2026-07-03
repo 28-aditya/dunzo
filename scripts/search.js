@@ -19,8 +19,8 @@ function renderSearchResults() {
     searchBarEmptyResults.classList.remove("active");
 
     const requiredTasks = state.tasks.filter(task =>
-        task.task_title.toLowerCase().includes(query)               ||
-        (task.task_description || "").toLowerCase().includes(query) ||
+        task.task_title.toLowerCase().includes(query)           ||
+        (task.task_description).toLowerCase().includes(query)   ||
         task.task_category.toLowerCase().includes(query)
     );
 
