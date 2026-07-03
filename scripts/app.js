@@ -55,6 +55,19 @@ if (quickInput && quickButton) {
 }
 
 // =========================
+// SIGN OUT
+// =========================
+
+const signOutBtn = document.getElementById("sign-out-btn");
+if (signOutBtn) {
+    signOutBtn.addEventListener("click", async () => {
+        signOutBtn.disabled = true;
+        await apiLogout();
+        window.location.href = "/pages/sign-in.html";
+    });
+}
+
+// =========================
 // BOOT
 // =========================
 
