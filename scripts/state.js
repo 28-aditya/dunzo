@@ -9,6 +9,7 @@ let state = {
     archivedTasks: [],
     notes: [],
     addedCategories: [],
+    notifications: [],
 
     activeNoteId: null,
 
