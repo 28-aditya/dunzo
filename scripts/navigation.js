@@ -97,6 +97,7 @@ let settingsInitialised = false;
 function refreshCurrentView() {
 
     apiSaveUIState(state.currentView);
+    renderDashboard();
 
     switch (state.currentView) {
         case "today":
@@ -144,9 +145,6 @@ function refreshCurrentView() {
             } else {
                 renderSettings();
             }
-            break;
-        default:
-            renderDashboard();
             break;
     }
 }
