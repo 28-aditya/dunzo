@@ -95,10 +95,6 @@ function renderDashboard() {
             if (task.time_completed) {
                 return new Date(task.time_completed).getTime();
             }
-            if (task.task_date && task.task_time) {
-                return new Date(`${task.task_date}T${task.task_time}`).getTime();
-            }
-            return new Date(task.time_created).getTime();
         });
 
         const latestCompletion = Math.max(...completionTimes);
