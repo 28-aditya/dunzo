@@ -85,7 +85,6 @@ function attachSettingsEvents() {
     settingsUsername.addEventListener("input", showSaveButton);
     settingsEmail.addEventListener("input",    showSaveButton);
     saveChangesBtn.addEventListener("click",   saveAccountChanges);
-    resetPwdBtn.addEventListener("click",      handleResetPassword);
 
     dailyGoalInput.addEventListener("change",    updateDailyGoal);
     autoArchiveToggle.addEventListener("change", updateAutoArchive);
@@ -117,12 +116,29 @@ function showSaveButton() {
     saveChangesBtn.textContent = "Save Changes";
 }
 
-function saveAccountChanges() {
+async function saveAccountChanges() {
     const newUsername = settingsUsername.value.trim();
     const newEmail    = settingsEmail.value.trim();
 
     if (!newUsername || !newEmail) {
         flashError(saveChangesBtn, "Fill in all fields");
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/me/profile`, {
+            method:      "PUT",
+            credentials: "include",
+            headers:     { "Content-Type": "application/json" },
+            body:        JSON.stringify({ name: newUsername, email: newEmail }),
+        });
+        if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            flashError(saveChangesBtn, data.detail || "Save failed");
+            return;
+        }
+    } catch {
+        flashError(saveChangesBtn, "Save failed");
         return;
     }
 
