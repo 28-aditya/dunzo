@@ -1,6 +1,6 @@
 // scripts/api.js
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://dunzo-backend-pzxl.onrender.com";
 
 // ─────────────────────────────────────────
 // SESSION (refresh token / logout)
