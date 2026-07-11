@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", initModal);
 
 let editingTaskId = null;
 
-let taskModal, newTaskBtn, closeBtns, saveBtn, deleteBtn;
+let taskModal, newTaskBtn, closeBtns, saveBtn, deleteBtn, archiveBtn;
 let titleEl, descEl, statusEl, categoryEl, customCategoryEl, customGroupEl, dateEl, timeEl, timeError;
 
 // -------------------------
@@ -18,6 +18,7 @@ function initModal() {
     closeBtns        = document.querySelectorAll(".close-modal");
     saveBtn          = document.querySelector(".task-modal .btn-primary");
     deleteBtn        = document.getElementById("delete-task-btn");
+    archiveBtn       = document.getElementById("archive-task-btn");
     titleEl          = document.getElementById("task-title");
     descEl           = document.getElementById("task-desc");
     statusEl         = document.getElementById("task-status");
@@ -30,8 +31,9 @@ function initModal() {
 
     if (newTaskBtn) newTaskBtn.addEventListener("click", openCreateModal);
     closeBtns.forEach(btn => btn.addEventListener("click", closeModal));
-    if (saveBtn)   saveBtn.addEventListener("click", handleSave);
-    if (deleteBtn) deleteBtn.addEventListener("click", handleDelete);
+    if (saveBtn)    saveBtn.addEventListener("click", handleSave);
+    if (deleteBtn)  deleteBtn.addEventListener("click", handleDelete);
+    if (archiveBtn) archiveBtn.addEventListener("click", handleArchive);
     if (categoryEl) categoryEl.addEventListener("change", handleCategoryChange);
     if (dateEl)     dateEl.addEventListener("change", handleDateChange);
 
@@ -99,6 +101,9 @@ function openEditModal(task) {
     setMode("edit");
     editingTaskId = task.task_id;
 
+    // Already-archived tasks don't need an archive action.
+    if (archiveBtn) archiveBtn.classList.toggle("hidden", !!task.is_archived);
+
     titleEl.value  = task.task_title       || "";
     descEl.value   = task.task_description || "";
     statusEl.value = task.task_status      || "";
@@ -148,7 +153,8 @@ function setMode(mode) {
         saveBtn.textContent  = isEdit ? "Save Changes" : "Create Task";
         saveBtn.dataset.mode = mode;
     }
-    if (deleteBtn) deleteBtn.classList.toggle("hidden", !isEdit);
+    if (deleteBtn)  deleteBtn.classList.toggle("hidden", !isEdit);
+    if (archiveBtn) archiveBtn.classList.toggle("hidden", !isEdit);
 }
 
 // -------------------------
@@ -273,6 +279,31 @@ async function handleDelete() {
         await apiDeleteTask(taskId);
     } catch (err) {
         console.error("Delete task failed:", err);
+    }
+
+    refreshCurrentView();
+    closeModal();
+}
+
+// -------------------------
+// ARCHIVE
+// -------------------------
+async function handleArchive() {
+    if (!editingTaskId) return;
+
+    const t = state.tasks.find(x => x.task_id === editingTaskId);
+    if (!t) return;
+
+    if (!confirm("Archive this task?")) return;
+
+    t.is_archived = true;
+    state.tasks = state.tasks.filter(x => x.task_id !== editingTaskId);
+    state.archivedTasks.push(t);
+
+    try {
+        await apiUpdateTask(t);
+    } catch (err) {
+        console.error("Archive task failed:", err);
     }
 
     refreshCurrentView();
