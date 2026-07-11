@@ -257,6 +257,53 @@ async function apiUnlinkTask(noteId, taskId) {
 }
 
 // ─────────────────────────────────────────
+// NOTIFICATIONS
+// ─────────────────────────────────────────
+
+async function apiGetNotifications() {
+    const res = await fetch(`${API_URL}/api/notifications/`, {
+        credentials: "include"
+    });
+    if (!res.ok) throw new Error("Failed to fetch notifications");
+    return res.json();
+}
+
+async function apiGetUnreadNotificationCount() {
+    const res = await fetch(`${API_URL}/api/notifications/unread-count`, {
+        credentials: "include"
+    });
+    if (!res.ok) throw new Error("Failed to fetch unread notification count");
+    return res.json();
+}
+
+async function apiMarkAllNotificationsRead() {
+    const res = await fetch(`${API_URL}/api/notifications/read-all`, {
+        method:      "PUT",
+        credentials: "include"
+    });
+    if (!res.ok) throw new Error("Failed to mark notifications read");
+    return res.json();
+}
+
+async function apiMarkNotificationRead(notificationId) {
+    const res = await fetch(`${API_URL}/api/notifications/${notificationId}/read`, {
+        method:      "PUT",
+        credentials: "include"
+    });
+    if (!res.ok) throw new Error("Failed to mark notification read");
+    return res.json();
+}
+
+async function apiDeleteNotification(notificationId) {
+    const res = await fetch(`${API_URL}/api/notifications/${notificationId}`, {
+        method:      "DELETE",
+        credentials: "include"
+    });
+    if (!res.ok) throw new Error("Failed to delete notification");
+    return res.json();
+}
+
+// ─────────────────────────────────────────
 // SETTINGS
 // ─────────────────────────────────────────
 
