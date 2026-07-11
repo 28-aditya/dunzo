@@ -1,6 +1,6 @@
 // scripts/createAccount.js
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://dunzo-backend-pzxl.onrender.com";
 
 // ── Google OAuth ──────────────────────────────────────────
 document.getElementById("google-signup-btn")

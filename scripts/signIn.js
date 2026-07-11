@@ -1,6 +1,6 @@
 // scripts/signIn.js
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://dunzo-backend-pzxl.onrender.com";
 
 // ── Auto-login if a valid session already exists ─────────
 // Covers landing directly on this page (bookmark, back button, etc.)
