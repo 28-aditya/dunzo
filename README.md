@@ -9,7 +9,7 @@
 ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚══════╝ ╚═════╝ 
 ```
 
-**v2.1.0.0**
+**v2.2.0.0**
 
 *A modern productivity workspace. Clean design, fast workflow, zero friction.*
 
@@ -37,6 +37,24 @@ dunzo is a productivity dashboard built entirely with vanilla HTML, CSS, and Jav
 - Status cycling — Todo → Doing → Done
 - Completion timestamps and overdue detection
 - Form validation with contextual error messages
+- Manual archive action from the task modal (edit mode)
+- Automatic archiving of tasks completed 5+ days ago (opt-in via Settings)
+
+### 🔔 Notifications
+- Bell icon on the dashboard opens a live notifications panel
+- Automatic alerts when a task becomes overdue
+- Automatic alerts when a task is due within 30 minutes
+- Unread count badge on the bell icon
+- Notifications marked as read when the panel is opened
+- Delete individual notifications
+- Badge refreshes immediately after completing, deleting, or archiving a task (not just on the poll interval)
+
+### 🔐 Authentication
+- Email/password sign-up and sign-in
+- Google OAuth sign-in
+- Live password strength meter (weak / medium / strong) on account creation
+- Weak passwords are rejected at submission, not just flagged visually
+- Password reset flow (email link)
 
 ### 📋 Views
 | View | Description |
@@ -63,7 +81,7 @@ dunzo is a productivity dashboard built entirely with vanilla HTML, CSS, and Jav
 
 ### ⚙️ Settings
 - Account management
-- Daily goal and auto-archive
+- Daily goal and auto-archive (archives completed tasks after 5 days when enabled)
 - Focus session timer configuration
 - Notification preferences
 - Default view selection
@@ -80,13 +98,15 @@ dunzo is a productivity dashboard built entirely with vanilla HTML, CSS, and Jav
 state.js            global state object
 models.js           TaskItem, NoteItem classes
 utils.js            shared helpers (formatDate, stepNumber)
-modal.js            task create / edit modal system
+modal.js            task create / edit modal system (incl. archive action)
 taskRendering.js    task list rendering and filtering
 dashboard.js        dashboard analytics and kanban board
 navigation.js       sidebar routing and view switching
 search.js           real-time search engine
 notes.js            notes system
 settings.js         settings module
+notifications.js    notifications bell, panel, badge, read/delete
+createAccount.js    account creation, password strength meter + enforcement
 app.js              entry point
 dashboardData.js    mock data seeding
 ```
@@ -96,8 +116,10 @@ dashboardData.js    mock data seeding
 state = {
     currentView,
     tasks,
+    archivedTasks,
     notes,
     addedCategories,
+    notifications,
     activeNoteId,
     settings: {
         darkTheme,
@@ -142,6 +164,18 @@ state = {
 }
 ```
 
+### Notification Object
+```js
+{
+    id,                // UUID
+    type,              // "overdue" | "due_soon"
+    message,
+    is_read,
+    created_at,        // ISO string
+    task_id            // UUID | null
+}
+```
+
 ---
 
 ## Progress
@@ -159,31 +193,41 @@ state = {
 - Analytics charts (trend, flow, category, heatmap)
 - Settings module (full)
 - Data export and import
-- Local storage persistence
 - Dark / light theme with persistence
 - Comprehensive bug audit and fixes
+- FastAPI backend integration (auth, tasks, notes, settings, categories)
+- Email/password and Google OAuth sign-in
+- Notifications system (overdue / due-soon alerts, read/unread, delete)
+- Auto-archiving of completed tasks
+- Password strength enforcement on account creation
 
 ### 🔄 In Progress
-- Authentication pages (index, sign-in, create-account, profile)
-- Comprehensive testing
+- Comprehensive end-to-end testing
+- Production hardening (see backend README for outstanding auth/security items)
 
 ### 📌 Planned
-- Backend integration
-- User accounts and authentication
-- Cloud synchronization
-- Notifications and reminders
-- Database support
+- Real-time sync (WebSockets) instead of polling for notifications
+- Offline-first support
+- Cloud/multi-device sync beyond the current backend
 
 ---
 
 ## Known Limitations
-- No backend — data lives in localStorage only
-- No cloud sync or multi-device support
-- Authentication UI in progress, not yet functional
+- Notifications are computed on read (no background scheduler) — the bell badge polls every 30s and also refreshes immediately after task mutations, so there's no scheduler process to keep running
+- Task due dates/times are stored and compared as naive local strings with no timezone conversion, consistent with the rest of the app
+- No cloud sync beyond the single connected backend/database
 
 ---
 
 ## Changelog
+
+### v2.2.0.0
+- Notifications system: overdue and due-in-30-minutes alerts, bell icon panel, unread badge, mark-as-read on open, delete
+- Auto-archiving: tasks completed 5+ days ago archive automatically when enabled in Settings
+- Manual "Archive" action added to the task modal (edit mode)
+- Notification badge now refreshes immediately after completing/deleting/archiving a task instead of waiting on the poll interval
+- Fixed a settings-page crash (missing password-reset button reference) that was silently blocking the auto-archive and notify-overdue toggles from saving
+- Password strength checker on account creation now actually blocks weak passwords at submit time instead of only showing a cosmetic rating
 
 ### v2.1.0.0
 - Full settings module
