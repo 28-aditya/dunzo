@@ -1,6 +1,6 @@
 // scripts/createAccount.js
 
-const API_URL = "https://dunzo-backend-pzxl.onrender.com";
+const API_URL = "http://localhost:8000";
 
 // ── Google OAuth ──────────────────────────────────────────
 document.getElementById("google-signup-btn")
@@ -76,6 +76,14 @@ document.getElementById("create-account-form")
             document.getElementById("password-error").textContent = "Password must be at least 8 characters";
             document.getElementById("password-error").classList.add("visible");
             valid = false;
+        } else {
+            const { level } = getStrength(password);
+            if (level === "weak") {
+                document.getElementById("password-error").textContent =
+                    "Password is too weak — add uppercase letters, numbers, or a symbol";
+                document.getElementById("password-error").classList.add("visible");
+                valid = false;
+            }
         }
         if (!terms) {
             alert("Please accept the Terms of Service to continue.");
@@ -89,10 +97,9 @@ document.getElementById("create-account-form")
 
         try {
             const res = await fetch(`${API_URL}/auth/email/register`, {
-                method:      "POST",
-                credentials: "include",
-                headers:     { "Content-Type": "application/json" },
-                body:        JSON.stringify({ name, email, password }),
+                method:  "POST",
+                headers: { "Content-Type": "application/json" },
+                body:    JSON.stringify({ name, email, password }),
             });
 
             const data = await res.json();

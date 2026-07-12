@@ -89,6 +89,17 @@ async function refreshUnreadCount() {
     }
 }
 
+// Called by other modules (modal.js, taskRendering.js) right after a task
+// mutation that could affect notifications (status change, delete, archive)
+// so the bell badge doesn't wait for the next poll cycle to catch up. Also
+// refreshes the open panel's contents if it's currently visible.
+async function syncNotificationsAfterTaskChange() {
+    await refreshUnreadCount();
+    if (notifPanel?.classList.contains("active")) {
+        await loadNotifications();
+    }
+}
+
 function updateNotifBadge(count) {
     if (!notifBadge) return;
     if (count > 0) {

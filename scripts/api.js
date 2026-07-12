@@ -43,8 +43,6 @@ async function loadUserData() {
         });
 
         if (res.status === 401) {
-            // Access token expired/missing — try a silent refresh using the
-            // refresh_token cookie before booting the user to sign-in.
             const refreshed = await apiRefreshToken();
             if (!refreshed) {
                 window.location.href = "/pages/sign-in.html";

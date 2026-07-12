@@ -259,6 +259,10 @@ async function handleSave() {
 
         refreshCurrentView();
         closeModal();
+
+        if (typeof syncNotificationsAfterTaskChange === "function") {
+            syncNotificationsAfterTaskChange();
+        }
     } finally {
         isSaving = false;
         if (saveBtn) saveBtn.disabled = false;
@@ -283,6 +287,10 @@ async function handleDelete() {
 
     refreshCurrentView();
     closeModal();
+
+    if (typeof syncNotificationsAfterTaskChange === "function") {
+        syncNotificationsAfterTaskChange();
+    }
 }
 
 // -------------------------
@@ -308,6 +316,10 @@ async function handleArchive() {
 
     refreshCurrentView();
     closeModal();
+
+    if (typeof syncNotificationsAfterTaskChange === "function") {
+        syncNotificationsAfterTaskChange();
+    }
 }
 
 // -------------------------

@@ -86,6 +86,13 @@ function attachSettingsEvents() {
     settingsEmail.addEventListener("input",    showSaveButton);
     saveChangesBtn.addEventListener("click",   saveAccountChanges);
 
+    // The settings markup currently has no password-reset button/card, so
+    // this element doesn't exist yet — guard it like the other optional
+    // fields below rather than letting a null access here stop every
+    // listener after it (that was silently breaking the auto-archive and
+    // notify-overdue toggles).
+    if (resetPwdBtn) resetPwdBtn.addEventListener("click", handleResetPassword);
+
     dailyGoalInput.addEventListener("change",    updateDailyGoal);
     autoArchiveToggle.addEventListener("change", updateAutoArchive);
 
@@ -163,6 +170,8 @@ function updateUserPanel() {
 }
 
 function handleResetPassword() {
+    if (!resetPwdBtn) return;
+
     resetPwdBtn.textContent   = "Email sent ✓";
     resetPwdBtn.disabled      = true;
     resetPwdBtn.style.opacity = "0.6";
@@ -307,7 +316,7 @@ function clearWorkspace() {
 // =========================
 
 function saveState() {
-    // kept as no-op for any legacy calls — DB is source of truth now
+
 }
 
 function flashError(el, msg) {

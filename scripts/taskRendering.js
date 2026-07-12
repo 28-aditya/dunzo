@@ -105,6 +105,9 @@ function renderTaskList({
 
             try {
                 await apiUpdateTask(task);
+                if (typeof syncNotificationsAfterTaskChange === "function") {
+                    syncNotificationsAfterTaskChange();
+                }
             } catch (err) {
                 console.error("Update task status failed:", err);
                 // Roll back the optimistic change if the API call failed
